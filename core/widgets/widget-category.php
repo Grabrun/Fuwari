@@ -10,8 +10,8 @@ class widget_category extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'category_widget',
-            'Boxmoe_侧栏分类', 
-            array('description' => __('Boxmoe_侧栏分类小工具', 'text_domain'),
+            'Fuwari_侧栏分类', 
+            array('description' => __('Fuwari_侧栏分类小工具', 'text_domain'),
 				  'classname' => __('widget_categories', 'text_domain' ))
         );
     }

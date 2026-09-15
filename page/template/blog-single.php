@@ -14,8 +14,8 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                                 <div class="toc-list"></div>
                             </div>
                         </div>
-            <div class="<?php echo boxmoe_layout_setting(); ?>">
-            <div class="blog-single <?php echo boxmoe_border_setting(); ?>">
+            <div class="<?php echo fuwari_layout_setting(); ?>">
+            <div class="blog-single <?php echo fuwari_border_setting(); ?>">
             <?php while (have_posts()) : the_post(); ?>
                 <div class="post-single">
                     <div class="single-category">
@@ -33,7 +33,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                       <div class="single-meta-box">
                         <div class="single-info-left">
                           <div class="single-meta">
-                              <img src="<?php echo boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_get_avatar_url(get_the_author_meta('ID'), 100); ?>" class="avatar lazy" alt="avatar">
+                              <img src="<?php echo fuwari_lazy_load_images(); ?>" data-src="<?php echo fuwari_get_avatar_url(get_the_author_meta('ID'), 100); ?>" class="avatar lazy" alt="avatar">
                             <div class="single-author-name">
                               <div class="single-author-info">
                                 <a href="#" class="name">
@@ -42,7 +42,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                                   <i class="fa fa-clock-o"></i><?php the_date(); ?></span>
                                 <span class="view">
                                   <i class="fa fa-street-view"></i><?php setPostViews(get_the_ID()); ?><?php echo getPostViews(get_the_ID()); ?></span>
-                                  <?php edit_post_link( '<i class="fa fa-pencil-square-o"></i>编辑['.__( '仅作者可见', 'boxmoe'). ']'); ?>
+                                  <?php edit_post_link( '<i class="fa fa-pencil-square-o"></i>编辑['.__( '仅作者可见', 'fuwari'). ']'); ?>
                               </div>
                             </div>
                           </div>
@@ -73,7 +73,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                         ?>                      
                       </div>
                       <div class="post-actions mt-4">
-                        <?php if(get_boxmoe('boxmoe_like_switch')): ?>
+                        <?php if(get_fuwari('fuwari_like_switch')): ?>
                           <button class="action-btn like-btn" title="点赞" data-post-id="<?php the_ID(); ?>">
                               <i class="fa fa-thumbs-up"></i>
                               <span class="like-count"><?php echo getPostLikes(get_the_ID()); ?></span>
@@ -85,14 +85,14 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                               <span class="favorite-text"><?php echo isPostFavorited(get_the_ID()) ? '已收藏' : '收藏'; ?></span>
                           </button>
                           <?php endif; ?>
-                          <?php if(get_boxmoe('boxmoe_reward_switch')): ?>
+                          <?php if(get_fuwari('fuwari_reward_switch')): ?>
                           <button class="action-btn reward-btn" title="赞赏">
                               <i class="fa fa-gift"></i>
                               <span>打赏</span>
                           </button>
                           <?php endif; ?>
                       </div>
-                      <?php if(get_boxmoe('boxmoe_reward_switch')): ?>
+                      <?php if(get_fuwari('fuwari_reward_switch')): ?>
                       <div class="reward-modal">
                           <div class="reward-content">
                               <div class="reward-header">
@@ -102,14 +102,14 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                               </div>
                               <div class="reward-body">
                                   <div class="qrcode-item">
-                                      <?php if(get_boxmoe('boxmoe_reward_qrcode_weixin')): ?>
-                                      <img src="<?php echo get_boxmoe('boxmoe_reward_qrcode_weixin'); ?>" alt="微信赞赏" >
+                                      <?php if(get_fuwari('fuwari_reward_qrcode_weixin')): ?>
+                                      <img src="<?php echo get_fuwari('fuwari_reward_qrcode_weixin'); ?>" alt="微信赞赏" >
                                       <p>微信扫一扫</p>
                                       <?php endif; ?>
                                   </div>
                                   <div class="qrcode-item">
-                                      <?php if(get_boxmoe('boxmoe_reward_qrcode_alipay')): ?>
-                                      <img src="<?php echo get_boxmoe('boxmoe_reward_qrcode_alipay'); ?>" alt="支付宝赞赏">
+                                      <?php if(get_fuwari('fuwari_reward_qrcode_alipay')): ?>
+                                      <img src="<?php echo get_fuwari('fuwari_reward_qrcode_alipay'); ?>" alt="支付宝赞赏">
                                       <p>支付宝扫一扫</p>
                                       <?php endif; ?>
                                   </div>

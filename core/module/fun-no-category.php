@@ -4,7 +4,7 @@ if(!defined('ABSPATH')){
     echo'Look your sister';
     exit;
 }
-if(get_boxmoe('boxmoe_no_categoty')){
+if(get_fuwari('fuwari_no_categoty')){
     add_action( 'load-themes.php',  'no_category_base_refresh_rules');
     add_action('created_category', 'no_category_base_refresh_rules');
     add_action('edited_category', 'no_category_base_refresh_rules');

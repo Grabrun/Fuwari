@@ -11,12 +11,12 @@ if(!defined('ABSPATH')){
 }
 
 // 文章新窗口打开开关--------------------------boxmoe.com--------------------------
-function boxmoe_article_new_window() {
-    return get_boxmoe('boxmoe_article_new_window_switch')?'target="_blank"':'';
+function fuwari_article_new_window() {
+    return get_fuwari('fuwari_article_new_window_switch')?'target="_blank"':'';
 }
 
 // 开启所有文章形式支持--------------------------boxmoe.com--------------------------
-if(get_boxmoe('boxmoe_article_support_switch')){
+if(get_fuwari('fuwari_article_support_switch')){
     add_theme_support('post-formats', array('image', 'video', 'audio', 'quote', 'link'));
 }
 
@@ -25,17 +25,17 @@ if(get_boxmoe('boxmoe_article_support_switch')){
 	
 
 // 缩略图尺寸设定--------------------------boxmoe.com--------------------------
-if(get_boxmoe('boxmoe_article_thumbnail_size_switch')){
-function boxmoe_article_thumbnail_size($size) {
-    $width  = intval(get_boxmoe('boxmoe_article_thumbnail_width')) ?: 300; 
-    $height = intval(get_boxmoe('boxmoe_article_thumbnail_height')) ?: 200;
+if(get_fuwari('fuwari_article_thumbnail_size_switch')){
+function fuwari_article_thumbnail_size($size) {
+    $width  = intval(get_fuwari('fuwari_article_thumbnail_width')) ?: 300; 
+    $height = intval(get_fuwari('fuwari_article_thumbnail_height')) ?: 200;
     return array($width, $height); 
 }
-add_filter('post_thumbnail_size', 'boxmoe_article_thumbnail_size');
+add_filter('post_thumbnail_size', 'fuwari_article_thumbnail_size');
 }
 
 // 文章缩略图逻辑--------------------------boxmoe.com--------------------------
-function boxmoe_article_thumbnail_src($cache_buster = '') {
+function fuwari_article_thumbnail_src($cache_buster = '') {
     global $post;
     $src='';
     if ($thumbnail_id = get_post_thumbnail_id()) {
@@ -45,19 +45,19 @@ function boxmoe_article_thumbnail_src($cache_buster = '') {
     }elseif (preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches)) {
         $src=$matches[1][0]; 
     }else{
-        if(get_boxmoe('boxmoe_article_thumbnail_random_api')){
-            $src=get_boxmoe('boxmoe_article_thumbnail_random_api_url');
+        if(get_fuwari('fuwari_article_thumbnail_random_api')){
+            $src=get_fuwari('fuwari_article_thumbnail_random_api_url');
         }else{
             $random_images = glob(get_template_directory().'/assets/images/random/*.{jpg,jpeg,png,gif}', GLOB_BRACE);   
             if (!empty($random_images)) {
                 $random_key = array_rand($random_images);
                 $src = str_replace(get_template_directory(), get_template_directory_uri(), $random_images[$random_key]);
             } else {
-                $src = boxmoe_theme_url().'/assets/images/default-thumbnail.jpg';
+                $src = fuwari_theme_url().'/assets/images/default-thumbnail.jpg';
             }
         }
     }
-    $src = $src ?: boxmoe_theme_url().'/assets/images/default-thumbnail.jpg';
+    $src = $src ?: fuwari_theme_url().'/assets/images/default-thumbnail.jpg';
     // 防缓存参数统一在此追加：URL 已含查询参数（如随机图 API ?category=acg&type=redirect）时用 & 连接，否则用 ?
     if ($cache_buster !== '') {
         $sep = (strpos($src, '?') !== false) ? '&' : '?';
@@ -122,31 +122,31 @@ function _get_excerpt($limit = 60, $after = '...') {
 }
 
 // 表格替换--------------------------boxmoe.com--------------------------
-function boxmoe_table_replace($text){
+function fuwari_table_replace($text){
 	$replace = array( '<table>' => '<div class="table-responsive"><table class="table" >','</table>' => '</table></div>' );
 	$text = str_replace(array_keys($replace), $replace, $text);
 	return $text;}
-add_filter('the_content', 'boxmoe_table_replace');
+add_filter('the_content', 'fuwari_table_replace');
 
 //防止代码转义--------------------------boxmoe.com--------------------------
-function boxmoe_prettify_esc_html($content){
+function fuwari_prettify_esc_html($content){
     $regex = '/(<pre\s+[^>]*?class\s*?=\s*?[",\'].*?prettyprint.*?[",\'].*?>)(.*?)(<\/pre>)/sim';
-    return preg_replace_callback($regex, 'boxmoe_prettify_esc_callback', $content);}
-function boxmoe_prettify_esc_callback($matches){
+    return preg_replace_callback($regex, 'fuwari_prettify_esc_callback', $content);}
+function fuwari_prettify_esc_callback($matches){
     $tag_open = $matches[1];
     $content = $matches[2];
     $tag_close = $matches[3];
     $content = esc_html($content);
     return $tag_open . $content . $tag_close;}
-add_filter('the_content', 'boxmoe_prettify_esc_html', 2);
-add_filter('comment_text', 'boxmoe_prettify_esc_html', 2);
+add_filter('the_content', 'fuwari_prettify_esc_html', 2);
+add_filter('comment_text', 'fuwari_prettify_esc_html', 2);
 
 //强制兼容--------------------------boxmoe.com--------------------------
-function boxmoe_prettify_replace($text){
+function fuwari_prettify_replace($text){
 	$replace = array( '<pre>' => '<pre class="prettyprint linenums" >','<pre class="prettyprint">' => '<pre class="prettyprint linenums" >' );
 	$text = str_replace(array_keys($replace), $replace, $text);
 	return $text;}
-add_filter('the_content', 'boxmoe_prettify_replace');
+add_filter('the_content', 'fuwari_prettify_replace');
 
 // 自动设置特色图片--------------------------boxmoe.com--------------------------
 function autoset_featured_image() {
@@ -171,7 +171,7 @@ add_action( 'future_to_publish', 'autoset_featured_image' );
 
 
 // 自适应图片--------------------------boxmoe.com--------------------------
-function boxmoe_remove_width_height($content) {
+function fuwari_remove_width_height($content) {
     preg_match_all('/<[img|IMG].*?src=[\'|"](.*?(?:[\.gif|\.jpg|\.png\.bmp\.webp]))[\'|"].*?[\/]?>/', $content, $images);
     if (!empty($images)) {
         foreach ($images[0] as $index => $value) {
@@ -181,18 +181,18 @@ function boxmoe_remove_width_height($content) {
     }
     return $content;
 }
-add_filter('the_content', 'boxmoe_remove_width_height', 99);
+add_filter('the_content', 'fuwari_remove_width_height', 99);
 
 
 // 图片懒加载--------------------------boxmoe.com--------------------------
-function boxmoe_lazy_content_load_images($content) {
+function fuwari_lazy_content_load_images($content) {
     $content = preg_replace_callback('/<img([^>]*?)src=([\'"])([^\'"]+)\2/i', 
         function($matches) {
             if (strpos($matches[0], 'data-src') !== false) {
                 return $matches[0];
             }
             return '<img' . $matches[1] 
-                . ' src="' . boxmoe_lazy_load_images() . '"' 
+                . ' src="' . fuwari_lazy_load_images() . '"' 
                 . ' data-src="' . $matches[3] . '"'
                 . ' class="lazy"'
                 . ' loading="lazy"';
@@ -201,23 +201,23 @@ function boxmoe_lazy_content_load_images($content) {
     return $content;
 }
 if(!is_admin()){
-    add_filter('the_content', 'boxmoe_lazy_content_load_images', 99);
+    add_filter('the_content', 'fuwari_lazy_content_load_images', 99);
 }
 
 // fancybox--------------------------boxmoe.com--------------------------
-function boxmoe_fancybox_replace ($content) {
+function fuwari_fancybox_replace ($content) {
     global $post;
     $pattern = "/<a(.*?)href=('|\")([A-Za-z0-9\/_\.\~\:-]*?)(-\d+x\d+)?(\.(?:bmp|gif|jpeg|png|jpg|webp))('|\")([^\>]*?)>/i";
     $replacement = '<a$1href=$2$3$5$6$7 class="fancybox" data-fancybox="gallery" data-src="$3$5">';
     $content = preg_replace($pattern, $replacement, $content);
     return $content;
 }
-add_filter('the_content', 'boxmoe_fancybox_replace', 99);
+add_filter('the_content', 'fuwari_fancybox_replace', 99);
 
 // 分页导航函数--------------------------boxmoe.com--------------------------
-if ( ! function_exists( 'boxmoe_pagination' ) ) :
-function boxmoe_pagination($query = null) {
-    $paging_type = get_boxmoe('boxmoe_article_paging_type');
+if ( ! function_exists( 'fuwari_pagination' ) ) :
+function fuwari_pagination($query = null) {
+    $paging_type = get_fuwari('fuwari_article_paging_type');
     if($paging_type == 'multi'){
         $p = 1;
         if ( is_singular() ) return;
@@ -255,12 +255,12 @@ function boxmoe_pagination($query = null) {
         echo '<nav class="pagination-next-prev"><ul class="pagination justify-content-center">';
         if ($current > 1) {
             echo '<li class="page-item">';
-            previous_posts_link('<span class="page-link"><i class="fa fa-arrow-left"></i> '.__('上一页', 'boxmoe').'</span>');
+            previous_posts_link('<span class="page-link"><i class="fa fa-arrow-left"></i> '.__('上一页', 'fuwari').'</span>');
             echo '</li>';
         }
         if ($current < $total) {
             echo '<li class="page-item ms-2">';
-            next_posts_link('<span class="page-link">'.__('下一页', 'boxmoe').' <i class="fa fa-arrow-right"></i></span>', $total);
+            next_posts_link('<span class="page-link">'.__('下一页', 'fuwari').' <i class="fa fa-arrow-right"></i></span>', $total);
             echo '</li>';
         }
         echo '</ul></nav>';
@@ -268,13 +268,13 @@ function boxmoe_pagination($query = null) {
     }
 }
 function p_link( $i, $title = '', $w='' ) {
-    if ( $title == '' ) $title = __('页', 'boxmoe-com')." {$i}";
+    if ( $title == '' ) $title = __('页', 'fuwari-com')." {$i}";
     $itext = $i;
     if( $i == 0 ){
-        $itext = __('<i class="fa fa-angle-double-left"></i>', 'boxmoe-com');
+        $itext = __('<i class="fa fa-angle-double-left"></i>', 'fuwari-com');
     }
     if( $w ){
-        $itext = __('<i class="fa fa-angle-double-right"></i>', 'boxmoe-com');
+        $itext = __('<i class="fa fa-angle-double-right"></i>', 'fuwari-com');
     }
     echo "<li class=\"page-item\"><a class=\"page-link\" href='", esc_html( get_pagenum_link( $i ) ), "'>{$itext}</a></li>";
 }
@@ -293,9 +293,9 @@ function getPostLikes($postID) {
     return $count;
 }
 
-function boxmoe_post_like() {
+function fuwari_post_like() {
     // 安全加固：校验 nonce（原 13.12 仅靠 IP transient 去重，无请求鉴权）
-    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'boxmoe_ajax_nonce')) {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'fuwari_ajax_nonce')) {
         wp_send_json_error(['message' => '安全验证失败']);
         return;
     }
@@ -329,8 +329,8 @@ function boxmoe_post_like() {
     }
 }
 
-add_action('wp_ajax_post_like', 'boxmoe_post_like');
-add_action('wp_ajax_nopriv_post_like', 'boxmoe_post_like');
+add_action('wp_ajax_post_like', 'fuwari_post_like');
+add_action('wp_ajax_nopriv_post_like', 'fuwari_post_like');
 
 // 检查文章是否被收藏
 function isPostFavorited($post_id) {
@@ -347,13 +347,13 @@ function isPostFavorited($post_id) {
 }
 
 // 处理文章收藏
-function boxmoe_post_favorite() {
+function fuwari_post_favorite() {
     if (!is_user_logged_in()) {
         wp_send_json_error(['message' => '请先登录']);
         return;
     }
     // 安全加固：校验 nonce（原 13.12 无请求鉴权）
-    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'boxmoe_ajax_nonce')) {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'fuwari_ajax_nonce')) {
         wp_send_json_error(['message' => '安全验证失败']);
         return;
     }
@@ -395,10 +395,10 @@ function boxmoe_post_favorite() {
     ]);
 }
 
-add_action('wp_ajax_post_favorite', 'boxmoe_post_favorite');
+add_action('wp_ajax_post_favorite', 'fuwari_post_favorite');
 
 // 处理删除收藏
-function boxmoe_delete_favorite() {
+function fuwari_delete_favorite() {
     if (!is_user_logged_in()) {
         wp_send_json_error(['message' => '请先登录']);
         return;
@@ -425,4 +425,4 @@ function boxmoe_delete_favorite() {
     ]);
 }
 
-add_action('wp_ajax_delete_favorite', 'boxmoe_delete_favorite');
+add_action('wp_ajax_delete_favorite', 'fuwari_delete_favorite');

@@ -171,7 +171,7 @@ function initCommentToolbar() {
                     const span = document.createElement('span');
                     span.textContent = emoji;
                     span.addEventListener('click', () => {
-                        insertAtBoxmoe(commentTextarea, emoji);
+                        insertAtFuwari(commentTextarea, emoji);
                         emojiPanel.style.display = 'none';
                     });
                     emojiContent.appendChild(span);
@@ -201,7 +201,7 @@ function initCommentToolbar() {
                 
                 try {
                     const imgUrl = await uploadImage(file);
-                    insertAtBoxmoe(commentTextarea, `![${file.name}](${imgUrl})`);
+                    insertAtFuwari(commentTextarea, `![${file.name}](${imgUrl})`);
                 } catch(err) {
                     showMessage('图片上传失败', 'error');
                 }
@@ -237,7 +237,7 @@ function initCommentToolbar() {
             if(code) {
                 // 修改为WordPress兼容的pre+code标签格式
                 const codeBlock = `\n<pre><code class="language-">\n${code}\n</code></pre>\n`;
-                insertAtBoxmoe(commentTextarea, codeBlock);
+                insertAtFuwari(commentTextarea, codeBlock);
                 codeInput.value = '';
                 codePanel.style.display = 'none';
             }
@@ -315,7 +315,7 @@ function showMessage(message, type = 'success') {
 }
 
 //编辑器辅助函数
-function insertAtBoxmoe(textarea, text) {
+function insertAtFuwari(textarea, text) {
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const value = textarea.value;

@@ -11,67 +11,67 @@ if(!defined('ABSPATH')){
 }
 
 $options[] = array(
-    'name' => __('社交图标', 'ui_boxmoe_com'),
+    'name' => __('社交图标', 'ui_fuwari_com'),
     'icon' => 'dashicons-share',
     'type' => 'heading'); 
 
     $options[] = array(
         'group' => 'start',
         'group_title' => '社交图标设置',
-        'name' => __('QQ', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_social_qq',
+        'name' => __('QQ', 'ui_fuwari_com'),
+        'id' => 'fuwari_social_qq',
         'type' => 'text',
         'std' => '10000',
         'class' => 'mini',
-        'desc' => __('QQ号，留空则不显示', 'ui_boxmoe_com'),
+        'desc' => __('QQ号，留空则不显示', 'ui_fuwari_com'),
         );
     $options[] = array(        
-        'name' => __('Email', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_social_email',
+        'name' => __('Email', 'ui_fuwari_com'),
+        'id' => 'fuwari_social_email',
         'type' => 'text',
         'std' => '',
-        'desc' => __('Email地址，留空则不显示', 'ui_boxmoe_com'),
+        'desc' => __('Email地址，留空则不显示', 'ui_fuwari_com'),
         'class' => 'mini',
         );    
     $options[] = array(
-        'name' => __('WeChat', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_social_wechat',
+        'name' => __('WeChat', 'ui_fuwari_com'),
+        'id' => 'fuwari_social_wechat',
         'type' => 'text',
         'std' => $image_path.'default-thumbnail.jpg',
-        'desc' => __('WeChat二维码链接，留空则不显示', 'ui_boxmoe_com'),
+        'desc' => __('WeChat二维码链接，留空则不显示', 'ui_fuwari_com'),
         'class' => '',
         );
 
     $options[] = array(
-        'name' => __('Weibo', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_social_weibo',
+        'name' => __('Weibo', 'ui_fuwari_com'),
+        'id' => 'fuwari_social_weibo',
         'type' => 'text',
         'std' => '',
-        'desc' => __('Weibo链接，留空则不显示', 'ui_boxmoe_com'),
+        'desc' => __('Weibo链接，留空则不显示', 'ui_fuwari_com'),
         'class' => 'small',
         );   
     $options[] = array(
-        'name' => __('Instagram', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_social_instagram',
+        'name' => __('Instagram', 'ui_fuwari_com'),
+        'id' => 'fuwari_social_instagram',
         'type' => 'text',
         'std' => '',
-        'desc' => __('Instagram链接，留空则不显示', 'ui_boxmoe_com'),
+        'desc' => __('Instagram链接，留空则不显示', 'ui_fuwari_com'),
         'class' => 'small',
         );
     $options[] = array(
-        'name' => __('Telegram', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_social_telegram',
+        'name' => __('Telegram', 'ui_fuwari_com'),
+        'id' => 'fuwari_social_telegram',
         'type' => 'text',
         'std' => '',
-        'desc' => __('Telegram链接，留空则不显示', 'ui_boxmoe_com'),
+        'desc' => __('Telegram链接，留空则不显示', 'ui_fuwari_com'),
         'class' => 'small',
         );
     $options[] = array(
         'group' => 'end',
-        'name' => __('GitHub', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_social_github',
+        'name' => __('GitHub', 'ui_fuwari_com'),
+        'id' => 'fuwari_social_github',
         'type' => 'text',
         'std' => '',
-        'desc' => __('GitHub链接，留空则不显示', 'ui_boxmoe_com'),
+        'desc' => __('GitHub链接，留空则不显示', 'ui_fuwari_com'),
         'class' => 'small',
         );

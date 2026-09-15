@@ -190,8 +190,8 @@ function initLazyLoad() {
 
 // 加载延迟初始化
 function initBannerImage() {
-    const bannerImg = document.querySelector('.boxmoe_header_banner_img');
-    const siteMain = document.querySelector('.boxmoe_header_banner .site-main');
+    const bannerImg = document.querySelector('.fuwari_header_banner_img');
+    const siteMain = document.querySelector('.fuwari_header_banner .site-main');
     if (!bannerImg || !siteMain) return;
     const img = bannerImg.querySelector('img');
     if (!img) return;
@@ -212,7 +212,7 @@ function initBannerImage() {
 }
 // Headhesive初始化
 function initStickyHeader() {
-  const header = document.querySelector('.boxmoe_header .navbar');
+  const header = document.querySelector('.fuwari_header .navbar');
   if (!header) return;
   let lastScrollTop = 0;
   const headerHeight = header.offsetHeight;
@@ -587,7 +587,7 @@ function initPrettyPrint() {
 }
 
 function initCodeCopy() {
-    const container = document.querySelector('.boxmoe-container');
+    const container = document.querySelector('.fuwari-container');
     if (!container) return;
     const preElements = container.querySelectorAll('pre');
     preElements.forEach((pre, index) => {

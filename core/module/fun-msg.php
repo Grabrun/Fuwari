@@ -11,7 +11,7 @@ if(!defined('ABSPATH')){
 }
 
 //发件邮件统一模板
-function boxmoe_smtp_mail_template($to, $subject, $message) {
+function fuwari_smtp_mail_template($to, $subject, $message) {
     if (!is_email($to)) {
         error_log('错误的邮件地址：' . $to);
         return false;
@@ -20,7 +20,7 @@ function boxmoe_smtp_mail_template($to, $subject, $message) {
         error_log('消息错误：消息不能为空');
         return false;
     }
-    $from_email = get_option('boxmoe_smtp_from');
+    $from_email = get_option('fuwari_smtp_from');
     if (!is_email($from_email)) {
         error_log('发件人错误：错误的发件人配置');
         return false;
@@ -37,7 +37,7 @@ function boxmoe_smtp_mail_template($to, $subject, $message) {
 }
 
 //新用户注册消息通知
-function boxmoe_new_user_register($user_id){
+function fuwari_new_user_register($user_id){
     $user = get_user_by('id', $user_id);
     $subject = '[' . get_option('blogname') . '] 有新注册会员！';
     $message = '
@@ -70,11 +70,11 @@ function boxmoe_new_user_register($user_id){
 
     // 获取管理员邮箱
     $admin_email = get_option('admin_email');
-    boxmoe_smtp_mail_template($admin_email, $subject, $message);
+    fuwari_smtp_mail_template($admin_email, $subject, $message);
 }
 
 //评论消息通知
-function boxmoe_comment_notification($comment_id){
+function fuwari_comment_notification($comment_id){
     $comment = get_comment($comment_id);
     $post = get_post($comment->comment_post_ID);
     $subject = '[' . get_option('blogname') . '] 有新的评论消息！';
@@ -102,32 +102,32 @@ function boxmoe_comment_notification($comment_id){
         </tbody>
     </table>';
 
-    boxmoe_smtp_mail_template($post->post_author, $subject, $message);
+    fuwari_smtp_mail_template($post->post_author, $subject, $message);
 }
-//评论通知统一分发器（架构优化：评论模块只需触发 boxmoe_comment_notify 事件，此处集中判断开关并分派，避免跨模块直接调用与重复通知）
-function boxmoe_comment_notify_dispatcher($comment_id) {
+//评论通知统一分发器（架构优化：评论模块只需触发 fuwari_comment_notify 事件，此处集中判断开关并分派，避免跨模块直接调用与重复通知）
+function fuwari_comment_notify_dispatcher($comment_id) {
     $comment = get_comment($comment_id);
     if (!$comment || 'spam' === $comment->comment_approved || 'trash' === $comment->comment_approved) {
         return;
     }
-    $smtp_on = (bool)get_boxmoe('boxmoe_smtp_mail_switch');
+    $smtp_on = (bool)get_fuwari('fuwari_smtp_mail_switch');
     // 回复通知：发给父评论者
     if ($smtp_on && $comment->comment_parent > 0) {
-        boxmoe_comment_reply_notification($comment_id);
+        fuwari_comment_reply_notification($comment_id);
     }
     // 新评论通知：发给文章作者
-    if ($smtp_on && get_boxmoe('boxmoe_new_comment_notice_switch')) {
-        boxmoe_comment_notification($comment_id);
+    if ($smtp_on && get_fuwari('fuwari_new_comment_notice_switch')) {
+        fuwari_comment_notification($comment_id);
     }
     // 机器人通知
-    if (get_boxmoe('boxmoe_robot_notice_switch') && get_boxmoe('boxmoe_new_comment_notice_robot_switch')) {
-        boxmoe_robot_msg_comment($comment_id);
+    if (get_fuwari('fuwari_robot_notice_switch') && get_fuwari('fuwari_new_comment_notice_robot_switch')) {
+        fuwari_robot_msg_comment($comment_id);
     }
 }
-add_action('boxmoe_comment_notify', 'boxmoe_comment_notify_dispatcher');
+add_action('fuwari_comment_notify', 'fuwari_comment_notify_dispatcher');
 
 //评论回复消息通知
-function boxmoe_comment_reply_notification($comment_id) {
+function fuwari_comment_reply_notification($comment_id) {
     $comment = get_comment($comment_id);   
     // 基础检查
     if (!$comment || !$comment->comment_parent) {
@@ -173,12 +173,12 @@ function boxmoe_comment_reply_notification($comment_id) {
             </tr>
         </tbody>
     </table>';
-    boxmoe_smtp_mail_template($parent_comment->comment_author_email, $subject, $message);
+    fuwari_smtp_mail_template($parent_comment->comment_author_email, $subject, $message);
 }
 
 
 //找回密码邮件
-function boxmoe_reset_password_email($user_login) {
+function fuwari_reset_password_email($user_login) {
     // 获取用户信息
     $user = get_user_by('login', $user_login);
     if (!$user) {
@@ -223,11 +223,11 @@ function boxmoe_reset_password_email($user_login) {
         </tbody>
     </table>';
     
-    return boxmoe_smtp_mail_template($user_email, $subject, $message);
+    return fuwari_smtp_mail_template($user_email, $subject, $message);
 }
 
 //会员注册成功发生邮件
-function boxmoe_new_user_register_email($user_id){
+function fuwari_new_user_register_email($user_id){
     $user = get_user_by('id', $user_id);
     $subject = '[' . get_option('blogname') . '] 会员注册成功';
     $message = '
@@ -256,12 +256,12 @@ function boxmoe_new_user_register_email($user_id){
             </tr>
         </tbody>
     </table>';
-    boxmoe_smtp_mail_template($user->user_email, $subject, $message);
+    fuwari_smtp_mail_template($user->user_email, $subject, $message);
 }
-//add_action('user_register', 'boxmoe_new_user_register_email');  
+//add_action('user_register', 'fuwari_new_user_register_email');  
 
 //验证码注册模板
-function boxmoe_verification_code_register_email($email, $verification_code = ''){
+function fuwari_verification_code_register_email($email, $verification_code = ''){
     if (func_num_args() === 1 && is_numeric($email)) {
         return;
     }
@@ -289,15 +289,15 @@ function boxmoe_verification_code_register_email($email, $verification_code = ''
             </tr>
         </tbody>
     </table>';
-    return boxmoe_smtp_mail_template($email, $subject, $message);
+    return fuwari_smtp_mail_template($email, $subject, $message);
 }
 
 
 
 
-if(get_boxmoe('boxmoe_robot_notice_switch')){
+if(get_fuwari('fuwari_robot_notice_switch')){
 //机器人post接口消息统一模板
-function boxmoe_robot_post_template($remote_server, $post_string) {  
+function fuwari_robot_post_template($remote_server, $post_string) {  
     $ch = curl_init();  
     curl_setopt($ch, CURLOPT_URL, $remote_server);
     curl_setopt($ch, CURLOPT_POST, 1); 
@@ -312,98 +312,98 @@ function boxmoe_robot_post_template($remote_server, $post_string) {
 } 
 
 //评论机器人通知
-function boxmoe_robot_msg_comment($comment_id){
+function fuwari_robot_msg_comment($comment_id){
     $comment = get_comment($comment_id);
     $siteurl = get_bloginfo('url');
     $text = '文章《' . get_the_title($comment->comment_post_ID) . '》有新的评论！';
     $message = $text . "\n" . "作者: $comment->comment_author \n邮箱: $comment->comment_author_email \n评论: $comment->comment_content \n 点击查看：$siteurl/?p=$comment->comment_post_ID#comments";
-		if(get_boxmoe('boxmoe_robot_channel') == 'qq_group' ){			
-			$msgid	=	get_boxmoe('boxmoe_robot_msg_user');
-            $apiurl	=	get_boxmoe('boxmoe_robot_api_url').'/send_private_msg?group_id='.$msgid;
+		if(get_fuwari('fuwari_robot_channel') == 'qq_group' ){			
+			$msgid	=	get_fuwari('fuwari_robot_msg_user');
+            $apiurl	=	get_fuwari('fuwari_robot_api_url').'/send_private_msg?group_id='.$msgid;
             $data = array ('msgtype' => 'text','text' => array ('content' => $message));
 			$data_string = json_encode($data);
-			return $result = boxmoe_robot_post_template($apiurl, $data_string);  
+			return $result = fuwari_robot_post_template($apiurl, $data_string);  
 			}
-        if(get_boxmoe('boxmoe_robot_channel') == 'qq_user' ){			
-			$msgid	=	get_boxmoe('boxmoe_robot_msg_user');
-            $apiurl	=	get_boxmoe('boxmoe_robot_api_url').'/send_private_msg?user_id='.$msgid;
+        if(get_fuwari('fuwari_robot_channel') == 'qq_user' ){			
+			$msgid	=	get_fuwari('fuwari_robot_msg_user');
+            $apiurl	=	get_fuwari('fuwari_robot_api_url').'/send_private_msg?user_id='.$msgid;
             $data = array ('msgtype' => 'text','text' => array ('content' => $message));
 			$data_string = json_encode($data);
-			return $result = boxmoe_robot_post_template($apiurl, $data_string);  
+			return $result = fuwari_robot_post_template($apiurl, $data_string);  
 			}    
-		if(get_boxmoe('boxmoe_robot_channel') == 'dingtalk' ){
+		if(get_fuwari('fuwari_robot_channel') == 'dingtalk' ){
 			$time    = intval(microtime(true) * 1000);
-			$secret  = get_boxmoe('boxmoe_robot_api_key');
+			$secret  = get_fuwari('fuwari_robot_api_key');
 			$sign    = urlencode(base64_encode(hash_hmac('sha256', "{$time}\n{$secret}", $secret, true)));
-			$apiurl	=	get_boxmoe('boxmoe_robot_api_url').'&timestamp='.$time.'&sign='.$sign;
+			$apiurl	=	get_fuwari('fuwari_robot_api_url').'&timestamp='.$time.'&sign='.$sign;
 			$data = array ('msgtype' => 'text','text' => array ('content' => $message));
 			$data_string = json_encode($data);
-			return $result = boxmoe_robot_post_template($apiurl, $data_string);  
+			return $result = fuwari_robot_post_template($apiurl, $data_string);  
 			}
-        if(get_boxmoe('boxmoe_robot_channel') == 'telegram' ){
-            $msgid	=	get_boxmoe('boxmoe_robot_msg_user');
-            $key_token = get_boxmoe('boxmoe_robot_api_key');
+        if(get_fuwari('fuwari_robot_channel') == 'telegram' ){
+            $msgid	=	get_fuwari('fuwari_robot_msg_user');
+            $key_token = get_fuwari('fuwari_robot_api_key');
             $apiurl = 'https://api.telegram.org/bot'.$key_token.'/sendMessage';
             $postdata = http_build_query(array('chat_id' => $msgid,'text' => $message));
-            return $result = boxmoe_robot_post_template($apiurl, $postdata);  
+            return $result = fuwari_robot_post_template($apiurl, $postdata);  
             }    
 	}
-    // 机器人通知统一由 boxmoe_comment_notify 分发器触发，此处不再重复挂载 comment_post（防双发）
+    // 机器人通知统一由 fuwari_comment_notify 分发器触发，此处不再重复挂载 comment_post（防双发）
 
-//用户注册通知统一分发器（架构优化：用户模块只需触发 boxmoe_user_register_notify 事件）
-function boxmoe_user_register_notify_dispatcher($user_id) {
+//用户注册通知统一分发器（架构优化：用户模块只需触发 fuwari_user_register_notify 事件）
+function fuwari_user_register_notify_dispatcher($user_id) {
     $user = get_user_by('id', $user_id);
     if (!$user) {
         return;
     }
-    if (get_boxmoe('boxmoe_smtp_mail_switch') && get_boxmoe('boxmoe_new_user_register_notice_switch')) {
-        boxmoe_new_user_register($user_id);
+    if (get_fuwari('fuwari_smtp_mail_switch') && get_fuwari('fuwari_new_user_register_notice_switch')) {
+        fuwari_new_user_register($user_id);
     }
-    if (get_boxmoe('boxmoe_robot_notice_switch') && get_boxmoe('boxmoe_new_user_register_notice_robot_switch')) {
-        boxmoe_robot_msg_reguser($user_id, $user->user_email);
+    if (get_fuwari('fuwari_robot_notice_switch') && get_fuwari('fuwari_new_user_register_notice_robot_switch')) {
+        fuwari_robot_msg_reguser($user_id, $user->user_email);
     }
     // 注册成功邮件（原 13.12 逻辑为无条件调用，此处保持一致；SMTP 未配置时静默失败）
-    boxmoe_new_user_register_email($user_id);
+    fuwari_new_user_register_email($user_id);
 }
-add_action('boxmoe_user_register_notify', 'boxmoe_user_register_notify_dispatcher');
+add_action('fuwari_user_register_notify', 'fuwari_user_register_notify_dispatcher');
 
 //新注册会员机器人通知	
-function boxmoe_robot_msg_reguser($user_id='',$user_email=''){	
+function fuwari_robot_msg_reguser($user_id='',$user_email=''){	
 	$text = '['.get_bloginfo('name').']新会员注册通知！';
 	$message = $text . "\n" ."用户名：$user_id \n邮箱:$user_email";
-		if(get_boxmoe('boxmoe_robot_channel') == 'qq_group' ){
-			$msgid	=	get_boxmoe('boxmoe_robot_msg_user');
-            $apiurl	=	get_boxmoe('boxmoe_robot_api_url').'/send_private_msg?group_id='.$msgid;
+		if(get_fuwari('fuwari_robot_channel') == 'qq_group' ){
+			$msgid	=	get_fuwari('fuwari_robot_msg_user');
+            $apiurl	=	get_fuwari('fuwari_robot_api_url').'/send_private_msg?group_id='.$msgid;
             $data = array ('msgtype' => 'text','text' => array ('content' => $message));
 			$data_string = json_encode($data);
-			return $result = boxmoe_robot_post_template($apiurl, $data_string);  
+			return $result = fuwari_robot_post_template($apiurl, $data_string);  
 			}
-        if(get_boxmoe('boxmoe_robot_channel') == 'qq_user' ){
-			$msgid	=	get_boxmoe('boxmoe_robot_msg_user');
-            $apiurl	=	get_boxmoe('boxmoe_robot_api_url').'/send_private_msg?user_id='.$msgid;
+        if(get_fuwari('fuwari_robot_channel') == 'qq_user' ){
+			$msgid	=	get_fuwari('fuwari_robot_msg_user');
+            $apiurl	=	get_fuwari('fuwari_robot_api_url').'/send_private_msg?user_id='.$msgid;
             $data = array ('msgtype' => 'text','text' => array ('content' => $message));
 			$data_string = json_encode($data);
-			return $result = boxmoe_robot_post_template($apiurl, $data_string);  
+			return $result = fuwari_robot_post_template($apiurl, $data_string);  
 			}    
-		if(get_boxmoe('boxmoe_robot_channel') == 'dingtalk' ){
+		if(get_fuwari('fuwari_robot_channel') == 'dingtalk' ){
 			$time    = intval(microtime(true) * 1000);
-			$secret  = get_boxmoe('boxmoe_robot_api_key');
+			$secret  = get_fuwari('fuwari_robot_api_key');
 			$sign    = urlencode(base64_encode(hash_hmac('sha256', "{$time}\n{$secret}", $secret, true)));
-			$apiurl	=	get_boxmoe('boxmoe_robot_api_url').'&timestamp='.$time.'&sign='.$sign;
+			$apiurl	=	get_fuwari('fuwari_robot_api_url').'&timestamp='.$time.'&sign='.$sign;
 			$data = array ('msgtype' => 'text','text' => array ('content' => $message));
 			$data_string = json_encode($data);
-			return $result = boxmoe_robot_post_template($apiurl, $data_string);  
+			return $result = fuwari_robot_post_template($apiurl, $data_string);  
 			}
-        if(get_boxmoe('boxmoe_robot_channel') == 'telegram' ){
-            $msgid = get_boxmoe('boxmoe_robot_msg_user');
-            $key_token = get_boxmoe('boxmoe_robot_api_key');
+        if(get_fuwari('fuwari_robot_channel') == 'telegram' ){
+            $msgid = get_fuwari('fuwari_robot_msg_user');
+            $key_token = get_fuwari('fuwari_robot_api_key');
             $apiurl = 'https://api.telegram.org/bot'.$key_token.'/sendMessage';
             $postdata = http_build_query(array('chat_id' => $msgid,'text' => $message));
-            return $result = boxmoe_robot_post_template($apiurl, $postdata);  
+            return $result = fuwari_robot_post_template($apiurl, $postdata);  
         }    
 }
-if(get_boxmoe('boxmoe_new_user_register_notice_robot_switch')){
-    add_action('user_register', 'boxmoe_robot_msg_reguser');
+if(get_fuwari('fuwari_new_user_register_notice_robot_switch')){
+    add_action('user_register', 'fuwari_robot_msg_reguser');
 }
 //机器人开关
 }

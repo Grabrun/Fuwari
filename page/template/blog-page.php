@@ -6,8 +6,8 @@
 //boxmoe.com===安全设置=阻止直接访问主题文件
 if(!defined('ABSPATH')){echo'Look your sister';exit;}
 ?>
-            <div class="<?php echo boxmoe_layout_setting(); ?>">
-            <div class="blog-single <?php echo boxmoe_border_setting(); ?>">
+            <div class="<?php echo fuwari_layout_setting(); ?>">
+            <div class="blog-single <?php echo fuwari_border_setting(); ?>">
             <?php while (have_posts()) : the_post(); ?>
                 <div class="post-single">
                     <div class="single-category">
@@ -25,14 +25,14 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                       <div class="single-meta-box">
                         <div class="single-info-left">
                           <div class="single-meta">
-                              <img src="<?php echo boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_get_avatar_url(get_the_author_meta('ID'), 100); ?>" class="avatar lazy" alt="avatar">
+                              <img src="<?php echo fuwari_lazy_load_images(); ?>" data-src="<?php echo fuwari_get_avatar_url(get_the_author_meta('ID'), 100); ?>" class="avatar lazy" alt="avatar">
                             <div class="single-author-name">
                               <div class="single-author-info">
                                 <a href="#" class="name">
                                   <i class="fa fa-at"></i><?php the_author(); ?></a>
                                 <span class="data">
                                   <i class="fa fa-clock-o"></i><?php the_date(); ?></span>
-                                  <?php edit_post_link( '<i class="fa fa-pencil-square-o"></i>编辑['.__( '仅作者可见', 'boxmoe'). ']'); ?>
+                                  <?php edit_post_link( '<i class="fa fa-pencil-square-o"></i>编辑['.__( '仅作者可见', 'fuwari'). ']'); ?>
                               </div>
                             </div>
                           </div>

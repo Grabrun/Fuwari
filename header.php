@@ -10,17 +10,17 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
     <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo boxmoe_theme_title(); ?></title>
-    <link rel="icon" href="<?php echo boxmoe_favicon(); ?>" type="image/x-icon">
-    <?php boxmoe_keywords(); ?>
-    <?php boxmoe_description(); ?>
+    <title><?php echo fuwari_theme_title(); ?></title>
+    <link rel="icon" href="<?php echo fuwari_favicon(); ?>" type="image/x-icon">
+    <?php fuwari_keywords(); ?>
+    <?php fuwari_description(); ?>
     <?php ob_start();wp_head();$wp_head_output = ob_get_clean();echo preg_replace('/\n/', "\n    ", trim($wp_head_output))."\n    ";?>
-    <?php if (get_boxmoe('boxmoe_banner_height_switch')){ boxmoe_banner_height_load(); }?>
+    <?php if (get_fuwari('fuwari_banner_height_switch')){ fuwari_banner_height_load(); }?>
 </head>
   <body>
-  <?php if(get_boxmoe('boxmoe_page_loading_switch')): ?>  
+  <?php if(get_fuwari('fuwari_page_loading_switch')): ?>  
     <div class="preloader">
-      <svg version="1.1" id="boxmoe-sakura" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80" height="80" viewBox="0 0 80 80" style="enable-background:new 0 0 80 80;" xml:space="preserve">
+      <svg version="1.1" id="fuwari-sakura" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80" height="80" viewBox="0 0 80 80" style="enable-background:new 0 0 80 80;" xml:space="preserve">
          <g id="sakura">
             <path id="hana-01" class="st0" d="M52,16.4c-1-8-8-12-8-12l-4,2l-4-2c0,0-7,4-8,12c-0.4,3.2,1,7,2,9.1c2.1,4.4,6.4,7.9,10,10.9
                c3.6-3,7.9-6.6,10-10.9C51,23.4,52.4,19.7,52,16.4z">
@@ -62,8 +62,8 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
    <style>.preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:flex;justify-content:center;align-items:center;z-index:9999;opacity:1;transition:opacity 0.5s ease;}.preloader svg{max-width:80%;max-height:80%;position:absolute;top:0;left:0;right:0;bottom:0;margin:auto}.preloader{background:#f8c3cd;text-align:center;height:100%;position:fixed;width:100%;top:0;z-index:1031}.preloader .st0{fill:#FCFCFC}.preloader .st1{fill:none;stroke:#FCFCFC;stroke-miterlimit:10;stroke-width:1.1}</style>
   <?php endif; ?>
 
-  <?php boxmoe_festival_lantern(); ?>
-  <header class="boxmoe_header">
+  <?php fuwari_festival_lantern(); ?>
+  <header class="fuwari_header">
       <nav class="navbar navbar-expand-lg  w-100">
         <div class="container d-flex justify-content-between align-items-center">
           <button class="navbar-toggler offcanvas-nav-btn" type="button">
@@ -72,7 +72,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
             <span class="navbar-toggler-bar"></span>
           </button>
           <a class="navbar-brand mx-auto" href="<?php echo home_url(); ?>">
-            <?php boxmoe_logo(); ?></a>
+            <?php fuwari_logo(); ?></a>
           <div class="d-flex d-lg-none align-items-center">
             <form class="mobile-search-form" role="search" method="get" action="<?php echo home_url( '/' ) ?>"  >
               <input type="search" class="mobile-search-input" placeholder="搜索..." aria-label="Search" name="s" value="<?php echo get_search_query(); ?>">
@@ -83,12 +83,12 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
             <button class="mobile-user-btn ms-2" type="button">
               <i class="fa fa-user"></i>
             </button>
-            <?php if(is_user_logged_in() && get_boxmoe('boxmoe_sign_in_link_switch')): ?>
+            <?php if(is_user_logged_in() && get_fuwari('fuwari_sign_in_link_switch')): ?>
             <div class="mobile-user-panel">
               <div class="user-panel-content">
                 <div class="mobile-user-wrapper">
                   <div class="mobile-logged-menu">
-                    <a href="<?php echo boxmoe_user_center_link_page(); ?>" class="mobile-menu-item">
+                    <a href="<?php echo fuwari_user_center_link_page(); ?>" class="mobile-menu-item">
                       <i class="fa fa-user-circle"></i>
                       <span>会员中心</span></a>
                       <?php if(current_user_can('administrator')): ?>
@@ -104,21 +104,21 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
               </div>
             </div>
             <?php endif; ?>
-            <?php if(!is_user_logged_in() && get_boxmoe('boxmoe_sign_in_link_switch')): ?>
+            <?php if(!is_user_logged_in() && get_fuwari('fuwari_sign_in_link_switch')): ?>
             <div class="mobile-user-panel">
               <div class="user-panel-content">
                 <div class="mobile-user-wrapper">
                   <div class="mobile-logged-menu">
                   <div class="user-wrapper d-lg-flex">
                 <div class="user-login-wrap">
-                <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="user-login">
+                <a href="<?php echo fuwari_sign_in_link_page(); ?>" class="user-login">
                 <span class="login-text">登录</span></a>
                 </div>
                 <span class="divider">or</span>
                 <div class="user-reg-wrap">
-                <a href="<?php echo boxmoe_sign_up_link_page(); ?>" class="user-reg">
+                <a href="<?php echo fuwari_sign_up_link_page(); ?>" class="user-reg">
                 <span class="reg-text">注册</span></a></div>
-                <img src="<?php echo boxmoe_theme_url(); ?>/assets/images/up-new-iocn.png" class="new-tag" alt="up-new-iocn">
+                <img src="<?php echo fuwari_theme_url(); ?>/assets/images/up-new-iocn.png" class="new-tag" alt="up-new-iocn">
                 </div>
                   </div>
                 </div>
@@ -129,14 +129,14 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
           <div class="offcanvas offcanvas-start offcanvas-nav width">
             <div class="offcanvas-header">
               <a href="<?php echo home_url(); ?>" class="text-inverse">
-                <?php boxmoe_logo(); ?></a>
+                <?php fuwari_logo(); ?></a>
               <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <?php if(is_user_logged_in() && get_boxmoe('boxmoe_sign_in_link_switch')): ?>
+            <?php if(is_user_logged_in() && get_fuwari('fuwari_sign_in_link_switch')): ?>
             <div class="mobile-logged-user-wrapper d-block d-lg-none">
-              <a href="<?php echo boxmoe_user_center_link_page(); ?>" class="user-info-wrap d-flex align-items-center">
+              <a href="<?php echo fuwari_user_center_link_page(); ?>" class="user-info-wrap d-flex align-items-center">
                 <div class="user-avatar">
-                  <img src="<?php echo boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_get_avatar_url(get_current_user_id(), 100); ?>" alt="avatar" class="img-fluid rounded-3 lazy">
+                  <img src="<?php echo fuwari_lazy_load_images(); ?>" data-src="<?php echo fuwari_get_avatar_url(get_current_user_id(), 100); ?>" alt="avatar" class="img-fluid rounded-3 lazy">
                 </div>
                 <div class="user-info">
                   <div class="user-name"><?php echo get_the_author_meta('display_name', get_current_user_id()); ?></div>
@@ -153,7 +153,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
             </ul>
           </div>
             <div class="offcanvas-body pt-0 align-items-center">
-             <?php boxmoe_nav_menu();?>
+             <?php fuwari_nav_menu();?>
               <div class="nav-right-section d-flex align-items-center">
                 <div class="search-box">
                   <form class="search-form" role="search" method="get" action="<?php echo home_url( '/' ) ?>">
@@ -194,25 +194,25 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
                     </li>
                 </ul>
             </div>
-                <?php if(!is_user_logged_in() && get_boxmoe('boxmoe_sign_in_link_switch')): ?>
+                <?php if(!is_user_logged_in() && get_fuwari('fuwari_sign_in_link_switch')): ?>
                 <div class="user-wrapper d-none d-lg-flex">
                 <div class="user-login-wrap">
-                <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="user-login">
+                <a href="<?php echo fuwari_sign_in_link_page(); ?>" class="user-login">
                 <span class="login-text">登录</span></a>
                 </div>
                 <span class="divider">or</span>
                 <div class="user-reg-wrap">
-                <a href="<?php echo boxmoe_sign_up_link_page(); ?>" class="user-reg">
+                <a href="<?php echo fuwari_sign_up_link_page(); ?>" class="user-reg">
                 <span class="reg-text">注册</span></a></div>
-                <img src="<?php echo boxmoe_theme_url(); ?>/assets/images/up-new-iocn.png" class="new-tag" alt="up-new-iocn">
+                <img src="<?php echo fuwari_theme_url(); ?>/assets/images/up-new-iocn.png" class="new-tag" alt="up-new-iocn">
                 </div>
                 <?php endif; ?>
-                 <?php if(is_user_logged_in() && get_boxmoe('boxmoe_sign_in_link_switch')):  ?>
+                 <?php if(is_user_logged_in() && get_fuwari('fuwari_sign_in_link_switch')):  ?>
                 <div class="logged-user-wrapper d-none d-lg-flex">
                   <div class="user-info-wrap d-flex align-items-center dropdown">
-                    <a href="<?php echo boxmoe_user_center_link_page(); ?>" class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="<?php echo fuwari_user_center_link_page(); ?>" class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
                       <div class="user-avatar">
-                      <img src="<?php echo boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_get_avatar_url(get_current_user_id(), 100); ?>" alt="avatar" class="img-fluid rounded-3 lazy">
+                      <img src="<?php echo fuwari_lazy_load_images(); ?>" data-src="<?php echo fuwari_get_avatar_url(get_current_user_id(), 100); ?>" alt="avatar" class="img-fluid rounded-3 lazy">
                     </div>
                       <div class="user-info">
                         <div class="user-name"><?php echo get_the_author_meta('display_name', get_current_user_id()); ?></div>
@@ -221,7 +221,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                       <li>
-                        <a class="dropdown-item" href="<?php echo boxmoe_user_center_link_page(); ?>">
+                        <a class="dropdown-item" href="<?php echo fuwari_user_center_link_page(); ?>">
                           <i class="fa fa-user-circle"></i>会员中心</a>
                       </li>
                       <?php if(current_user_can('administrator')): ?>
@@ -245,15 +245,15 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
         </div>
       </nav>
     </header>
-    <section class="boxmoe_header_banner">
-      <div class="boxmoe_header_banner_img">
-        <img src="<?php  boxmoe_banner_image(); ?>" alt="boxmoe_header_banner_img">
+    <section class="fuwari_header_banner">
+      <div class="fuwari_header_banner_img">
+        <img src="<?php  fuwari_banner_image(); ?>" alt="fuwari_header_banner_img">
         <div class="site-main">
-          <h2 class="text-gradient"><?php echo boxmoe_banner_welcome(); ?></h2>
-          <?php echo boxmoe_banner_hitokoto(); ?>
+          <h2 class="text-gradient"><?php echo fuwari_banner_welcome(); ?></h2>
+          <?php echo fuwari_banner_hitokoto(); ?>
         </div>
       </div>
-      <div class="boxmoe_header_banner_waves">
+      <div class="fuwari_header_banner_waves">
         <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
           <defs>
             <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
@@ -267,7 +267,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
         </svg>
       </div>
     </section>
-    <section class="boxmoe-container container">
+    <section class="fuwari-container container">
       <div class="breadcrumb-head">
         <span>
           <i class="fa fa-home"></i>

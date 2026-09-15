@@ -10,7 +10,7 @@ if(!defined('ABSPATH')){
     exit;
 }
 // SMTP 密码加密/解密（安全加固）：密钥由 wp_salt('auth') 派生，不落库；兼容旧版本明文存储
-function boxmoe_smtp_encrypt($plain) {
+function fuwari_smtp_encrypt($plain) {
     if ('' === (string)$plain || !function_exists('openssl_encrypt')) {
         return $plain;
     }
@@ -20,16 +20,24 @@ function boxmoe_smtp_encrypt($plain) {
     if (false === $cipher) {
         return $plain;
     }
-    return 'boxmoe_enc:' . base64_encode($iv . $cipher);
+    return 'fuwari_enc:' . base64_encode($iv . $cipher);
 }
-function boxmoe_smtp_decrypt($stored) {
-    if (!is_string($stored) || 0 !== strpos($stored, 'boxmoe_enc:')) {
+function fuwari_smtp_decrypt($stored) {
+    if (!is_string($stored) || '' === $stored) {
+        return $stored;
+    }
+    // 0.3.0 起前缀为 fuwari_enc:（10 字符）；兼容 0.1.0-0.2.0 的 boxmoe_enc:（11 字符）
+    if (0 === strpos($stored, 'fuwari_enc:')) {
+        $prefix_len = 10;
+    } elseif (0 === strpos($stored, 'boxmoe_enc:')) {
+        $prefix_len = 11;
+    } else {
         return $stored; // 未加密（旧版本明文或空值），兼容返回
     }
     if (!function_exists('openssl_decrypt')) {
         return '';
     }
-    $raw = base64_decode(substr($stored, 11), true);
+    $raw = base64_decode(substr($stored, $prefix_len), true);
     if (false === $raw || strlen($raw) <= 16) {
         return '';
     }
@@ -40,18 +48,18 @@ function boxmoe_smtp_decrypt($stored) {
     return (false === $plain) ? '' : $plain;
 }
 
-if(get_boxmoe('boxmoe_smtp_mail_switch')){
+if(get_fuwari('fuwari_smtp_mail_switch')){
     // 添加管理菜单
-    add_action('admin_menu', 'boxmoe_smtp_menu');
+    add_action('admin_menu', 'fuwari_smtp_menu');
     
     // 添加SMTP设置菜单
-    function boxmoe_smtp_menu() {
+    function fuwari_smtp_menu() {
         add_menu_page(
             'SMTP设置', 
             'SMTP设置', 
             'manage_options', 
-            'boxmoe-smtp-settings', 
-            'boxmoe_smtp_settings_page',
+            'fuwari-smtp-settings', 
+            'fuwari_smtp_settings_page',
             'dashicons-email',
             100
         );
@@ -59,26 +67,26 @@ if(get_boxmoe('boxmoe_smtp_mail_switch')){
     }
     
     // SMTP设置页面内容
-    function boxmoe_smtp_settings_page() {
-        if(isset($_POST['boxmoe_smtp_save'])) {
+    function fuwari_smtp_settings_page() {
+        if(isset($_POST['fuwari_smtp_save'])) {
             // 安全加固：校验 nonce，防 CSRF
-            check_admin_referer('boxmoe_smtp_settings_action');
-            update_option('boxmoe_smtp_host', sanitize_text_field($_POST['smtp_host']));
-            update_option('boxmoe_smtp_port', sanitize_text_field($_POST['smtp_port']));
-            update_option('boxmoe_smtp_user', sanitize_text_field($_POST['smtp_user']));
+            check_admin_referer('fuwari_smtp_settings_action');
+            update_option('fuwari_smtp_host', sanitize_text_field($_POST['smtp_host']));
+            update_option('fuwari_smtp_port', sanitize_text_field($_POST['smtp_port']));
+            update_option('fuwari_smtp_user', sanitize_text_field($_POST['smtp_user']));
             // 安全加固：密码留空表示保持原密码（不回显、不覆盖）；非空时加密后存储
             if (isset($_POST['smtp_pass']) && '' !== (string)$_POST['smtp_pass']) {
-                update_option('boxmoe_smtp_pass', boxmoe_smtp_encrypt(sanitize_text_field($_POST['smtp_pass'])));
+                update_option('fuwari_smtp_pass', fuwari_smtp_encrypt(sanitize_text_field($_POST['smtp_pass'])));
             }
-            update_option('boxmoe_smtp_from', sanitize_text_field($_POST['smtp_from']));
-            update_option('boxmoe_smtp_name', sanitize_text_field($_POST['smtp_name']));
+            update_option('fuwari_smtp_from', sanitize_text_field($_POST['smtp_from']));
+            update_option('fuwari_smtp_name', sanitize_text_field($_POST['smtp_name']));
             echo '<div class="updated"><p>设置已保存！</p></div>';
         }
 
         // 添加测试邮件发送功能
-        if(isset($_POST['boxmoe_smtp_test'])) {
+        if(isset($_POST['fuwari_smtp_test'])) {
             // 安全加固：校验 nonce，防 CSRF
-            check_admin_referer('boxmoe_smtp_settings_action');
+            check_admin_referer('fuwari_smtp_settings_action');
             $to = sanitize_email($_POST['test_email']);
             $subject = '测试邮件 - ' . get_bloginfo('name');
             $message = '这是一封测试邮件，如果您收到这封邮件，说明SMTP配置正确。';
@@ -96,35 +104,35 @@ if(get_boxmoe('boxmoe_smtp_mail_switch')){
         <div class="wrap">
             <h2>SMTP邮件设置</h2>
             <form method="post">
-                <?php wp_nonce_field('boxmoe_smtp_settings_action'); ?>
+                <?php wp_nonce_field('fuwari_smtp_settings_action'); ?>
                 <table class="form-table">
                     <tr>
                         <th>SMTP服务器</th>
-                        <td><input type="text" name="smtp_host" value="<?php echo esc_attr(get_option('boxmoe_smtp_host')); ?>" class="regular-text"></td>
+                        <td><input type="text" name="smtp_host" value="<?php echo esc_attr(get_option('fuwari_smtp_host')); ?>" class="regular-text"></td>
                     </tr>
                     <tr>
                         <th>SMTP端口</th>
-                        <td><input type="text" name="smtp_port" value="<?php echo esc_attr(get_option('boxmoe_smtp_port')); ?>" class="regular-text"></td>
+                        <td><input type="text" name="smtp_port" value="<?php echo esc_attr(get_option('fuwari_smtp_port')); ?>" class="regular-text"></td>
                     </tr>
                     <tr>
                         <th>邮箱账号</th>
-                        <td><input type="text" name="smtp_user" value="<?php echo esc_attr(get_option('boxmoe_smtp_user')); ?>" class="regular-text"></td>
+                        <td><input type="text" name="smtp_user" value="<?php echo esc_attr(get_option('fuwari_smtp_user')); ?>" class="regular-text"></td>
                     </tr>
                     <tr>
                         <th>邮箱密码</th>
-                        <td><input type="password" name="smtp_pass" value="" class="regular-text" autocomplete="new-password" placeholder="<?php echo (get_option('boxmoe_smtp_pass') ? '已设置（留空保持不变，不再回显）' : '未设置'); ?>"></td>
+                        <td><input type="password" name="smtp_pass" value="" class="regular-text" autocomplete="new-password" placeholder="<?php echo (get_option('fuwari_smtp_pass') ? '已设置（留空保持不变，不再回显）' : '未设置'); ?>"></td>
                     </tr>
                     <tr>
                         <th>发件人邮箱</th>
-                        <td><input type="text" name="smtp_from" value="<?php echo esc_attr(get_option('boxmoe_smtp_from')); ?>" class="regular-text"></td>
+                        <td><input type="text" name="smtp_from" value="<?php echo esc_attr(get_option('fuwari_smtp_from')); ?>" class="regular-text"></td>
                     </tr>
                     <tr>
                         <th>发件人名称</th>
-                        <td><input type="text" name="smtp_name" value="<?php echo esc_attr(get_option('boxmoe_smtp_name')); ?>" class="regular-text"></td>
+                        <td><input type="text" name="smtp_name" value="<?php echo esc_attr(get_option('fuwari_smtp_name')); ?>" class="regular-text"></td>
                     </tr>
                 </table>
                 <p class="submit">
-                    <input type="submit" name="boxmoe_smtp_save" class="button-primary" value="保存设置">
+                    <input type="submit" name="fuwari_smtp_save" class="button-primary" value="保存设置">
                 </p>
             </form>
 
@@ -141,7 +149,7 @@ if(get_boxmoe('boxmoe_smtp_mail_switch')){
                     </tr>
                 </table>
                 <p class="submit">
-                    <input type="submit" name="boxmoe_smtp_test" class="button-secondary" value="发送测试邮件">
+                    <input type="submit" name="fuwari_smtp_test" class="button-secondary" value="发送测试邮件">
                 </p>
             </form>
         </div>
@@ -149,16 +157,16 @@ if(get_boxmoe('boxmoe_smtp_mail_switch')){
     }
     
     // 配置WordPress邮件发送
-    add_action('phpmailer_init', 'boxmoe_smtp_config');
-    function boxmoe_smtp_config($phpmailer) {
+    add_action('phpmailer_init', 'fuwari_smtp_config');
+    function fuwari_smtp_config($phpmailer) {
         $phpmailer->isSMTP();
-        $phpmailer->Host = get_option('boxmoe_smtp_host');
+        $phpmailer->Host = get_option('fuwari_smtp_host');
         $phpmailer->SMTPAuth = true;
-        $phpmailer->Port = get_option('boxmoe_smtp_port');
-        $phpmailer->Username = get_option('boxmoe_smtp_user');
-        $phpmailer->Password = boxmoe_smtp_decrypt(get_option('boxmoe_smtp_pass'));
-        $phpmailer->From = get_option('boxmoe_smtp_from');
-        $phpmailer->FromName = get_option('boxmoe_smtp_name');
+        $phpmailer->Port = get_option('fuwari_smtp_port');
+        $phpmailer->Username = get_option('fuwari_smtp_user');
+        $phpmailer->Password = fuwari_smtp_decrypt(get_option('fuwari_smtp_pass'));
+        $phpmailer->From = get_option('fuwari_smtp_from');
+        $phpmailer->FromName = get_option('fuwari_smtp_name');
         $phpmailer->SMTPSecure = 'ssl';
     }
 }

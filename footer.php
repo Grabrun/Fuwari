@@ -11,24 +11,24 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
     <hr class="horizontal dark">
       <div class="container pb-4">
         <div class="row align-items-center">
-        <?php echo boxmoe_load_assets_footer(); ?>
+        <?php echo fuwari_load_assets_footer(); ?>
       </div>
     </footer>
     <div class="body-background"></div>
     <div class="floating-action-menu">
       <nav class="floating-menu-items">
         <ul>
-          <?php if(get_boxmoe('boxmoe_blog_layout')=='two'): ?>
+          <?php if(get_fuwari('fuwari_blog_layout')=='two'): ?>
           <li class="d-lg-none">
             <button class="float-btn" title="打开侧栏" data-bs-toggle="offcanvas" href="#blog-sidebar" aria-controls="blog-sidebar">
               <i class="fa fa-outdent"></i>
             </button>
           </li>
           <?php endif; ?>
-          <?php if(get_boxmoe('boxmoe_lolijump_switch')): ?>
+          <?php if(get_fuwari('fuwari_lolijump_switch')): ?>
           <li>
             <a id="lolijump" href="#" title="返回顶部">
-              <img src="<?php echo boxmoe_theme_url(); ?>/assets/images/top/<?php echo get_boxmoe('boxmoe_lolijump_img'); ?>.gif" alt="返回顶部"></a>
+              <img src="<?php echo fuwari_theme_url(); ?>/assets/images/top/<?php echo get_fuwari('fuwari_lolijump_img'); ?>.gif" alt="返回顶部"></a>
           </li>
           <?php endif; ?>
         </ul>
@@ -40,7 +40,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
     $wp_footer_output = ob_get_clean();
     echo preg_replace('/\n/', "\n    ", trim($wp_footer_output))."\n    ";
     ?>
-    <?php echo get_boxmoe('boxmoe_diy_code_footer'); ?>
+    <?php echo get_fuwari('fuwari_diy_code_footer'); ?>
   </body>
 </html>
 <style>

@@ -6,13 +6,13 @@
 //boxmoe.com===安全设置=阻止直接访问主题文件
 if(!defined('ABSPATH')){echo'Look your sister';exit;}
 ?>
-<?php if(get_boxmoe('boxmoe_blog_layout')=='two'): ?>
+<?php if(get_fuwari('fuwari_blog_layout')=='two'): ?>
     <div class="col-lg-4 blog-sidebar">
           <div class="position-sticky top">
             <div class="offcanvas-lg offcanvas-end" id="blog-sidebar" tabindex="-1" aria-labelledby="blog-sidebar">
               <div class="offcanvas-header">
                 <h5 class="offcanvas-title h4" id="blog-sidebar">
-                <?php echo boxmoe_logo(); ?></h5>
+                <?php echo fuwari_logo(); ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#blog-sidebar"></button>
               </div>
               <div class="offcanvas-body flex-column">

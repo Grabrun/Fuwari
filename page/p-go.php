@@ -6,7 +6,7 @@
 if (!defined('ABSPATH')) {echo'Look your sister';exit;}
 //=========================================
 $my_urls = [
-	['boxmoe', 'https://www.boxmoe.com'],
+	['fuwari', 'https://www.boxmoe.com'],
 	['jsmoe', 'https://www.jsmoe.com'],
 	['ggy', 'https://www.ggy.net/aff.php?aff=614'],
 	['kvmla', 'https://www.kvmla.pro/aff.php?aff=2793']

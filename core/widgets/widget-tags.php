@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {echo'Look your sister';exit;}
 class widget_tags extends WP_Widget {
 
 	function __construct(){
-		parent::__construct( 'widget_tags', 'Boxmoe_侧栏标签', array( 'description' => __('Boxmoe_标签侧栏', 'text_domain'),
+		parent::__construct( 'widget_tags', 'Fuwari_侧栏标签', array( 'description' => __('Fuwari_标签侧栏', 'text_domain'),
 				  'classname' => __('widget-tag', 'text_domain' )) );
 	}
 
@@ -26,28 +26,28 @@ class widget_tags extends WP_Widget {
 			$i = 0;
 			foreach($tags_list as $tag) {
 				$i++;
-				echo '<a title="['. $tag->name .']有'.$tag->count.__('个相关', 'boxmoe-com').'" '.boxmoe_article_new_window().' href="'.get_tag_link($tag).'" class="tag-cloud"><i class="tagfa fa fa-dot-circle-o"></i>'. $tag->name .'</a>'; 
+				echo '<a title="['. $tag->name .']有'.$tag->count.__('个相关', 'fuwari-com').'" '.fuwari_article_new_window().' href="'.get_tag_link($tag).'" class="tag-cloud"><i class="tagfa fa fa-dot-circle-o"></i>'. $tag->name .'</a>'; 
 			} 
 		}else{
-			echo __('暂无标签！', 'boxmoe-com');
+			echo __('暂无标签！', 'fuwari-com');
 		}
 		echo '</div>';
 		echo $after_widget;
 	}
 
 	function form($instance) {
-		$defaults = array( 'title' => __('标签云', 'boxmoe-com'), 'count' => 24 );
+		$defaults = array( 'title' => __('标签云', 'fuwari-com'), 'count' => 24 );
 		$instance = wp_parse_args( (array) $instance, $defaults );
 ?>
 		<p>
 			<label>
-				<?php echo __('标题：', 'boxmoe-com') ?>
+				<?php echo __('标题：', 'fuwari-com') ?>
 				<input id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $instance['title']; ?>" class="widefat" />
 			</label>
 		</p>
 		<p>
 			<label>
-				<?php echo __('显示数量：', 'boxmoe-com') ?>
+				<?php echo __('显示数量：', 'fuwari-com') ?>
 				<input id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>" type="number" value="<?php echo $instance['count']; ?>" class="widefat" />
 			</label>
 		</p>

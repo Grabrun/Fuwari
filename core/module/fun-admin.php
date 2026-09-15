@@ -6,21 +6,21 @@ if(!defined('ABSPATH')){
 }
 
 // 设置菜单--------------------------boxmoe.com--------------------------
-function boxmoe_options_menu_filter($menu) {
+function fuwari_options_menu_filter($menu) {
 	$menu['mode'] = 'menu';
-	$menu['page_title'] = 'Boxmoe主题设置';
-	$menu['menu_title'] = 'Boxmoe主题设置';
-	$menu['menu_slug'] = 'boxmoe-options';
+	$menu['page_title'] = 'Fuwari主题设置';
+	$menu['menu_title'] = 'Fuwari主题设置';
+	$menu['menu_slug'] = 'fuwari-options';
 	$menu['icon_url'] = 'dashicons-admin-generic';
 	$menu['position'] = '61';
 	return $menu;
 }
-add_filter('optionsframework_menu', 'boxmoe_options_menu_filter');
+add_filter('optionsframework_menu', 'fuwari_options_menu_filter');
 
 //编辑器TinyMCE增强
 function enable_more_buttons($buttons)
 {
-	$buttons[] = 'boxmoe_emoji';
+	$buttons[] = 'fuwari_emoji';
 	$buttons[] = 'hr';
 	$buttons[] = 'del';
 	$buttons[] = 'sub';
@@ -37,12 +37,12 @@ function enable_more_buttons($buttons)
 add_filter("mce_buttons", "enable_more_buttons");
 
 // 添加自定义表情按钮
-function add_boxmoe_emoji_button($plugins) {
-	$plugins['boxmoe_emoji'] = get_template_directory_uri() . '/assets/js/tinymce-emoji.js';
+function add_fuwari_emoji_button($plugins) {
+	$plugins['fuwari_emoji'] = get_template_directory_uri() . '/assets/js/tinymce-emoji.js';
 	return $plugins;
 }
-add_filter('mce_external_plugins', 'add_boxmoe_emoji_button');
-function boxmoe_tinymce_emoji($init) {
+add_filter('mce_external_plugins', 'add_fuwari_emoji_button');
+function fuwari_tinymce_emoji($init) {
 	$emoji_list = array(
 		'😀' => '笑脸',
 		'😂' => '笑哭',
@@ -65,13 +65,13 @@ function boxmoe_tinymce_emoji($init) {
 		'🤩' => '星星眼',
 		'🤪' => '搞怪'
 	);	
-	$init['boxmoe_emoji_list'] = json_encode($emoji_list, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_UNESCAPED_UNICODE);
+	$init['fuwari_emoji_list'] = json_encode($emoji_list, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_UNESCAPED_UNICODE);
 	return $init;
 }
-add_filter('tiny_mce_before_init', 'boxmoe_tinymce_emoji');
+add_filter('tiny_mce_before_init', 'fuwari_tinymce_emoji');
 
 // 添加HTML编辑器表情按钮
-function boxmoe_html_editor_emoji() {
+function fuwari_html_editor_emoji() {
 	echo '<div class="quicktags-toolbar-emoji">
 		<strong>表情：</strong>
 		<button type="button" class="emoji-btn" data-emoji="😀" title="笑脸">😀</button>
@@ -116,7 +116,7 @@ function boxmoe_html_editor_emoji() {
 		});
 	</script>';
 }
-add_action('edit_form_after_title', 'boxmoe_html_editor_emoji');
+add_action('edit_form_after_title', 'fuwari_html_editor_emoji');
 
 // 评论回复编辑器上添加表情按钮
 function add_comment_emoji_buttons() {
@@ -177,15 +177,15 @@ function add_comment_emoji_buttons() {
 }
 add_action('admin_footer', 'add_comment_emoji_buttons');
 
-function boxmoe_admin_style() {
+function fuwari_admin_style() {
     echo '<style>
 		.avatar{width:60px;height:60px;}.comment-emoji-toolbar{margin-bottom:10px;}.quicktags-toolbar input[type="button"]{margin:2px !important;padding:2px 8px !important;border-radius:3px !important;border:1px solid #ddd !important;background:#f7f7f7 !important;color:#666 !important;transition:all 0.3s ease;}.quicktags-toolbar input[type="button"]:hover{background:#0073aa !important;color:#fff !important;border-color:#006799 !important;}.quicktags-toolbar input[type="button"] i{margin-right:4px;}
     </style>';
 }
-add_action('admin_head', 'boxmoe_admin_style');
+add_action('admin_head', 'fuwari_admin_style');
 
 function example_footer_admin () {
-	echo '<span id="footer-thankyou">感谢使用<a target="_blank" href="https://cn.wordpress.org/">WordPress</a>进行创作。Theme by <a target="_blank" href="https://www.boxmoe.com/" style="color:red;">Fuwari</a></span> ';
+	echo '<span id="footer-thankyou">感谢使用<a target="_blank" href="https://cn.wordpress.org/">WordPress</a>进行创作。Theme by 拿完西瓜跑</span> ';
 	}
 	add_filter('admin_footer_text', 'example_footer_admin');
 

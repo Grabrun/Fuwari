@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {echo'Look your sister';exit;}
 class widget_postlist extends WP_Widget {
 
 	function __construct(){
-		parent::__construct( 'widget_postlist', 'Boxmoe_侧栏文章', array( 'description' => __('Boxmoe_文章侧栏', 'text_domain'),
+		parent::__construct( 'widget_postlist', 'Fuwari_侧栏文章', array( 'description' => __('Fuwari_文章侧栏', 'text_domain'),
 				  'classname' => __('widget-postlist', 'text_domain' )) );
 	}
 	function widget( $args, $instance ) {
@@ -35,12 +35,12 @@ class widget_postlist extends WP_Widget {
 		while (have_posts()) : the_post(); 		
 		echo '<article class="widget-post">
 		               <div class="info">
-                        <a href="'. get_the_permalink() .'" '. boxmoe_article_new_window() .' class="thumb">
-                          <span class="fullimage" style="background-image: url('.boxmoe_article_thumbnail_src(boxmoe_random_string(6)).');"></span>
+                        <a href="'. get_the_permalink() .'" '. fuwari_article_new_window() .' class="thumb">
+                          <span class="fullimage" style="background-image: url('.fuwari_article_thumbnail_src(fuwari_random_string(6)).');"></span>
                         </a>
                         <div class="right">
                           <h4 class="title">
-                            <a '. boxmoe_article_new_window() .' href="'. get_the_permalink() .'">'. get_the_title() . get_the_subtitle() .'</a></h4>
+                            <a '. fuwari_article_new_window() .' href="'. get_the_permalink() .'">'. get_the_title() . get_the_subtitle() .'</a></h4>
                           <time datetime="'.get_the_time('Y-m-d').'">'.get_the_time('Y-m-d').'</time>
 						  </div>';
 		echo '</article>';					
@@ -51,7 +51,7 @@ class widget_postlist extends WP_Widget {
 
 	function form( $instance ) {
 		$defaults = array( 
-			'title' => __('最新文章', 'boxmoe-com'), 
+			'title' => __('最新文章', 'fuwari-com'), 
 			'limit' => 6, 
 			'cat' => '', 
 			'orderby' => 'date', 
@@ -60,30 +60,30 @@ class widget_postlist extends WP_Widget {
 ?>
 		<p>
 			<label>
-				<?php echo __('标题：', 'boxmoe-com') ?>
+				<?php echo __('标题：', 'fuwari-com') ?>
 				<input style="width:100%;" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $instance['title']; ?>" />
 			</label>
 		</p>
 		<p>
 			<label>
-				<?php echo __('排序：', 'boxmoe-com') ?>
+				<?php echo __('排序：', 'fuwari-com') ?>
 				<select style="width:100%;" id="<?php echo $this->get_field_id('orderby'); ?>" name="<?php echo $this->get_field_name('orderby'); ?>" style="width:100%;">
-					<option value="comment_count" <?php selected('comment_count', $instance['orderby']); ?>><?php echo __('评论数', 'boxmoe-com') ?></option>
-					<option value="date" <?php selected('date', $instance['orderby']); ?>><?php echo __('发布时间', 'boxmoe-com') ?></option>
-					<option value="rand" <?php selected('rand', $instance['orderby']); ?>><?php echo __('随机', 'boxmoe-com') ?></option>
+					<option value="comment_count" <?php selected('comment_count', $instance['orderby']); ?>><?php echo __('评论数', 'fuwari-com') ?></option>
+					<option value="date" <?php selected('date', $instance['orderby']); ?>><?php echo __('发布时间', 'fuwari-com') ?></option>
+					<option value="rand" <?php selected('rand', $instance['orderby']); ?>><?php echo __('随机', 'fuwari-com') ?></option>
 				</select>
 			</label>
 		</p>
 		<p>
 			<label>
-				<?php echo __('分类限制：', 'boxmoe-com') ?>
-				<a style="font-weight:bold;color:#f60;text-decoration:none;" href="javascript:;" title="<?php echo __('格式：1,2 &nbsp;表限制ID为1,2分类的文章&#13;格式：-1,-2 &nbsp;表排除分类ID为1,2的文章&#13;也可直接写1或者-1；注意逗号须是英文的', 'boxmoe-com') ?>">？</a>
+				<?php echo __('分类限制：', 'fuwari-com') ?>
+				<a style="font-weight:bold;color:#f60;text-decoration:none;" href="javascript:;" title="<?php echo __('格式：1,2 &nbsp;表限制ID为1,2分类的文章&#13;格式：-1,-2 &nbsp;表排除分类ID为1,2的文章&#13;也可直接写1或者-1；注意逗号须是英文的', 'fuwari-com') ?>">？</a>
 				<input style="width:100%;" id="<?php echo $this->get_field_id('cat'); ?>" name="<?php echo $this->get_field_name('cat'); ?>" type="text" value="<?php echo $instance['cat']; ?>" size="24" />
 			</label>
 		</p>
 		<p>
 			<label>
-				<?php echo __('显示数目：', 'boxmoe-com') ?>
+				<?php echo __('显示数目：', 'fuwari-com') ?>
 				<input style="width:100%;" id="<?php echo $this->get_field_id('limit'); ?>" name="<?php echo $this->get_field_name('limit'); ?>" type="number" value="<?php echo $instance['limit']; ?>" size="24" />
 			</label>
 		</p>

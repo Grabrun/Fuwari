@@ -1,12 +1,12 @@
 (function() {
-    tinymce.create('tinymce.plugins.BoxmoeEmoji', {
+    tinymce.create('tinymce.plugins.FuwariEmoji', {
         init: function(editor, url) {
-            editor.addButton('boxmoe_emoji', {
+            editor.addButton('fuwari_emoji', {
                 type: 'menubutton',
                 text: '表情',
                 icon: false,
                 menu: (function() {
-                    var emojiList = editor.settings.boxmoe_emoji_list;
+                    var emojiList = editor.settings.fuwari_emoji_list;
                     var items = [];
                     
                     for (var emoji in emojiList) {
@@ -29,5 +29,5 @@
         },
     });
     
-    tinymce.PluginManager.add('boxmoe_emoji', tinymce.plugins.BoxmoeEmoji);
+    tinymce.PluginManager.add('fuwari_emoji', tinymce.plugins.FuwariEmoji);
 })();

@@ -16,10 +16,10 @@ if (is_user_logged_in()){
     <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <title><?php echo boxmoe_theme_title(); ?></title>
-   <link rel="icon" href="<?php echo boxmoe_favicon(); ?>" type="image/x-icon">
-    <?php boxmoe_keywords(); ?>
-    <?php boxmoe_description(); ?>
+   <title><?php echo fuwari_theme_title(); ?></title>
+   <link rel="icon" href="<?php echo fuwari_favicon(); ?>" type="image/x-icon">
+    <?php fuwari_keywords(); ?>
+    <?php fuwari_description(); ?>
     <?php ob_start();wp_head();$wp_head_output = ob_get_clean();echo preg_replace('/\n/', "\n    ", trim($wp_head_output))."\n    ";?>
 </head>
 
@@ -30,11 +30,11 @@ if (is_user_logged_in()){
             <div class="row justify-content-center">
                <div class="w-100 align-self-end col-12">
                   <div class="text-center mb-3">
-                     <a href="<?php echo get_option('home'); ?>"><?php boxmoe_logo(); ?></a>
+                     <a href="<?php echo get_option('home'); ?>"><?php fuwari_logo(); ?></a>
                      <h2 class="mb-1">欢迎加入</h2>
                      <p class="mb-0">
                         如果你已经注册了账号，可以点击
-                        <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="text-primary">登录</a>
+                        <a href="<?php echo fuwari_sign_in_link_page(); ?>" class="text-primary">登录</a>
                      </p>
                   </div>
                   <form class="needs-validation mb-6" id="signupform" novalidate="">
@@ -89,13 +89,13 @@ if (is_user_logged_in()){
                         Copyright © 2025 
                         <span class="text-primary"><a href="<?php echo get_option('home'); ?>"><?php echo get_bloginfo('name'); ?></a></span>
                         | Theme by
-                        <span class="text-primary"><a href="https://www.boxmoe.com">Boxmoe</a></span> powered by WordPress
+                        <span class="text-primary">Fuwari（浮絮）</span> powered by WordPress
                      </div>
                   </div>
                </div>
             </div>
          </div>
-         <div class="position-fixed top-0 end-0 w-50 h-100 d-none d-lg-block vh-100" style="background-image: url(<?php echo get_boxmoe('boxmoe_user_login_bg')? get_boxmoe('boxmoe_user_login_bg') :'https://api.boxmoe.com/random.php'; ?>); background-position: center; background-repeat: no-repeat; background-size: cover;transform: skewX(-10deg);right:-8rem!important;">
+         <div class="position-fixed top-0 end-0 w-50 h-100 d-none d-lg-block vh-100" style="background-image: url(<?php echo get_fuwari('fuwari_user_login_bg')? get_fuwari('fuwari_user_login_bg') :'https://api.boxmoe.com/random.php'; ?>); background-position: center; background-repeat: no-repeat; background-size: cover;transform: skewX(-10deg);right:-8rem!important;">
          </div>
       </div>
       <div class="position-absolute start-0 bottom-0 m-4">

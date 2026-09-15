@@ -11,7 +11,7 @@ function init_comment_session() {
     }
 }
 add_action('init', 'init_comment_session');
-function boxmoe_comment($comment, $args = array(), $depth = 1) {
+function fuwari_comment($comment, $args = array(), $depth = 1) {
     $GLOBALS['comment'] = $comment;
     $defaults = array(
         'max_depth' => 5,
@@ -24,7 +24,7 @@ function boxmoe_comment($comment, $args = array(), $depth = 1) {
     ?>
     <div id="comment-<?php comment_ID(); ?>" class="comment-item <?php echo $depth > 1 ? 'child' : 'parent'; ?>">
             <div class="comment-avatar">
-            <img src="<?php echo boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_get_avatar_url($comment->comment_author_email, 60); ?>" alt="评论头像" class="lazy">
+            <img src="<?php echo fuwari_lazy_load_images(); ?>" data-src="<?php echo fuwari_get_avatar_url($comment->comment_author_email, 60); ?>" alt="评论头像" class="lazy">
             </div>
         <div class="comment-content">
             <div class="comment-meta">
@@ -39,7 +39,7 @@ function boxmoe_comment($comment, $args = array(), $depth = 1) {
                     ?>
                 </span>
                 <?php if (user_can($comment->user_id, 'administrator')): ?>
-                    <span class="comment-badge"><?php echo get_boxmoe('boxmoe_comment_blogger_tag')?get_boxmoe('boxmoe_comment_blogger_tag'):'博主'; ?></span>
+                    <span class="comment-badge"><?php echo get_fuwari('fuwari_comment_blogger_tag')?get_fuwari('fuwari_comment_blogger_tag'):'博主'; ?></span>
                 <?php endif; ?>
                 <span class="comment-date"><?php comment_date('Y年m月d日'); ?></span>
             </div>
@@ -83,7 +83,7 @@ function boxmoe_comment($comment, $args = array(), $depth = 1) {
     </div>
     <?php
 }
-function boxmoe_comment_add_at($comment_text, $comment) {  
+function fuwari_comment_add_at($comment_text, $comment) {  
     if ($comment->comment_parent > 0) {
         $parent_comment = get_comment($comment->comment_parent);
         if ($parent_comment) {
@@ -97,7 +97,7 @@ function boxmoe_comment_add_at($comment_text, $comment) {
     }
     return $comment_text;  
 }
-add_filter('comment_text', 'boxmoe_comment_add_at', 10, 2);
+add_filter('comment_text', 'fuwari_comment_add_at', 10, 2);
 
 function save_private_comment_status($comment_id) {
     if (isset($_POST['private_comment'])) {
@@ -180,7 +180,7 @@ function ajax_comment_callback() {
     }
 
     $comment_content = $comment_data['comment'];
-    if(get_boxmoe('boxmoe_comment_english_switch')){
+    if(get_fuwari('fuwari_comment_english_switch')){
     if (preg_match('/^[\x20-\x7E\s]+$/', $comment_content)) {
         wp_send_json_error('评论内容不能为纯英文');
     }
@@ -242,11 +242,11 @@ function ajax_comment_callback() {
         add_comment_meta($comment_id, '_wp_trash_meta_status', $commentarr['comment_approved']);
     }
 
-    // 通知统一由 wp_insert_comment → boxmoe_comment_notify_bridge 触发 boxmoe_comment_notify 事件（架构优化：解耦评论模块与消息模块）
+    // 通知统一由 wp_insert_comment → fuwari_comment_notify_bridge 触发 fuwari_comment_notify 事件（架构优化：解耦评论模块与消息模块）
 
     $comment = get_comment($comment_id);
     ob_start();
-    boxmoe_comment($comment, array('max_depth' => 1), 1);
+    fuwari_comment($comment, array('max_depth' => 1), 1);
     $comment_html = ob_get_clean();
 
     wp_send_json_success(array(
@@ -264,11 +264,11 @@ add_action('init', 'disable_comment_flood_filter');
 add_filter('notify_post_author', '__return_false', 1);
 add_filter('notify_moderator', '__return_false', 1);
 
-// 评论通知事件桥（架构优化：任何路径的 wp_insert_comment 都触发 boxmoe_comment_notify，由消息模块统一分发；修复 13.12 中未定义函数 fatal 与重复通知）
-function boxmoe_comment_notify_bridge($comment_id, $comment_object) {
+// 评论通知事件桥（架构优化：任何路径的 wp_insert_comment 都触发 fuwari_comment_notify，由消息模块统一分发；修复 13.12 中未定义函数 fatal 与重复通知）
+function fuwari_comment_notify_bridge($comment_id, $comment_object) {
     if (!$comment_object || !$comment_id) {
         return;
     }
-    do_action('boxmoe_comment_notify', $comment_id);
+    do_action('fuwari_comment_notify', $comment_id);
 }
-add_action('wp_insert_comment', 'boxmoe_comment_notify_bridge', 10, 2);
+add_action('wp_insert_comment', 'fuwari_comment_notify_bridge', 10, 2);

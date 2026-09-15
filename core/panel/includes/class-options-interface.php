@@ -86,7 +86,7 @@ class Options_Framework_Interface {
 					$output .= '<div id="' . esc_attr($group_section_id) .'" class="' . esc_attr( $class ) . ' mini col">' . "\n";
 					
 					if (isset($value['group_title'])) {
-						$output .= '<div class="boxmoe_tab_header"><span class="dashicons dashicons-info-outline"></span> ' . esc_html($value['group_title']) . '</div>' . "\n";
+						$output .= '<div class="fuwari_tab_header"><span class="dashicons dashicons-info-outline"></span> ' . esc_html($value['group_title']) . '</div>' . "\n";
 					}
 				}
 				
@@ -95,7 +95,7 @@ class Options_Framework_Interface {
 				}
 
 				if ($group_opened) {
-				$output .= '<div class="boxmoe_group_opened">' . "\n";
+				$output .= '<div class="fuwari_group_opened">' . "\n";
 				}		
 				if ( isset( $value['name'] ) ) {
 					$output .= '<h4 class="heading"><span class="dashicons dashicons-shortcode"></span> ' . esc_html( $value['name'] ) . '</h4>' . "\n";
@@ -427,7 +427,7 @@ class Options_Framework_Interface {
 				$class = ! empty( $value['id'] ) ? $value['id'] : $value['name'];
 				$class = preg_replace('/[^a-zA-Z0-9._\-]/', '', strtolower($class) );
 				$output .= '<div id="options-group-' . $counter . '" class="group ' . $class . '">';
-				$output .= '<div class="boxmoe_tab_header"><span class="dashicons dashicons-wordpress"></span> ' . esc_html( $value['name'] ) . '</div>' . "\n";
+				$output .= '<div class="fuwari_tab_header"><span class="dashicons dashicons-wordpress"></span> ' . esc_html( $value['name'] ) . '</div>' . "\n";
 				break;
 			}
 

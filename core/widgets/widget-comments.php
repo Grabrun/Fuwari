@@ -10,8 +10,8 @@ class widget_comments extends WP_Widget {
     public function __construct() {
         parent::__construct(
             'widget_comments',
-            'Boxmoe_最新评论', 
-            array('description' => __('Boxmoe_最新评论侧栏', 'text_domain'),
+            'Fuwari_最新评论', 
+            array('description' => __('Fuwari_最新评论侧栏', 'text_domain'),
 				  'classname' => __('widget_comments', 'text_domain' ))
         );
     }
@@ -32,8 +32,8 @@ class widget_comments extends WP_Widget {
 			$content = strip_tags($comment->com_excerpt);
             $content = mb_strimwidth(strip_tags($content), 0, '40', '...', 'UTF-8');
             $content = convert_smilies($content);
-            $lazy_img = boxmoe_lazy_load_images();
-            $comment_avatar = '<img src="'.esc_url($lazy_img).'" data-src="'.esc_url(boxmoe_get_avatar_url($comment->user_id, 60)).'" class="avatar lazy" alt="avatar">';
+            $lazy_img = fuwari_lazy_load_images();
+            $comment_avatar = '<img src="'.esc_url($lazy_img).'" data-src="'.esc_url(fuwari_get_avatar_url($comment->user_id, 60)).'" class="avatar lazy" alt="avatar">';
 			$output .= '<li class="comment-listitem">
 			            <div class="comment-user">
                           <span class="comment-avatar">
@@ -41,7 +41,7 @@ class widget_comments extends WP_Widget {
                           <div class="comment-author">'.strip_tags($comment->comment_author).'</div>
                           <span class="comment-date">'.get_comment_date('Y-m-d', $comment->comment_ID).'</span></div>
                         <div class="comment-content-link">
-                          <a '.boxmoe_article_new_window().' href="'.get_comment_link( $comment->comment_ID ).'" title="'.$comment->post_title.__('上的评论', 'boxmoe-com').'">
+                          <a '.fuwari_article_new_window().' href="'.get_comment_link( $comment->comment_ID ).'" title="'.$comment->post_title.__('上的评论', 'fuwari-com').'">
                             <div class="comment-content">'.$content.'</div></a>
                         </div>						  
 						</li>';
@@ -52,24 +52,24 @@ class widget_comments extends WP_Widget {
 	}
 
 	function form($instance) {
-		$defaults = array( 'title' => __('最新评论', 'boxmoe-com'), 'limit' => 8, 'outer' => 1 );
+		$defaults = array( 'title' => __('最新评论', 'fuwari-com'), 'limit' => 8, 'outer' => 1 );
 		$instance = wp_parse_args( (array) $instance, $defaults );
 ?>
 		<p>
 			<label>
-				<?php echo __('标题：', 'boxmoe-com') ?>
+				<?php echo __('标题：', 'fuwari-com') ?>
 				<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $instance['title']; ?>" />
 			</label>
 		</p>
 		<p>
 			<label>
-				<?php echo __('显示数目：', 'boxmoe-com') ?>
+				<?php echo __('显示数目：', 'fuwari-com') ?>
 				<input class="widefat" id="<?php echo $this->get_field_id('limit'); ?>" name="<?php echo $this->get_field_name('limit'); ?>" type="number" value="<?php echo $instance['limit']; ?>" />
 			</label>
 		</p>
 		<p>
 			<label>
-				<?php echo __('排除某用户ID：', 'boxmoe-com') ?>
+				<?php echo __('排除某用户ID：', 'fuwari-com') ?>
 				<input class="widefat" id="<?php echo $this->get_field_id('outer'); ?>" name="<?php echo $this->get_field_name('outer'); ?>" type="number" value="<?php echo $instance['outer']; ?>" />
 			</label>
 		</p>

@@ -65,13 +65,13 @@ endif;
  *
  * Not in a class to support backwards compatibility in themes.
  */
-if ( ! function_exists( 'get_boxmoe' ) ) :
-function get_boxmoe( $name, $default = false ) {
+if ( ! function_exists( 'get_fuwari' ) ) :
+function get_fuwari( $name, $default = false ) {
 
 	// 静态缓存：单次请求内选项只读一次数据库（架构优化）
-	static $boxmoe_options_cache = null;
+	static $fuwari_options_cache = null;
 
-	if ( null === $boxmoe_options_cache ) {
+	if ( null === $fuwari_options_cache ) {
 		$option_name = '';
 
 		// Gets option name as defined in the theme
@@ -86,15 +86,23 @@ function get_boxmoe( $name, $default = false ) {
 		}
 
 		// Get option settings from database
-		$boxmoe_options_cache = get_option( $option_name );
-		if ( ! is_array( $boxmoe_options_cache ) ) {
-			$boxmoe_options_cache = array();
+		$fuwari_options_cache = get_option( $option_name );
+		if ( ! is_array( $fuwari_options_cache ) ) {
+			$fuwari_options_cache = array();
 		}
 	}
 
 	// Return specific option
-	if ( isset( $boxmoe_options_cache[$name] ) ) {
-		return $boxmoe_options_cache[$name];
+	if ( isset( $fuwari_options_cache[$name] ) ) {
+		return $fuwari_options_cache[$name];
+	}
+
+	// 0.3.0 起选项 id 由 boxmoe_* 更名为 fuwari_*：读取时回退旧键，避免升级后设置丢失
+	if ( 0 === strpos( $name, 'fuwari_' ) ) {
+		$legacy_key = 'boxmoe_' . substr( $name, 7 );
+		if ( isset( $fuwari_options_cache[$legacy_key] ) ) {
+			return $fuwari_options_cache[$legacy_key];
+		}
 	}
 
 	return $default;

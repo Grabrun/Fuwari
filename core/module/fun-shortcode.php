@@ -248,10 +248,10 @@ function login_to_read($atts, $content=null) {
 
 
 // 可视化编辑器添加下拉式按钮
-function boxmoe_select(){
+function fuwari_select(){
 echo '
 <select id="short_code_select">
-    <option value="短代码选择！">Boxmoe短代码</option>
+    <option value="短代码选择！">Fuwari短代码</option>
 	<option value="[h2set]内容[/h2set]">H2设置标</option>	
 	<option value="[h2down]内容[/h2down]">H2下载标</option>
 	<option value="[downloadbtn link=\'链接\']按钮名称[/downloadbtn]">下载按钮</option>
@@ -311,10 +311,10 @@ echo '
 </select>';
 }
 if (current_user_can('edit_posts') && current_user_can('edit_pages')) {
-	add_action('media_buttons', 'boxmoe_select', 11);
+	add_action('media_buttons', 'fuwari_select', 11);
 }
 //ctlr+enter回复
-function boxmoe_button() {
+function fuwari_button() {
 echo '<script type="text/javascript">
 	jQuery(document).ready(function(){
 		jQuery("#short_code_select").change(function(){
@@ -324,7 +324,7 @@ echo '<script type="text/javascript">
 	});
 </script>';
 }
-add_action('admin_head', 'boxmoe_button');
+add_action('admin_head', 'fuwari_button');
 
 // HTML模式短代码
 function html_code_button() {

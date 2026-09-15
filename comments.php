@@ -10,12 +10,12 @@ if(!isset($user_ID)) {
   }
   ?>
                 <div class="post-comments" id="comments-container">
-                    <?php if (get_boxmoe('boxmoe_comment_switch')) :?>
+                    <?php if (get_fuwari('fuwari_comment_switch')) :?>
                     <h2 class="mb-7" id="comments-container">评论（已关闭）</h2>
                     <?php else:?>
                     <h2>评论（<?php comments_number('0', '1', '%'); ?>）</h2>
                     <?php endif;?>
-                    <?php if (get_boxmoe('boxmoe_comment_switch') == false) :?>
+                    <?php if (get_fuwari('fuwari_comment_switch') == false) :?>
                     <div class="comments-toggle">
                         <i class="fa fa-chevron-down"></i>
                         <span>查看评论列表</span>
@@ -66,7 +66,7 @@ if(!isset($user_ID)) {
                                         }
                                         ?>
                                         <div class="comment-level-<?php echo $depth; ?>">
-                                            <?php boxmoe_comment($comment, $comment_args, $depth); ?>
+                                            <?php fuwari_comment($comment, $comment_args, $depth); ?>
                                             <?php display_comments($comment->comment_ID, $comments_by_parent, $comment_args, $depth + 1); ?>
                                         </div>
                                         <?php
@@ -138,7 +138,7 @@ if(!isset($user_ID)) {
                                            <?php if (!empty($comment_author)) {
                                             echo '[当前状态：未登录，访客]';
                                            }else{
-                                            if (!get_boxmoe('boxmoe_comment_login_switch')) :
+                                            if (!get_fuwari('fuwari_comment_login_switch')) :
                                             echo '[填写昵称邮箱后可以评论]';
                                             else:
                                             echo '[登录后可以评论]';
@@ -148,7 +148,7 @@ if(!isset($user_ID)) {
                                     </div>    
                                     <?php endif;?>
                                     <?php if (! is_user_logged_in() ):?>
-                                    <?php if (!get_boxmoe('boxmoe_comment_login_switch')) :?>
+                                    <?php if (!get_fuwari('fuwari_comment_login_switch')) :?>
                                     <button type="button" class="switch-account-btn">
                                         <i class="fa fa-refresh"></i>
                                         <?php $comment_author = get_comment_author_info('comment_author');
@@ -173,7 +173,7 @@ if(!isset($user_ID)) {
                                     </a>
                                     <?php endif;?>
                                 </div>
-                                <?php if (!get_boxmoe('boxmoe_comment_login_switch')) :?>
+                                <?php if (!get_fuwari('fuwari_comment_login_switch')) :?>
                                 <?php if (! is_user_logged_in() ):?>
                                 <div class="guest-inputs" >                                   
                                     <div class="input-group">
@@ -198,7 +198,7 @@ if(!isset($user_ID)) {
                                 <?php endif;?>
                                 <?php endif;?>
                             </div>
-                            <?php if (!is_user_logged_in() &&  get_boxmoe('boxmoe_comment_login_switch')) :?>
+                            <?php if (!is_user_logged_in() &&  get_fuwari('fuwari_comment_login_switch')) :?>
                                 <?php else:?>
                             <div class="comment-form-comment">
                                 <textarea id="comment" name="comment" tabindex="4" placeholder="写下您的评论..." rows="4" required></textarea>                                

@@ -15,7 +15,7 @@ get_header();
 global $wpdb,$current_user;
 $user_info=wp_get_current_user();
 
-echo '<link rel="stylesheet" href="'.boxmoe_theme_url().'/assets/css/user_center.css">';
+echo '<link rel="stylesheet" href="'.fuwari_theme_url().'/assets/css/user_center.css">';
 $items = isset($_GET["items"]) ? $_GET["items"] : 'home';
 $current_user = wp_get_current_user();
 ?>
@@ -43,7 +43,7 @@ $current_user = wp_get_current_user();
                                     <tr>
                                        <th scope="row">
                                           <div class="d-flex align-items-center">
-                                          <img id="user-avatar"  src="<?php echo boxmoe_get_avatar_url($current_user->ID,100); ?>"  class="avatar rounded-3 img-fluid" alt="avatar">
+                                          <img id="user-avatar"  src="<?php echo fuwari_get_avatar_url($current_user->ID,100); ?>"  class="avatar rounded-3 img-fluid" alt="avatar">
                                              <div class="ms-3">
                                                 <div class="fs-5 fw-semibold text-dark"><?php echo get_user_meta(get_current_user_id(), 'nickname', true); ?> (ID:<?php echo $current_user->ID; ?>)</div>
                                              </div>
@@ -82,4 +82,4 @@ $current_user = wp_get_current_user();
 <?php
 get_footer();
 ?>
-<script type="text/javascript" src="<?php echo boxmoe_theme_url(); ?>/assets/js/user_center.js"></script>
+<script type="text/javascript" src="<?php echo fuwari_theme_url(); ?>/assets/js/user_center.js"></script>

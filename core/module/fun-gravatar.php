@@ -12,10 +12,10 @@ if(!defined('ABSPATH')){
 
 
 // Gravatar头像--------------------------boxmoe.com--------------------------
-function boxmoe_getavatar_host() {
+function fuwari_getavatar_host() {
     $gravatar_Url = 'cravatar.cn/avatar';
 
-    switch (get_boxmoe('boxmoe_gravatar_url')) {
+    switch (get_fuwari('fuwari_gravatar_url')) {
         case 'cn':
             $gravatar_Url = 'cn.gravatar.com/avatar';
             break;
@@ -44,9 +44,9 @@ function boxmoe_getavatar_host() {
 }
 
 
-function boxmoe_qqavatar_host() {
+function fuwari_qqavatar_host() {
     $qqavatar_Url = 'q2.qlogo.cn';
-    switch (get_boxmoe('boxmoe_qqavatar_url')) {
+    switch (get_fuwari('fuwari_qqavatar_url')) {
         case 'Q1':
             $qqavatar_Url = 'q1.qlogo.cn';
             break;
@@ -65,7 +65,7 @@ function boxmoe_qqavatar_host() {
 }
 
 
-function boxmoe_get_avatar($avatar, $id_or_email, $size = 96, $default = '', $alt = '', $args = array()) {
+function fuwari_get_avatar($avatar, $id_or_email, $size = 96, $default = '', $alt = '', $args = array()) {
     $email = '';
     $user_id = '';
     if (is_numeric($id_or_email)) {
@@ -90,7 +90,7 @@ function boxmoe_get_avatar($avatar, $id_or_email, $size = 96, $default = '', $al
         $email = $id_or_email;
     }
     $hash       = md5(strtolower(trim($email)));
-    $gavatarurl = 'https://' . boxmoe_getavatar_host() . '/' . $hash;
+    $gavatarurl = 'https://' . fuwari_getavatar_host() . '/' . $hash;
 
     $class = isset($args['class']) 
         ? array_merge(['avatar'], is_array($args['class']) ? $args['class'] : explode(' ', $args['class'])) 
@@ -105,7 +105,7 @@ function boxmoe_get_avatar($avatar, $id_or_email, $size = 96, $default = '', $al
         } elseif (stripos($email, "@qq.com"))  {
             $qq = str_ireplace("@qq.com", "", $email);
             if (preg_match("/^\d+$/", $qq)) {
-                $qqavatar = "https://" . boxmoe_qqavatar_host() . "/headimg_dl?dst_uin=" . $qq . "&spec=100";
+                $qqavatar = "https://" . fuwari_qqavatar_host() . "/headimg_dl?dst_uin=" . $qq . "&spec=100";
                 return '<img src="' . $qqavatar . '" class="' . $class . '" alt="avatar" />';
             } else {
                 return '<img src="' . $gavatarurl . '" class="' . $class . '" alt="avatar" />';
@@ -116,7 +116,7 @@ function boxmoe_get_avatar($avatar, $id_or_email, $size = 96, $default = '', $al
     } elseif (stripos($email, "@qq.com"))  {
         $qq = str_ireplace("@qq.com", "", $email);
         if (preg_match("/^\d+$/", $qq)) {
-            $qqavatar = "https://" . boxmoe_qqavatar_host() . "/headimg_dl?dst_uin=" . $qq . "&spec=100";
+            $qqavatar = "https://" . fuwari_qqavatar_host() . "/headimg_dl?dst_uin=" . $qq . "&spec=100";
             return '<img src="' . $qqavatar . '" class="' . $class . '" alt="avatar" />';
         } else {
             return '<img src="' . $gavatarurl . '" class="' . $class . '" alt="avatar" />';
@@ -125,10 +125,10 @@ function boxmoe_get_avatar($avatar, $id_or_email, $size = 96, $default = '', $al
         return '<img src="' . $gavatarurl . '" class="' . $class . '" alt="avatar" />';
     }
 }
-add_filter('get_avatar', 'boxmoe_get_avatar', 10, 6);
+add_filter('get_avatar', 'fuwari_get_avatar', 10, 6);
 
 // 提取头像地址--------------------------boxmoe.com--------------------------
-function boxmoe_get_avatar_url($id_or_email, $size = 100) {
+function fuwari_get_avatar_url($id_or_email, $size = 100) {
     $email = '';
     $user_id = '';
         if (is_numeric($id_or_email)) {
@@ -153,11 +153,11 @@ function boxmoe_get_avatar_url($id_or_email, $size = 100) {
     if (stripos($email, "@qq.com")) {
         $qq = str_ireplace("@qq.com", "", $email);
         if (preg_match("/^\d+$/", $qq)) {
-            return "https://" . boxmoe_qqavatar_host() . "/headimg_dl?dst_uin=" . $qq . "&spec=100";
+            return "https://" . fuwari_qqavatar_host() . "/headimg_dl?dst_uin=" . $qq . "&spec=100";
         }
     }
     $hash = md5(strtolower(trim($email)));
-    return 'https://' . boxmoe_getavatar_host() . '/' . $hash;
+    return 'https://' . fuwari_getavatar_host() . '/' . $hash;
 }
 
 

@@ -3,6 +3,30 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.3.0-beta.1] - 2026-09-16
+
+> 破坏性变更版：内部标识统一重构（`boxmoe_*` → `fuwari_*`），作者更新，移除对原作者服务器的依赖。
+
+### 破坏性变更（Breaking Changes）
+
+- **函数/常量/事件钩子改名**：全仓 `boxmoe_*` → `fuwari_*`（函数名、`get_fuwari`、`FUWARI_THEME_VERSION`、`fuwari_modules` filter、`fuwari_comment_notify`/`fuwari_user_register_notify` 钩子、AJAX nonce `fuwari_ajax_nonce`、翻译域 `'fuwari'`、`ui_fuwari_com`）。
+- **选项 id 改名与迁移**：设置项 id `boxmoe_*` → `fuwari_*`；`get_fuwari` 读取时回退旧键（`fuwari_x` 未命中时查 `boxmoe_x`），主题激活（`after_switch_theme`）时一次性复制旧键为新键——升级站点设置不丢失。
+- **CSS 类/ID 与前端选择器**：`.boxmoe_*`/`.boxmoe-*` → `.fuwari_*`/`.fuwari-*`，模板、CSS、JS 选择器同步；`assets/js/boxmoe.js` → `fuwari.js`（enqueue 同步）。
+- **作者更新**：`Author: 拿完西瓜跑`（移除 Author URI）；后台页脚 "Theme by 拿完西瓜跑"；登录/注册页脚改为 "Fuwari（浮絮） powered by WordPress"；广告 widget 默认内容清空；SEO 默认关键词移除 boxmoe。
+- **移除原作者版本更新检查**：后台不再请求 `doc.boxmoe.com/wp-json/themes/v1/version/lolimeow`，改为显示本分支版本（`FUWARI_THEME_VERSION`）。
+- **仅前台页尾保留原项目说明**：页尾版权行输出 "Theme by Fuwari（浮絮） · 源自 LoliMeow 项目"（链接 boxmoe.com）。
+
+### 兼容与安全
+
+- SMTP 加密前缀由 `boxmoe_enc:`（11 字符）改为 `fuwari_enc:`（10 字符）；解密同时识别新旧前缀（修复前缀长度变化导致的 `substr` 截取错位隐患）。
+- 保留：`boxmoe.com` 域名仅出现于代码注释、跳转白名单（p-go/p-goto 功能数据）、登录页背景图 API 默认值与页尾说明；历史 CHANGELOG/README 中原名作为版本溯源。
+
+### 验证
+
+- 静态冒烟 `.verify/php_smoke.py`：72 个 PHP 文件通过；`node --check` 通过 fuwari.js / user_center.js / comments.js / quicktags.js / tinymce-emoji.js。
+- 非 URL `boxmoe` 残留复查：仅兼容层 6 处（选项迁移、SMTP 旧前缀识别、旧键回退），全部为有意保留。
+- 本机无 PHP CLI，`php -l` 与真实站点走查（设置面板保存、旧站点升级选项保留、SMTP 旧密码解密、用户中心、前台页尾）需在目标环境执行。
+
 ## [0.2.0-beta.2] - 2026-09-16
 
 > Bug 修复版：修复文章缩略图随机 API 配置后前台显示失败的 URL 拼接缺陷。

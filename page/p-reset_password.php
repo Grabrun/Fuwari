@@ -16,10 +16,10 @@ if (is_user_logged_in()){
     <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <title><?php echo boxmoe_theme_title(); ?></title>
-   <link rel="icon" href="<?php echo boxmoe_favicon(); ?>" type="image/x-icon">
-    <?php boxmoe_keywords(); ?>
-    <?php boxmoe_description(); ?>
+   <title><?php echo fuwari_theme_title(); ?></title>
+   <link rel="icon" href="<?php echo fuwari_favicon(); ?>" type="image/x-icon">
+    <?php fuwari_keywords(); ?>
+    <?php fuwari_description(); ?>
     <?php ob_start();wp_head();$wp_head_output = ob_get_clean();echo preg_replace('/\n/', "\n    ", trim($wp_head_output))."\n    ";?>
 </head>
 
@@ -31,7 +31,7 @@ if (is_user_logged_in()){
                <div class="w-100 align-self-end col-12">
                   <div class="text-center mb-7">
                      <a href="<?php echo home_url(); ?>">
-                     <?php boxmoe_logo(); ?></a>
+                     <?php fuwari_logo(); ?></a>
                      <h1 class="mb-1">重置密码</h1>
                      <p class="mb-0">请输入您的邮箱，我们将发送重置密码的链接。</p>
                   </div>
@@ -51,7 +51,7 @@ if (is_user_logged_in()){
                      </div>
                   </form>
                   <div class="text-center">
-                     <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="icon-link icon-link-hover">
+                     <a href="<?php echo fuwari_sign_in_link_page(); ?>" class="icon-link icon-link-hover">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
                         </svg>
@@ -61,7 +61,7 @@ if (is_user_logged_in()){
                </div>
             </div>
          </div>
-         <div class="position-fixed top-0 end-0 w-50 h-100 d-none d-lg-block vh-100" style="background-image: url(<?php echo get_boxmoe('boxmoe_user_login_bg')? get_boxmoe('boxmoe_user_login_bg') :'https://api.boxmoe.com/random.php'; ?>); background-position: center; background-repeat: no-repeat; background-size: cover;transform: skewX(-10deg);right:-8rem!important;">
+         <div class="position-fixed top-0 end-0 w-50 h-100 d-none d-lg-block vh-100" style="background-image: url(<?php echo get_fuwari('fuwari_user_login_bg')? get_fuwari('fuwari_user_login_bg') :'https://api.boxmoe.com/random.php'; ?>); background-position: center; background-repeat: no-repeat; background-size: cover;transform: skewX(-10deg);right:-8rem!important;">
          </div>
       </div>
 

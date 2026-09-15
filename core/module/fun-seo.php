@@ -12,11 +12,11 @@ if(!defined('ABSPATH')){
 
 
 // 百度推送功能--------------------------boxmoe.com--------------------------
-if(get_boxmoe('boxmoe_baidu_submit_switch')){
-function boxmoe_baidu_submit($post_ID) {
+if(get_fuwari('fuwari_baidu_submit_switch')){
+function fuwari_baidu_submit($post_ID) {
     if (get_post_status($post_ID) == 'publish') {
         $WEB_DOMAIN = get_option('home');
-        $BAIDU_TOKEN = get_boxmoe('boxmoe_baidu_token');
+        $BAIDU_TOKEN = get_fuwari('fuwari_baidu_token');
         $api_url = 'http://data.zz.baidu.com/urls?site='.$WEB_DOMAIN.'&token='.$BAIDU_TOKEN;
         $post_url = get_permalink($post_ID);
         $args = array(
@@ -30,15 +30,15 @@ function boxmoe_baidu_submit($post_ID) {
         }      
     }
 }
-add_action('publish_post', 'boxmoe_baidu_submit');
+add_action('publish_post', 'fuwari_baidu_submit');
 }
 
 // Bing推送功能--------------------------boxmoe.com--------------------------
-if(get_boxmoe('boxmoe_bing_submit_switch')){
-function boxmoe_bing_submit($post_ID) {
+if(get_fuwari('fuwari_bing_submit_switch')){
+function fuwari_bing_submit($post_ID) {
     if (get_post_status($post_ID) == 'publish') {
         $WEB_DOMAIN = get_option('home');
-        $BING_API_KEY = get_boxmoe('boxmoe_bing_api_key');
+        $BING_API_KEY = get_fuwari('fuwari_bing_api_key');
         $api_url = 'https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apikey='.$BING_API_KEY;
         $post_url = get_permalink($post_ID);
         $args = array(
@@ -52,14 +52,14 @@ function boxmoe_bing_submit($post_ID) {
         }
     }
 }
-add_action('publish_post', 'boxmoe_bing_submit');
+add_action('publish_post', 'fuwari_bing_submit');
 }
 
 // 360推送功能--------------------------boxmoe.com--------------------------
-if(get_boxmoe('boxmoe_360_submit_switch')){
-function boxmoe_360_submit($post_ID) {
+if(get_fuwari('fuwari_360_submit_switch')){
+function fuwari_360_submit($post_ID) {
     if (get_post_status($post_ID) == 'publish') {
-        $API_KEY_360 = get_boxmoe('boxmoe_360_api_key');
+        $API_KEY_360 = get_fuwari('fuwari_360_api_key');
         $api_url = 'https://zhanzhang.so.com/linksubmit/urlsubmit?site_token='.$API_KEY_360;
         $post_url = get_permalink($post_ID);
         $args = array(
@@ -73,12 +73,12 @@ function boxmoe_360_submit($post_ID) {
         }
     }
 }
-add_action('publish_post', 'boxmoe_360_submit');
+add_action('publish_post', 'fuwari_360_submit');
 }
 
 // 谷歌搜索推送功能--------------------------boxmoe.com--------------------------
-if(get_boxmoe('boxmoe_google_submit_switch')){
-function boxmoe_google_submit($post_ID) {
+if(get_fuwari('fuwari_google_submit_switch')){
+function fuwari_google_submit($post_ID) {
     if (get_post_status($post_ID) == 'publish') {
         // 修复：原 13.12 把 API Key 拼进 sitemap ping URL 且以 POST JSON 发送，接口语义错误。
         // Google 官方已停用 sitemap ping 接口，此处改为 GET 提交站点 sitemap（最接近的合规实现），
@@ -91,19 +91,19 @@ function boxmoe_google_submit($post_ID) {
         }
     }
 }
-add_action('publish_post', 'boxmoe_google_submit');
+add_action('publish_post', 'fuwari_google_submit');
 }
 
 
 // 网站标题连接符--------------------------boxmoe.com--------------------------
-function boxmoe_title_link(){
-    return get_boxmoe('boxmoe_title_link') ? ' ' . get_boxmoe('boxmoe_title_link'). ' ' : ' - ';
+function fuwari_title_link(){
+    return get_fuwari('fuwari_title_link') ? ' ' . get_fuwari('fuwari_title_link'). ' ' : ' - ';
 }
 
 
 
 // 网站标题--------------------------boxmoe.com--------------------------
-function boxmoe_theme_title(){
+function fuwari_theme_title(){
 	global $new_title;
 	if( $new_title ) return $new_title;
 	global $paged;
@@ -113,20 +113,20 @@ function boxmoe_theme_title(){
 		$t .= get_the_subtitle(false);
 	}
 	if ($t) {
-		$html .= $t . boxmoe_title_link();
+		$html .= $t . fuwari_title_link();
 	}
 	$html .= get_bloginfo('name');
 
 	if (is_home()) {
 		if ($paged > 1) {
-			$html .= boxmoe_title_link() . '最新发布';
+			$html .= fuwari_title_link() . '最新发布';
 		}else{
-			$html .= boxmoe_title_link() . get_option('blogdescription');
+			$html .= fuwari_title_link() . get_option('blogdescription');
 		}
 
 	}
 	if ($paged > 1) {
-		$html .= boxmoe_title_link() . '第' . $paged . '页';
+		$html .= fuwari_title_link() . '第' . $paged . '页';
 	}
 	return $html;
 
@@ -156,20 +156,20 @@ $postmeta_keywords_description = array(
         "name" => "keywords",
 
         "std" => "",
-        "title" => __('关键字', 'boxmoe').'：'
+        "title" => __('关键字', 'fuwari').'：'
     ),
     array(
         "name" => "description",
         "std" => "",
-        "title" => __('描述', 'boxmoe').'：'
+        "title" => __('描述', 'fuwari').'：'
         )
 );
-if( get_boxmoe('boxmoe_post_keywords_description_switch') ){
-    add_action('admin_menu', 'boxmoe_postmeta_keywords_description_create');
-    add_action('save_post', 'boxmoe_postmeta_keywords_description_save');
+if( get_fuwari('fuwari_post_keywords_description_switch') ){
+    add_action('admin_menu', 'fuwari_postmeta_keywords_description_create');
+    add_action('save_post', 'fuwari_postmeta_keywords_description_save');
 }
 
-function boxmoe_postmeta_keywords_description() {
+function fuwari_postmeta_keywords_description() {
     global $post, $postmeta_keywords_description;
     foreach($postmeta_keywords_description as $meta_box) {
         $meta_box_value = get_post_meta($post->ID, $meta_box['name'], true);
@@ -186,15 +186,15 @@ function boxmoe_postmeta_keywords_description() {
     echo '<input type="hidden" name="post_newmetaboxes_noncename" id="post_newmetaboxes_noncename" value="'.wp_create_nonce( plugin_basename(__FILE__) ).'" />';
 }
 
-function boxmoe_postmeta_keywords_description_create() {
+function fuwari_postmeta_keywords_description_create() {
     global $theme_name;
     if ( function_exists('add_meta_box') ) {
-        add_meta_box( 'postmeta_keywords_description_boxes', __('自定义关键字和描述', 'boxmoe'), 'boxmoe_postmeta_keywords_description', 'post', 'normal', 'high' );
-        add_meta_box( 'postmeta_keywords_description_boxes', __('自定义关键字和描述', 'boxmoe'), 'boxmoe_postmeta_keywords_description', 'page', 'normal', 'high' );
+        add_meta_box( 'postmeta_keywords_description_boxes', __('自定义关键字和描述', 'fuwari'), 'fuwari_postmeta_keywords_description', 'post', 'normal', 'high' );
+        add_meta_box( 'postmeta_keywords_description_boxes', __('自定义关键字和描述', 'fuwari'), 'fuwari_postmeta_keywords_description', 'page', 'normal', 'high' );
     }
 }
 
-function boxmoe_postmeta_keywords_description_save( $post_id ) {
+function fuwari_postmeta_keywords_description_save( $post_id ) {
     global $postmeta_keywords_description;
    
     if ( !wp_verify_nonce( isset($_POST['post_newmetaboxes_noncename'])?$_POST['post_newmetaboxes_noncename']:'', plugin_basename(__FILE__) ))
@@ -215,7 +215,7 @@ function boxmoe_postmeta_keywords_description_save( $post_id ) {
 }
 
 // 网站关键词输出--------------------------boxmoe.com--------------------------
-function boxmoe_keywords() {
+function fuwari_keywords() {
     global $s, $post;
     $keywords = '';
     if ( is_singular() ) {
@@ -223,18 +223,18 @@ function boxmoe_keywords() {
         foreach ( get_the_tags( $post->ID ) as $tag ) $keywords .= $tag->name . ', ';
       }
       foreach ( get_the_category( $post->ID ) as $category ) $keywords .= $category->cat_name . ', ';
-      if(get_boxmoe('boxmoe_post_keywords_description_switch') ) {
+      if(get_fuwari('fuwari_post_keywords_description_switch') ) {
           $the = trim(get_post_meta($post->ID, 'keywords', true));
           if( $the ) $keywords = $the;
       }else{
           $keywords = substr_replace( $keywords , '' , -2);
       }
       
-    } elseif ( is_home () )    { $keywords =get_boxmoe('boxmoe_keywords');
+    } elseif ( is_home () )    { $keywords =get_fuwari('fuwari_keywords');
     } elseif ( is_tag() )      { $keywords = single_tag_title('', false);
     } elseif ( is_category() ) { $keywords = single_cat_title('', false);
   
-      if(get_boxmoe('cat_keyworks_s') ){
+      if(get_fuwari('cat_keyworks_s') ){
           $description = trim(strip_tags(category_description()));
           if( $description && strstr($description, '::::::') ){
               $desc = explode('::::::', $description);
@@ -254,7 +254,7 @@ function boxmoe_keywords() {
 
 
 // 网站描述输出--------------------------boxmoe.com--------------------------
-function boxmoe_description() {
+function fuwari_description() {
     global $s, $post;
     $description = '';
     $blog_name = get_bloginfo('name');
@@ -266,24 +266,24 @@ function boxmoe_description() {
       }
       $description = trim( str_replace( array( "\r\n", "\r", "\n", "　", " "), " ", str_replace( "\"", "'", strip_tags( $text ) ) ) );
       if ( !( $description ) ) $description = $blog_name . "-" . trim( wp_title('', false) );
-      if(get_boxmoe('boxmoe_auto_keywords_description_switch') ) {
+      if(get_fuwari('fuwari_auto_keywords_description_switch') ) {
           $the = trim(get_post_meta($post->ID, 'description', true));
           if( $the ) $description = $the;
       }
 
-    } elseif ( is_home () )    { $description =get_boxmoe('boxmoe_description');
+    } elseif ( is_home () )    { $description =get_fuwari('fuwari_description');
     } elseif ( is_tag() )      { $description = $blog_name . "'" . single_tag_title('', false) . "'";
     } elseif ( is_category() ) { 
   
       $description = trim(strip_tags(category_description()));
   
-      if(get_boxmoe('cat_keyworks_s') && $description && strstr($description, '::::::') ){
+      if(get_fuwari('cat_keyworks_s') && $description && strstr($description, '::::::') ){
           $desc = explode('::::::', $description);
           $description = trim($desc[1]);
       }
   
     } elseif ( is_archive() )  { $description = $blog_name . "'" . trim( wp_title('', false) ) . "'";
-    } elseif ( is_search() )   { $description = $blog_name . ": '" . esc_html( $s, 1 ) . "' ".__('的搜索結果', 'boxmoe');
+    } elseif ( is_search() )   { $description = $blog_name . ": '" . esc_html( $s, 1 ) . "' ".__('的搜索結果', 'fuwari');
     } else { $description = $blog_name . "'" . trim( wp_title('', false) ) . "'";
     }
     $description = mb_substr( $description, 0, 80, 'utf-8' );

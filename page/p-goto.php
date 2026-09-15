@@ -2,7 +2,7 @@
 /**
 * Template Name:澶栭摼鎻愰啋鐗?*/
 $my_urls = array(
-array('boxmoe','https://www.boxmoe.com'),
+array('fuwari','https://www.boxmoe.com'),
 array('jsmoe','https://www.jsmoe.com')
 );
 
@@ -119,7 +119,7 @@ body{margin:0;padding:0}body{height:100%}#loading{-webkit-box-pack:center;-ms-fl
 	<span class="getting-there">LOADING STUFF...</span>
 </div>    <div class="loading-content">
         <div class="logo-img">
-            <?php echo boxmoe_logo();?>
+            <?php echo fuwari_logo();?>
         </div>
 		<?php if($err != "1"){?>
         <div class="loading-info">                        

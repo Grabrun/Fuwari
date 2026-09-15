@@ -6,13 +6,13 @@
 //boxmoe.com===安全设置=阻止直接访问主题文件
 if(!defined('ABSPATH')){echo'Look your sister';exit;}
 ?>
-        <div class="<?php echo boxmoe_layout_setting(); ?> blog-post">
+        <div class="<?php echo fuwari_layout_setting(); ?> blog-post">
         <?php while ( have_posts() ) : the_post(); ?>
-          <article class="post-list list-one row <?php echo boxmoe_border_setting(); ?>">
+          <article class="post-list list-one row <?php echo fuwari_border_setting(); ?>">
             <div class="post-list-img">
               <figure class="mb-4 mb-lg-0 zoom-img">
-                <a <?php echo boxmoe_article_new_window(); ?> href="<?php echo get_the_permalink(); ?>" title="<?php echo get_the_title().get_the_subtitle(false).boxmoe_title_link().get_bloginfo('name')?>">
-                  <img src="<?php boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_article_thumbnail_src('id'.get_the_ID()); ?>" alt="<?php the_title(); ?>" class="img-fluid rounded-3 lazy"></a>
+                <a <?php echo fuwari_article_new_window(); ?> href="<?php echo get_the_permalink(); ?>" title="<?php echo get_the_title().get_the_subtitle(false).fuwari_title_link().get_bloginfo('name')?>">
+                  <img src="<?php fuwari_lazy_load_images(); ?>" data-src="<?php echo fuwari_article_thumbnail_src('id'.get_the_ID()); ?>" alt="<?php the_title(); ?>" class="img-fluid rounded-3 lazy"></a>
               </figure>
 
             </div>
@@ -31,11 +31,11 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
               </div>
               <div class="mt-2 mb-2">
                 <h3 class="post-title h4">
-                  <a href="<?php echo get_the_permalink(); ?>" title="<?php echo get_the_title().get_the_subtitle(false).boxmoe_title_link().get_bloginfo('name')?>" class="text-reset"><?php echo get_the_title(); ?></a></h3>
+                  <a href="<?php echo get_the_permalink(); ?>" title="<?php echo get_the_title().get_the_subtitle(false).fuwari_title_link().get_bloginfo('name')?>" class="text-reset"><?php echo get_the_title(); ?></a></h3>
                 <p class="post-content"><?php echo _get_excerpt(); ?></p></div>
               <div class="post-meta align-items-center">
                 <div class="post-list-avatar">
-                <img src="<?php echo boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_get_avatar_url(get_the_author_meta('ID'), 100); ?>" alt="avatar" class="avatar lazy">
+                <img src="<?php echo fuwari_lazy_load_images(); ?>" data-src="<?php echo fuwari_get_avatar_url(get_the_author_meta('ID'), 100); ?>" alt="avatar" class="avatar lazy">
                     </div>
                 <div class="post-meta-info">
                   <div class="post-meta-stats">
@@ -53,6 +53,6 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
           </article>
         <?php endwhile; ?>
           <div class="col-lg-12 col-md-12 pagenav">
-            <?php boxmoe_pagination(); ?>            
+            <?php fuwari_pagination(); ?>            
           </div>
         </div>

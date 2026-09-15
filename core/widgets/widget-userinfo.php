@@ -12,10 +12,10 @@ class widget_userinfo extends WP_Widget {
 	function __construct(){
 		parent::__construct( 
 			'widget_userinfo', 
-			'Boxmoe_用户信息', 
+			'Fuwari_用户信息', 
 			array( 
-				'description' => __('用户信息侧栏小工具', 'boxmoe-com'),
-				'classname'   => __('widget-userinfo', 'boxmoe-com')
+				'description' => __('用户信息侧栏小工具', 'fuwari-com'),
+				'classname'   => __('widget-userinfo', 'fuwari-com')
 			) 
 		);
 	}
@@ -27,14 +27,14 @@ class widget_userinfo extends WP_Widget {
 		$nickname = isset($instance['nickname']) ? $instance['nickname'] : '昵称在这里';
 		$bio = isset($instance['bio']) ? $instance['bio'] : '个人简介文字';
 		$avatarid = isset($instance['avatarid']) ? $instance['avatarid'] : 1;
-		$avatar_url = boxmoe_get_avatar_url($avatarid, 100);
+		$avatar_url = fuwari_get_avatar_url($avatarid, 100);
 		echo $before_widget;
 		echo $before_title . $title . $after_title;
 		echo '<div class="widget-content">';	
 		echo '
 		<div class="widget-profile">
 			<div class="profile-avatar">
-				<img src="'.boxmoe_lazy_load_images().'"  class="lazy" data-src="'.esc_url($avatar_url).'" alt="avatar">
+				<img src="'.fuwari_lazy_load_images().'"  class="lazy" data-src="'.esc_url($avatar_url).'" alt="avatar">
 			</div>
 			<h3 class="profile-name">'. esc_html($nickname) .'</h3>
 			<p class="profile-desc">'. esc_html($bio) .'</p>
@@ -81,7 +81,7 @@ class widget_userinfo extends WP_Widget {
 	// 后台表单
 	public function form( $instance ) {
 		$defaults = array(
-			'title' => __('个人信息', 'boxmoe-com'),
+			'title' => __('个人信息', 'fuwari-com'),
 			'nickname' => '',
 			'bio' => '',
 			'avatarid' => '1',
@@ -96,7 +96,7 @@ class widget_userinfo extends WP_Widget {
 		?>
 		<p>
 			<label>
-				<?php echo __('标题：', 'boxmoe-com') ?>
+				<?php echo __('标题：', 'fuwari-com') ?>
 				<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" 
 					name="<?php echo $this->get_field_name('title'); ?>" type="text" 
 					value="<?php echo esc_attr($instance['title']); ?>" />
@@ -104,7 +104,7 @@ class widget_userinfo extends WP_Widget {
 		</p>
 		<p>
 			<label>
-				<?php echo __('昵称：', 'boxmoe-com') ?>
+				<?php echo __('昵称：', 'fuwari-com') ?>
 				<input class="widefat" id="<?php echo $this->get_field_id('nickname'); ?>" 
 					name="<?php echo $this->get_field_name('nickname'); ?>" type="text" 
 					value="<?php echo esc_attr($instance['nickname']); ?>" />
@@ -112,14 +112,14 @@ class widget_userinfo extends WP_Widget {
 		</p>
 		<p>
 			<label>
-				<?php echo __('个人简介：', 'boxmoe-com') ?>
+				<?php echo __('个人简介：', 'fuwari-com') ?>
 				<textarea class="widefat" id="<?php echo $this->get_field_id('bio'); ?>" 
 					name="<?php echo $this->get_field_name('bio'); ?>"><?php echo esc_textarea($instance['bio']); ?></textarea>
 			</label>
 		</p>
 		<p>
 			<label>
-				<?php echo __('用户ID：', 'boxmoe-com') ?>
+				<?php echo __('用户ID：', 'fuwari-com') ?>
 				<input class="widefat" id="<?php echo $this->get_field_id('avatarid'); ?>" 
 					name="<?php echo $this->get_field_name('avatarid'); ?>" type="number" 
 					value="<?php echo esc_attr($instance['avatarid']); ?>" />
@@ -130,7 +130,7 @@ class widget_userinfo extends WP_Widget {
 				<input type="checkbox" id="<?php echo $this->get_field_id('show_qq'); ?>"
 					name="<?php echo $this->get_field_name('show_qq'); ?>"
 					<?php checked($instance['show_qq']); ?> />
-				<?php echo __('显示QQ图标', 'boxmoe-com') ?>
+				<?php echo __('显示QQ图标', 'fuwari-com') ?>
 			</label>
 		</p>
 		<p>
@@ -138,7 +138,7 @@ class widget_userinfo extends WP_Widget {
 				<input type="checkbox" id="<?php echo $this->get_field_id('show_weibo'); ?>"
 					name="<?php echo $this->get_field_name('show_weibo'); ?>"
 					<?php checked($instance['show_weibo']); ?> />
-				<?php echo __('显示微博图标', 'boxmoe-com') ?>
+				<?php echo __('显示微博图标', 'fuwari-com') ?>
 			</label>
 		</p>
 		<p>
@@ -146,7 +146,7 @@ class widget_userinfo extends WP_Widget {
 				<input type="checkbox" id="<?php echo $this->get_field_id('show_email'); ?>"
 					name="<?php echo $this->get_field_name('show_email'); ?>"
 					<?php checked($instance['show_email']); ?> />
-				<?php echo __('显示邮箱图标', 'boxmoe-com') ?>
+				<?php echo __('显示邮箱图标', 'fuwari-com') ?>
 			</label>
 		</p>
 		<p>
@@ -154,7 +154,7 @@ class widget_userinfo extends WP_Widget {
 				<input type="checkbox" id="<?php echo $this->get_field_id('show_github'); ?>"
 					name="<?php echo $this->get_field_name('show_github'); ?>"
 					<?php checked($instance['show_github']); ?> />
-				<?php echo __('显示GitHub图标', 'boxmoe-com') ?>
+				<?php echo __('显示GitHub图标', 'fuwari-com') ?>
 			</label>
 		</p>
 		<p>
@@ -162,7 +162,7 @@ class widget_userinfo extends WP_Widget {
 				<input type="checkbox" id="<?php echo $this->get_field_id('show_telegram'); ?>"
 					name="<?php echo $this->get_field_name('show_telegram'); ?>"
 					<?php checked($instance['show_telegram']); ?> />
-				<?php echo __('显示Telegram图标', 'boxmoe-com') ?>
+				<?php echo __('显示Telegram图标', 'fuwari-com') ?>
 			</label>
 		</p>
 		<p>
@@ -170,7 +170,7 @@ class widget_userinfo extends WP_Widget {
 				<input type="checkbox" id="<?php echo $this->get_field_id('show_weixin'); ?>"
 					name="<?php echo $this->get_field_name('show_weixin'); ?>"
 					<?php checked($instance['show_weixin']); ?> />
-				<?php echo __('显示微信图标', 'boxmoe-com') ?>
+				<?php echo __('显示微信图标', 'fuwari-com') ?>
 			</label>
 		</p>
 	<?php

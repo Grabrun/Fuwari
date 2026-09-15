@@ -7,15 +7,15 @@
 if(!defined('ABSPATH')){echo'Look your sister';exit;}
 
 // 头像上传处理
-add_action('wp_ajax_upload_avatar', 'boxmoe_upload_avatar');
+add_action('wp_ajax_upload_avatar', 'fuwari_upload_avatar');
 
-function boxmoe_upload_avatar() {
+function fuwari_upload_avatar() {
     if (!is_user_logged_in()) {
         wp_send_json_error(['message' => '请先登录']);
         return;
     }
     $nonce = $_POST['nonce'];
-    if (!wp_verify_nonce($nonce, 'boxmoe_ajax_nonce')) {
+    if (!wp_verify_nonce($nonce, 'fuwari_ajax_nonce')) {
         wp_send_json_error(['message' => '非法请求']);
         return;
     }
@@ -91,16 +91,16 @@ function boxmoe_upload_avatar() {
 }
 
 // 用户信息更新处理
-add_action('wp_ajax_update_user_profile', 'boxmoe_update_user_profile');
+add_action('wp_ajax_update_user_profile', 'fuwari_update_user_profile');
 
-function boxmoe_update_user_profile() {
+function fuwari_update_user_profile() {
     if (!is_user_logged_in()) {
         wp_send_json_error(['message' => '请先登录']);
         return;
     }
 
     $nonce = $_POST['nonce'];
-    if (!wp_verify_nonce($nonce, 'boxmoe_ajax_nonce')) {
+    if (!wp_verify_nonce($nonce, 'fuwari_ajax_nonce')) {
         wp_send_json_error(['message' => '非法请求']);
         return;
     }
@@ -132,16 +132,16 @@ function boxmoe_update_user_profile() {
 }
 
 // 用户密码更新处理
-add_action('wp_ajax_update_user_password', 'boxmoe_update_user_password');
+add_action('wp_ajax_update_user_password', 'fuwari_update_user_password');
 
-function boxmoe_update_user_password() {
+function fuwari_update_user_password() {
     if (!is_user_logged_in()) {
         wp_send_json_error(['message' => '请先登录']);
         return;
     }
 
     $nonce = $_POST['nonce'];
-    if (!wp_verify_nonce($nonce, 'boxmoe_ajax_nonce')) {
+    if (!wp_verify_nonce($nonce, 'fuwari_ajax_nonce')) {
         wp_send_json_error(['message' => '非法请求']);
         return;
     }

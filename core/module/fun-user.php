@@ -6,20 +6,20 @@ if(!defined('ABSPATH')){
 }
 
 // 用户中心链接设置--------------------------boxmoe.com--------------------------
-function boxmoe_user_center_link_page(){
-    $boxmoe_user_center_link_page = get_boxmoe('boxmoe_user_center_link_page');
-    if($boxmoe_user_center_link_page){
-        return get_the_permalink($boxmoe_user_center_link_page);
+function fuwari_user_center_link_page(){
+    $fuwari_user_center_link_page = get_fuwari('fuwari_user_center_link_page');
+    if($fuwari_user_center_link_page){
+        return get_the_permalink($fuwari_user_center_link_page);
     }else{
         return false;
     }
 }
 
 // 注册页面链接设置--------------------------boxmoe.com--------------------------
-function boxmoe_sign_up_link_page(){
-    $boxmoe_sign_up_link_page = get_boxmoe('boxmoe_sign_up_link_page');
-    if($boxmoe_sign_up_link_page){
-        return get_the_permalink($boxmoe_sign_up_link_page);
+function fuwari_sign_up_link_page(){
+    $fuwari_sign_up_link_page = get_fuwari('fuwari_sign_up_link_page');
+    if($fuwari_sign_up_link_page){
+        return get_the_permalink($fuwari_sign_up_link_page);
     }else{
         return false;
     }
@@ -27,20 +27,20 @@ function boxmoe_sign_up_link_page(){
 
 
 // 登录页面链接设置--------------------------boxmoe.com--------------------------
-function boxmoe_sign_in_link_page(){
-     $boxmoe_sign_in_link_page = get_boxmoe('boxmoe_sign_in_link_page');
-    if($boxmoe_sign_in_link_page){
-        return get_the_permalink($boxmoe_sign_in_link_page);
+function fuwari_sign_in_link_page(){
+     $fuwari_sign_in_link_page = get_fuwari('fuwari_sign_in_link_page');
+    if($fuwari_sign_in_link_page){
+        return get_the_permalink($fuwari_sign_in_link_page);
     }else{
         return false;
     }
 }
 
 // 重置密码页面链接设置--------------------------boxmoe.com--------------------------
-function boxmoe_reset_password_link_page(){
-    $boxmoe_reset_password_link_page = get_boxmoe('boxmoe_reset_password_link_page');
-    if($boxmoe_reset_password_link_page){
-        return get_the_permalink($boxmoe_reset_password_link_page);
+function fuwari_reset_password_link_page(){
+    $fuwari_reset_password_link_page = get_fuwari('fuwari_reset_password_link_page');
+    if($fuwari_reset_password_link_page){
+        return get_the_permalink($fuwari_reset_password_link_page);
     }else{
         return false;
     }
@@ -222,8 +222,8 @@ function handle_user_signup() {
     $user = new WP_User($user_id);
     $user->set_role('subscriber');
 
-    // 通知统一由 boxmoe_user_register_notify 事件分发（架构优化：解耦用户模块与消息模块，开关判断集中在消息模块）
-    do_action('boxmoe_user_register_notify', $user_id);
+    // 通知统一由 fuwari_user_register_notify 事件分发（架构优化：解耦用户模块与消息模块，开关判断集中在消息模块）
+    do_action('fuwari_user_register_notify', $user_id);
     delete_transient('verification_code_' . $formData['email']);  
     wp_set_current_user($user_id);
     wp_set_auth_cookie($user_id, true);
@@ -233,7 +233,7 @@ function handle_user_signup() {
     exit;
 }
 
-function boxmoe_allow_chinese_username($username, $raw_username, $strict) {
+function fuwari_allow_chinese_username($username, $raw_username, $strict) {
     if (!$strict) {
         return $username;
     } 
@@ -245,7 +245,7 @@ function boxmoe_allow_chinese_username($username, $raw_username, $strict) {
 // 原 13.12 在 AJAX 注册流程中临时 remove/add_filter，存在竞态且影响面不可控。
 // 此处先移除核心默认回调，再挂载主题白名单回调（注册路径另有强正则校验兜底）。
 remove_filter('sanitize_user', 'sanitize_user', 10, 3);
-add_filter('sanitize_user', 'boxmoe_allow_chinese_username', 10, 3);
+add_filter('sanitize_user', 'fuwari_allow_chinese_username', 10, 3);
 
 add_action('wp_ajax_nopriv_send_verification_code', 'handle_send_verification_code');
 add_action('wp_ajax_send_verification_code', 'handle_send_verification_code');
@@ -262,7 +262,7 @@ function handle_send_verification_code() {
     }
     $verification_code = sprintf("%06d", mt_rand(0, 999999));
     set_transient('verification_code_' . $email, $verification_code, 5 * MINUTE_IN_SECONDS);
-    if (boxmoe_verification_code_register_email($email, $verification_code)) {
+    if (fuwari_verification_code_register_email($email, $verification_code)) {
         wp_send_json_success(array('message' => '验证码已发送'));
     } else {
         wp_send_json_error(array('message' => '验证码发送失败，请稍后重试'));
@@ -293,7 +293,7 @@ function handle_reset_password_request() {
         exit;
     }
 
-    if(boxmoe_reset_password_email($user->user_login)){
+    if(fuwari_reset_password_email($user->user_login)){
         wp_send_json_success(array('message' => '重置密码链接已发送到您的邮箱，请查收'));
     }else{
         wp_send_json_error(array('message' => '发送邮件失败，请稍后重试'));
@@ -325,22 +325,22 @@ function get_client_ip() {
 }
 
 // 处理用户注册时间
-add_action('user_register', 'boxmoe_user_register_time');
-function boxmoe_user_register_time($user_id){
+add_action('user_register', 'fuwari_user_register_time');
+function fuwari_user_register_time($user_id){
     $user = get_user_by('id', $user_id);
     update_user_meta($user_id, 'register_time', current_time('mysql'));
 }
 
 // 处理用户登录时间
-add_action('wp_login', 'boxmoe_user_login_time');
-function boxmoe_user_login_time($user_login){
+add_action('wp_login', 'fuwari_user_login_time');
+function fuwari_user_login_time($user_login){
     $user = get_user_by('login', $user_login);
     update_user_meta($user->ID, 'last_login_time', current_time('mysql'));
 }
 
 // 处理用户登录IP
-add_action('wp_login', 'boxmoe_user_login_ip');
-function boxmoe_user_login_ip($user_login){
+add_action('wp_login', 'fuwari_user_login_ip');
+function fuwari_user_login_ip($user_login){
     $user = get_user_by('login', $user_login);
     update_user_meta($user->ID, 'last_login_ip', get_client_ip());
 }
