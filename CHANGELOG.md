@@ -14,6 +14,7 @@
   - `page/template/blog-list.php`、`core/widgets/widget-postlist.php` 改为通过函数参数传入防缓存串，移除调用处的裸 `?` 拼接。
   - 覆盖场景：随机图 API（含查询参数）、自定义 `_thumbnail` 外链、文章内容首图、本地随机图、默认图。
 - 验证：URL 拼接逻辑模拟通过（API 含参 → `&id{ID}`；本地图 → `?id{ID}`）；全仓复查无同类裸 `?` 拼接残留。
+- **工具修复**：`.verify/php_smoke.py` 仓库根路径由硬编码 `lolimeow-master` 改为相对脚本位置解析，目录更名 `fuwari` 后冒烟脚本恢复真实扫描（此前因路径失效出现"检查 0 个文件"的假通过，已修复并复跑 72 文件通过）。
 
 ## [0.2.0-beta.1] - 2026-09-15
 

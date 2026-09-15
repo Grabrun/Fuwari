@@ -10,7 +10,7 @@
 """
 import os, re, sys
 
-ROOT = r"E:\Projects\DouBao\WordPressTheme\lolimeow-master"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 仓库根（.verify 的上一级），随目录改名自适应
 ISSUES = []
 SKIPPED_BRACE = []
 
