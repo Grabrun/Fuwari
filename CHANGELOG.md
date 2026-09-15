@@ -28,6 +28,7 @@
 - 主题名由 **LoliMeow（洛丽喵）** 更名为 **Fuwari（浮絮）**，全称 **Fuwari · 浮絮**。
 - 更新：`style.css` Theme Name/Description（根目录与 assets/css）、README 标题、后台页脚 "Theme by" 文案、全仓文件头 `@package` 标识、SEO 默认关键词。
 - 保留：历史 CHANGELOG/README 中原名作为版本溯源记录；作者信息与 boxmoe.com 版权链接不变；作者端主题更新检查 URL 不变；主题目录名 `lolimeow-master` 不变（避免影响既有部署路径）。
+- 追加（2026-09-16）：主题目录与 zip 安装前缀统一为 `fuwari`（仓库目录 `lolimeow-master` → `fuwari`，发布包内目录结构为 `fuwari/`）。
 
 ### 回归审计修复（2026-09-15，随本版本一并交付）
 
