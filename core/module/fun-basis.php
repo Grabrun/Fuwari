@@ -97,7 +97,7 @@ function fuwari_festival_lantern(){
 // 高度载入--------------------------boxmoe.com--------------------------
 function fuwari_banner_height_load(){
         $pc_height = get_fuwari('fuwari_banner_height') ?: '580';
-        $mb_height = get_fuwari('fuwari_banner_height_mobile') ?: '480';
+        $mb_height = get_fuwari('fuwari_banner_height_m') ?: '480';
         echo "<style>.fuwari_header_banner{height:{$pc_height}px;} @media (max-width: 768px){.fuwari_header_banner{height:{$mb_height}px;}}</style>"."\n    ";
 }
 

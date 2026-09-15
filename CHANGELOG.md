@@ -3,6 +3,32 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.4.0-beta.2] - 2026-09-16
+
+> 深度审计修复版：全项目审计（函数/钩子/资源/安全/回归五维）发现并修复 2 处缺陷，其余全部验证通过。
+
+### 修复
+
+- **安全（CSRF）**：`fuwari_delete_favorite`（用户中心删除收藏）后端补充 `fuwari_ajax_nonce` 校验——前端 `user_center.js` 本已随请求发送 nonce，后端此前未验证；与 `post_favorite`/`post_like`/用户中心其他端点对齐。
+- **功能（移动端 Banner 高度设置失效）**：`fun-basis.php` 调用键 `fuwari_banner_height_mobile` 与设置面板键 `fuwari_banner_height_m` 不一致（上游遗留，改名保持了两者不一致），移动端高度设置一直回退默认 480。调用处改为 `fuwari_banner_height_m`，后台设置即生效。
+
+### 审计通过项（0.1.0 → 0.4.0 全轮回归）
+
+- **函数完整性**：108 个 PHP 函数定义与 154 处调用 100% 一致；所有 `add_action`/`add_filter` 字符串引用函数均有定义（0.3.0 改名无任何悬挂引用）。
+- **资源完整性**：模板引用图片 0 缺失；enqueue 资源全存在；fontawesome 字体 5 格式齐全；0.4.0 性能优化（fancybox/font-awesome CSS enqueue、comments 条件加载、jquery 开关、子集字体）功能确认正常。
+- **安全链**：头像上传（登录+nonce+finfo 真实 MIME+扩展名映射+1MB）；post_like/post_favorite/用户中心/SMTP/评论/登录/注册/重置密码全部有 nonce；SQL 无拼接（absint/sanitize）；输出无直接回显用户输入；无 eval（p-go/p-goto 的 "eval(" 为攻击特征拦截防护）；无 unserialize。
+- **0.2.0 回归**：erphpdown/vip/充值/订单零残留。
+- **版本一致性**：style.css / README / CHANGELOG 全部对齐。
+
+### 已知遗留（非阻断，记录不修复）
+
+- `number.svg`（widget 序号背景）、`pattern/*.svg`（纹理装饰，模板零使用）为上游缺失的视觉级资源，无功能影响。
+- 自定义 AJAX 登录/注册端点无独立速率限制（依赖 WP 核心登录保护或第三方插件）。
+
+### 验证
+
+- 静态冒烟 `.verify/php_smoke.py` 通过；两处修复均经引用一致性复查。
+
 ## [0.4.0-beta.1] - 2026-09-16
 
 > 加载速度优化版（非破坏性）：消除渲染阻塞、削减首屏体积与请求数，不改变任何功能与安全行为。

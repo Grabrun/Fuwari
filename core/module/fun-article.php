@@ -403,6 +403,11 @@ function fuwari_delete_favorite() {
         wp_send_json_error(['message' => '请先登录']);
         return;
     }
+    // 安全加固（0.4.0-beta.2 审计修复）：校验 nonce，防 CSRF（前端 user_center.js 已随请求发送）
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'fuwari_ajax_nonce')) {
+        wp_send_json_error(['message' => '非法请求']);
+        return;
+    }
 
     $post_id = isset($_POST['post_id']) ? absint($_POST['post_id']) : 0;
     
