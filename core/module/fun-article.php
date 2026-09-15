@@ -35,7 +35,7 @@ add_filter('post_thumbnail_size', 'boxmoe_article_thumbnail_size');
 }
 
 // 文章缩略图逻辑--------------------------boxmoe.com--------------------------
-function boxmoe_article_thumbnail_src() {
+function boxmoe_article_thumbnail_src($cache_buster = '') {
     global $post;
     $src='';
     if ($thumbnail_id = get_post_thumbnail_id()) {
@@ -57,7 +57,13 @@ function boxmoe_article_thumbnail_src() {
             }
         }
     }
-    return $src ?: boxmoe_theme_url().'/assets/images/default-thumbnail.jpg';
+    $src = $src ?: boxmoe_theme_url().'/assets/images/default-thumbnail.jpg';
+    // 防缓存参数统一在此追加：URL 已含查询参数（如随机图 API ?category=acg&type=redirect）时用 & 连接，否则用 ?
+    if ($cache_buster !== '') {
+        $sep = (strpos($src, '?') !== false) ? '&' : '?';
+        $src .= $sep . $cache_buster;
+    }
+    return $src;
 }
 
 //文章点击数换算K--------------------------boxmoe.com--------------------------

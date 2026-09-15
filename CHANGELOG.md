@@ -3,6 +3,18 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.2.0-beta.2] - 2026-09-16
+
+> Bug 修复版：修复文章缩略图随机 API 配置后前台显示失败的 URL 拼接缺陷。
+
+### 修复
+
+- **修复**：文章缩略图随机 API（如 `https://images.grabrun.top/api/v1/random?category=acg&type=redirect`）配置后前台显示失败——原实现在 `boxmoe_article_thumbnail_src()` 返回值后无条件以 `?` 追加防缓存参数，而随机 API URL 本身已含查询参数，导致 URL 损坏（`...?category=acg&type=redirect?id1`）。
+  - `boxmoe_article_thumbnail_src()` 新增可选参数 `$cache_buster`，在函数内统一追加：URL 已含 `?` 时用 `&` 连接，否则用 `?`。
+  - `page/template/blog-list.php`、`core/widgets/widget-postlist.php` 改为通过函数参数传入防缓存串，移除调用处的裸 `?` 拼接。
+  - 覆盖场景：随机图 API（含查询参数）、自定义 `_thumbnail` 外链、文章内容首图、本地随机图、默认图。
+- 验证：URL 拼接逻辑模拟通过（API 含参 → `&id{ID}`；本地图 → `?id{ID}`）；全仓复查无同类裸 `?` 拼接残留。
+
 ## [0.2.0-beta.1] - 2026-09-15
 
 > 破坏性变更版：移除对 erphpdown 付费插件的全部硬耦合（会员/VIP/充值/订单体系），主题不再需要该插件即可运行用户中心。`0.x` 阶段破坏性变更递增次版本（0.1.0 → 0.2.0），仍为预发布版。

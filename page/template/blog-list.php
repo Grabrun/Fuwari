@@ -12,7 +12,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
             <div class="post-list-img">
               <figure class="mb-4 mb-lg-0 zoom-img">
                 <a <?php echo boxmoe_article_new_window(); ?> href="<?php echo get_the_permalink(); ?>" title="<?php echo get_the_title().get_the_subtitle(false).boxmoe_title_link().get_bloginfo('name')?>">
-                  <img src="<?php boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_article_thumbnail_src(); ?>?id<?php echo get_the_ID(); ?>" alt="<?php the_title(); ?>" class="img-fluid rounded-3 lazy"></a>
+                  <img src="<?php boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_article_thumbnail_src('id'.get_the_ID()); ?>" alt="<?php the_title(); ?>" class="img-fluid rounded-3 lazy"></a>
               </figure>
 
             </div>
