@@ -4,9 +4,9 @@ Theme URI:https://www.boxmoe.com
 Description:Fuwari（浮絮）主题.
 Author:拿完西瓜跑
 */
-@import url(fancybox.min.css);
-@import url(font-awesome.min.css);
-@font-face {font-family:"fuwari";src:url("../fonts/alimama.woff2") format("woff2");font-display:swap;}
+/* 0.4.0: 移除 CSS @import（fancybox/font-awesome 改为 wp_enqueue_style 并行加载，消除渲染阻塞） */
+/* 0.4.0: 字体子集化 alimama-common.woff2（GB2312 一级常用字，2.3MB → 1.3MB） */
+@font-face {font-family:"fuwari";src:url("../fonts/alimama-common.woff2") format("woff2");font-display:swap;}
   *::-webkit-scrollbar{height:10px;width:10px}
   *::-webkit-scrollbar-track{border-radius:5px;background-color:#DFE9EB}
   *::-webkit-scrollbar-track:hover{background-color:#B8C0C2}

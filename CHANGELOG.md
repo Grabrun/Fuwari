@@ -3,6 +3,25 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.4.0-beta.1] - 2026-09-16
+
+> 加载速度优化版（非破坏性）：消除渲染阻塞、削减首屏体积与请求数，不改变任何功能与安全行为。
+
+### 性能优化
+
+- **CSS `@import` 消除（渲染阻塞修复）**：`style.css` 内 `@import url(fancybox.min.css)` 与 `@import url(font-awesome.min.css)`（浏览器串行下载、阻塞渲染）移除，改为 `wp_enqueue_style` 并行加载（顺序 font-awesome → fancybox → theme.min → style 保持不变）。
+- **字体子集化（最大体积收益）**：主题字体 `alimama.woff2`（2352KB，GB2312 全字符集）子集化为 `alimama-common.woff2`（1292KB，GB2312 一级 3755 常用字 + ASCII + 常用标点，经 fonttools 校验字形齐全）。**生僻字/二级汉字自动回退到系统字体**（Microsoft JhengHei/雅黑，font-family 备选已存在），不影响功能。
+- **删除未引用死资源**：`assets/images/top/dance.gif`（1109KB）无任何代码引用，删除。
+- **jQuery 默认不加载**：审计确认主题全部脚本（fuwari.js / comments.js / theme.min.js / lib.min.js / sakura.js / user_center.js）均为原生 JS，`jQuery(` 调用 0 次（fancybox 为无 jQuery 版）；`fuwari_jquery_switch` 默认值由开启改为关闭（新装站点每页省约 85KB）。**保留后台开关**，第三方插件/子主题需要时可开启。已有站点已保存的配置不受影响。
+- **comments.js 按需加载**：仅在 `is_singular()`（文章/页面，存在评论表单）时加载，减少首页/列表/归档页 1 个 JS 请求。脚本本身带 `#commentform` 判空保护，功能不变。
+- **第三方域名预连接**：`wp_resource_hints` 对 `gravatar.com`（头像）、`boxmoe.com`（页尾链接）及配置的 `wpa.qq.com`（QQ 社交）添加 `preconnect`，提前建连降低首屏延迟。
+
+### 验证
+
+- 静态冒烟 `.verify/php_smoke.py`：72 个 PHP 文件通过；CSS `@import` 残留 0；旧字体/死资源引用残留 0。
+- 子集字体经 fonttools 校验：3984 字形，常用字/ASCII/标点全部命中 cmap。
+- 本机无 PHP CLI 与浏览器，真实站点走查（前台样式与图标、文章页评论、暗黑/亮色切换、图片灯箱 fancybox、登录注册）需在目标环境执行。
+
 ## [0.3.0-beta.1] - 2026-09-16
 
 > 破坏性变更版：内部标识统一重构（`boxmoe_*` → `fuwari_*`），作者更新，移除对原作者服务器的依赖。

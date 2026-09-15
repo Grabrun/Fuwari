@@ -59,8 +59,8 @@ $options[] = array(
         'name' => __('jQuery兼容开关', 'ui_fuwari_com'),
         'id' => 'fuwari_jquery_switch',
         'type' => "checkbox",
-        'std' => true,
-        'desc' => __('默认开启，如果不使用jquery的代码插件可关闭', 'ui_fuwari_com'),
+        'std' => false,
+        'desc' => __('0.4.0 起默认关闭：主题自身脚本均为原生 JS，不依赖 jQuery（约节省 85KB/页）。若第三方插件/子主题需要可开启', 'ui_fuwari_com'),
         );
     $options[] = array(
         'name' => __('移除dns-prefetch', 'ui_fuwari_com'),

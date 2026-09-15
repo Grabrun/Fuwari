@@ -125,6 +125,9 @@ function fuwari_banner_hitokoto(){
 
 // 前端资源载入--------------------------boxmoe.com--------------------------
 function fuwari_load_assets_header(){ 
+    // 0.4.0: 原 style.css 内 @import fancybox/font-awesome（串行阻塞渲染）改为 wp_enqueue 并行加载
+    wp_enqueue_style('fa-style', fuwari_theme_url() . '/assets/css/font-awesome.min.css', array(), THEME_VERSION);
+    wp_enqueue_style('fancybox-style', fuwari_theme_url() . '/assets/css/fancybox.min.css', array(), THEME_VERSION);
     wp_enqueue_style('theme-style', fuwari_theme_url() . '/assets/css/theme.min.css', array(), THEME_VERSION);
     wp_enqueue_style('fuwari-style', fuwari_theme_url() . '/assets/css/style.css', array(), THEME_VERSION);
     if(get_fuwari('fuwari_jquery_switch')){
@@ -132,7 +135,10 @@ function fuwari_load_assets_header(){
     }
     wp_enqueue_script('theme-script', fuwari_theme_url() . '/assets/js/theme.min.js', array(), THEME_VERSION, true);
     wp_enqueue_script('theme-lib-script', fuwari_theme_url() . '/assets/js/lib.min.js', array(), THEME_VERSION, true);
-    wp_enqueue_script('comments-script', fuwari_theme_url() . '/assets/js/comments.js', array(), THEME_VERSION, true);
+    // 0.4.0: comments.js 仅在文章/页面（存在评论表单的 singular 页）加载，减少全站请求
+    if(is_singular()){
+        wp_enqueue_script('comments-script', fuwari_theme_url() . '/assets/js/comments.js', array(), THEME_VERSION, true);
+    }
     wp_enqueue_script('fuwari-script', fuwari_theme_url() . '/assets/js/fuwari.js', array(), THEME_VERSION, true);
     if(get_fuwari('fuwari_sakura_switch')){
         wp_enqueue_script('sakura-script', fuwari_theme_url() . '/assets/js/sakura.js', array(), THEME_VERSION, true);
@@ -150,6 +156,21 @@ function fuwari_load_assets_header(){
 }
 add_action('wp_enqueue_scripts', 'fuwari_load_assets_header');
 add_action('wp_enqueue_scripts', 'fuwari_body_grey', 12);
+
+// 0.4.0: 资源预连接——对主题实际请求的第三方域名提前建连（gravatar 头像 / 页尾链接 / 配置的 QQ）
+function fuwari_resource_hints( $hints, $relation_type ) {
+    if ( 'preconnect' === $relation_type ) {
+        $hosts = array( 'https://gravatar.com', 'https://www.boxmoe.com' );
+        if ( get_fuwari( 'fuwari_social_qq' ) ) {
+            $hosts[] = 'https://wpa.qq.com';
+        }
+        foreach ( $hosts as $host ) {
+            $hints[] = array( 'href' => $host );
+        }
+    }
+    return $hints;
+}
+add_filter( 'wp_resource_hints', 'fuwari_resource_hints', 10, 2 );
 
 // 前端内容载入--------------------------boxmoe.com--------------------------
 function fuwari_load_assets_footer(){?>
