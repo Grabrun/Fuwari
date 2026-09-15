@@ -23,6 +23,14 @@
 - 评论 session（`init_comment_session`）保留——它服务评论者信息记忆，与 VIP 优惠码无关。
 - 0.1.0 建立的架构与安全加固全部保留：模块加载集中化、通知事件化、头像 MIME 白名单、AJAX nonce、SMTP 密码加密、VIP 重放锁（其唯一消费方已随 `handle_vip_upgrade` 删除）、`get_boxmoe` 静态缓存。
 
+### 回归审计修复（2026-09-15，随本版本一并交付）
+
+深度回归审计发现并修复两处会导致用户中心不可用的悬空引用：
+
+- **修复**：`page/template/user-home.php` 仍调用已删除的 `boxmoe_user_money()` / `boxmoe_user_moneyto()`（未定义函数 → PHP fatal）。已删除"积分余额/累计消耗"两个 erphp 卡片及其充值入口链接，保留收藏/评论卡片与头像、资料表单。
+- **修复**：删除卡片时误删了 `<div class="row gx-4">` 容器起始标签（导致网格布局失效），已补回。
+- **审计覆盖**：全仓复查无 `items=order/vip/money/recharge/consumption` 残留链接、无 `get_option('erphp/ice_')` 调用、无已删函数调用方；模板 div 闭合平衡；7 个 AJAX 端点（点赞/收藏/取消收藏/头像/资料/密码）与 `ajax_object.nonce`、`showToast`（boxmoe.js）依赖链完整；`fun-user-center.php` 删除边界精确（0.1.0 保留区完整）；设置面板 group 闭合、`options-framework-js.php` 死引用清理完成。
+
 ### 验证
 
 - 静态冒烟 `.verify/php_smoke.py` 全仓通过；`user_center.js` 通过 `node --check`。
