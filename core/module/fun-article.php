@@ -208,16 +208,6 @@ function boxmoe_fancybox_replace ($content) {
 }
 add_filter('the_content', 'boxmoe_fancybox_replace', 99);
 
-// fancybox-erphpdown
-//add_filter('the_content', 'erphpdownbuy_replace', 99);
-function erphpdownbuy_replace ($content) {
-	global $post;
-	$pattern = "/<a(.*?)class=\"erphpdown-iframe erphpdown-buy\"(.*?)>/i";
-	$replacement = '<a$1$2$3$4$5$6 class="fancybox" data-fancybox data-type="iframe" class="erphpdown-buy">';
-	$content = preg_replace($pattern, $replacement, $content);
-	return $content;
-}
-
 // 分页导航函数--------------------------boxmoe.com--------------------------
 if ( ! function_exists( 'boxmoe_pagination' ) ) :
 function boxmoe_pagination($query = null) {

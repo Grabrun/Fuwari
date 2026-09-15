@@ -3,6 +3,31 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.2.0-beta.1] - 2026-09-15
+
+> 破坏性变更版：移除对 erphpdown 付费插件的全部硬耦合（会员/VIP/充值/订单体系），主题不再需要该插件即可运行用户中心。`0.x` 阶段破坏性变更递增次版本（0.1.0 → 0.2.0），仍为预发布版。
+
+### 破坏性变更（Breaking Changes）
+
+- **移除会员中心插件依赖**：`page/p-user_center.php` 不再判断/调用 `mobantu_erphp_menu()`；删除插件未启用时的提示页与"破解版插件购买"广告链接（原 else 分支整体移除）。
+- **移除会员/VIP 体系**：删除 VIP 订阅页 `user-vip.php`、`fun-user-center.php` 中的 `handle_vip_upgrade()`（`upgrade_vip` AJAX，含余额扣减 `erphpSetUserMoneyXiaoFei`、会员写入 `userPayMemberSetData`、分销 `EPD::doAff`、优惠码 `$_SESSION['erphp_promo_code']`）；用户中心不再展示会员等级/到期时间。
+- **移除充值体系**：删除卡密充值 `boxmoe_form_money_card()`（`checkDoCardResult`）、在线充值 `boxmoe_form_money_online()`（`constant("erphpdown")` 拼 20+ 支付渠道 URL、`ERPHPDOWN_ECPAY_URL`/`ERPHPDOWN_NEWEBPAY_URL`、`plugin_check_ecpay/newebpay`、微信 OAuth）；删除充值页 `user-money.php`、充值记录页 `user-recharge.php`；删除主题设置项 `boxmoe_czcard_src` 及 `fun-user.php` 中 `boxmoe_czcard_src()`。
+- **移除订单体系**：删除订单管理页 `user-order.php`（直查 `$wpdb->icealipay` 表、`constant("erphpdown").'download.php'` 下载链接）；删除消费记录页 `user-consumption.php`（空壳文件）。
+- **用户中心路由精简**：`?items=` 仅保留 `home/collect/comment/password` 四项；`user-nav.php` 移除订单/会员/资产/充值 4 个入口；删除依赖插件的 `mobantu_paging` 分页函数与首页"积分充值"入口、`ice_ali_money_checkin` 签到（`erphpdown_check_checkin`）。
+- **前端 JS 精简**：`assets/js/user_center.js` 删除卡密充值、在线充值、每日签到、VIP 升级模态框四段逻辑，保留资料/密码/头像/收藏。
+- **残留清理**：删除 `fun-article.php` 中已注释的 `erphpdownbuy_replace` 残骸；删除 `assets/css/style.css` 中 `.single-content .erphpdown` 样式；清理 `options-framework-js.php` 中对已删选项 `czcard_src`/`user_banner_src` 的死引用。
+
+### 保留（未受影响）
+
+- 用户中心自有功能完整保留：个人资料编辑、密码修改、头像上传、我的收藏（`user_favorites`）、我的评论。
+- 评论 session（`init_comment_session`）保留——它服务评论者信息记忆，与 VIP 优惠码无关。
+- 0.1.0 建立的架构与安全加固全部保留：模块加载集中化、通知事件化、头像 MIME 白名单、AJAX nonce、SMTP 密码加密、VIP 重放锁（其唯一消费方已随 `handle_vip_upgrade` 删除）、`get_boxmoe` 静态缓存。
+
+### 验证
+
+- 静态冒烟 `.verify/php_smoke.py` 全仓通过；`user_center.js` 通过 `node --check`。
+- 本机无 PHP CLI，`php -l` 与真实站点走查（用户中心 4 个页面、注册/登录/评论/收藏）仍需在目标环境执行。
+
 ## [0.1.0-beta.1] - 2026-09-15
 
 > 独立分支项目首版：版本从 0.0.0 起算（基线为 LoliMeow 13.12 源码），本版本为架构与安全深度优化的第一个测试版。主版本为 0 表示初始开发阶段，`0.1.0` 为第一个功能版本，`beta.1` 为预发布。

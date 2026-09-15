@@ -432,8 +432,7 @@ hr:not([size]) {height:1px}
 100%{transform:rotate(360deg)}
 }@keyframes counter{0%{transform:rotate(0)}
 100%{transform:rotate(-360deg)}
-}.single-content .erphpdown legend{float:none}
-.single-content .post-header{position:relative}
+}.single-content .post-header{position:relative}
 .single-content .post-title{font-size:19px;color:#000;text-align:center;margin-top:10px;letter-spacing:0}
 .single-content .post-auther-avatar img{border-radius:100px;width:40px;height:40px;float:left;margin-right:10px;border:2px solid #ad9ad4;border-right-color:#db9693;border-bottom-color:#db9693}
 .single-content .post-auther-avatar img{-webkit-transition:all .8s ease-in-out;-moz-transition:all .8s ease-in-out;transition:all .8s ease-in-out}

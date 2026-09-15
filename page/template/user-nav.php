@@ -39,30 +39,6 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                            </a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link <?php if($items == 'order') {?>active<?php }?>" href="?items=order">
-                              <i class="align-bottom fa fa-shopping-cart"></i>
-                              <span class="ms-2">订单管理</span>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link <?php if($items == 'vip') {?>active<?php }?>" href="?items=vip">
-                              <i class="align-bottom fa fa-diamond"></i>
-                              <span class="ms-2">会员订阅</span>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link <?php if($items == 'money') {?>active<?php }?>" href="?items=money">
-                              <i class="align-bottom fa fa-money"></i>
-                              <span class="ms-2">资产管理</span>
-                           </a>
-                        </li>
-                        <li class="nav-item">
-                           <a class="nav-link <?php if($items == 'recharge') {?>active<?php }?>" href="?items=recharge">
-                              <i class="align-bottom fa fa-credit-card"></i>
-                              <span class="ms-2">充值记录</span>
-                           </a>
-                        </li>
-                        <li class="nav-item">
                            <a class="nav-link <?php if($items == 'collect') {?>active<?php }?>" href="?items=collect">
                               <i class="align-bottom fa fa-heart"></i>
                               <span class="ms-2">我的收藏</span>

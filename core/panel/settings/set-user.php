@@ -62,8 +62,4 @@ $options[] = array(
         );
     $options[] = array(
         'group' => 'end',
-        'name' => __('前端充值卡购买链接', 'ui_boxmoe_com'), 
-        'id' => 'boxmoe_czcard_src',
-        'std' => '',
-        'desc' => __('（前端用户充值中心，充值卡购买链接）', 'ui_boxmoe_com'),
-        'type' => 'text'); 
+        );

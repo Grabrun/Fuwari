@@ -85,11 +85,11 @@ jQuery(document).ready(function() {
 		jQuery('#section-baidutuisongkey').show();
 	}	
 	jQuery('#sign_f').click(function() {
-  		jQuery('#section-reg_question,#section-sign_zhcn,#section-users_login, #section-users_reg, #section-users_reset,#section-users_page, #section-regto, #section-loginto,#section-czcard_src,#section-user_banner_src ').fadeToggle(400);
+  		jQuery('#section-reg_question,#section-sign_zhcn,#section-users_login, #section-users_reg, #section-users_reset,#section-users_page, #section-regto, #section-loginto ').fadeToggle(400);
 	});
 
 	if (jQuery('#sign_f:checked').val() !== undefined) {
-		jQuery('#section-reg_question,#section-sign_zhcn, #section-users_login, #section-users_reg,#section-users_reset, #section-users_page, #section-regto, #section-loginto,#section-czcard_src,#section-user_banner_src').show();
+		jQuery('#section-reg_question,#section-sign_zhcn, #section-users_login, #section-users_reg,#section-users_reset, #section-users_page, #section-regto, #section-loginto').show();
 	}	
 	jQuery('#smtpmail').click(function() {
   		jQuery('#section-fromnames,#section-smtphost,#section-smtpprot, #section-smtpusername, #section-smtppassword').fadeToggle(400);
