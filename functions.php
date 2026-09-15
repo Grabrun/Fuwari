@@ -17,21 +17,41 @@ define( 'OPTIONS_FRAMEWORK_DIRECTORY', get_template_directory_uri() . '/core/pan
 require_once dirname( __FILE__ ) . '/core/panel/options-framework.php';
 require_once dirname( __FILE__ ) . '/options.php';
 require_once dirname( __FILE__ ) . '/core/panel/options-framework-js.php';
-//boxmoe.com===功能模块
-require_once  get_stylesheet_directory() . '/core/module/fun-basis.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-admin.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-optimize.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-gravatar.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-navwalker.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-user.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-user-center.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-comments.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-seo.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-article.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-smtp.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-msg.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-no-category.php';
-require_once  get_stylesheet_directory() . '/core/module/fun-shortcode.php';
+//boxmoe.com===主题版本（语义化版本 SemVer 2.0.0）
+if ( ! defined( 'BOXMOE_THEME_VERSION' ) ) {
+	$boxmoe_theme_data = wp_get_theme();
+	define( 'BOXMOE_THEME_VERSION', $boxmoe_theme_data->get( 'Version' ) );
+}
+//boxmoe.com===功能模块（集中加载清单，支持 boxmoe_modules filter 扩展/裁剪）
+function boxmoe_load_modules() {
+	$boxmoe_module_list = array(
+		'fun-basis',
+		'fun-admin',
+		'fun-optimize',
+		'fun-gravatar',
+		'fun-navwalker',
+		'fun-user',
+		'fun-user-center',
+		'fun-comments',
+		'fun-seo',
+		'fun-article',
+		'fun-smtp',
+		'fun-msg',
+		'fun-no-category',
+		'fun-shortcode',
+	);
+	// 子主题或扩展可通过该 filter 增删模块（保持加载顺序）
+	$boxmoe_module_list = apply_filters( 'boxmoe_modules', $boxmoe_module_list );
+	$boxmoe_module_dir  = get_stylesheet_directory() . '/core/module/';
+	foreach ( $boxmoe_module_list as $boxmoe_module ) {
+		$boxmoe_module = sanitize_file_name( $boxmoe_module );
+		$boxmoe_module_file = $boxmoe_module_dir . $boxmoe_module . '.php';
+		if ( file_exists( $boxmoe_module_file ) ) {
+			require_once $boxmoe_module_file;
+		}
+	}
+}
+boxmoe_load_modules();
 //boxmoe.com===自定义代码
 
 

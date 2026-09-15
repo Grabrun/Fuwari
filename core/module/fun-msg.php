@@ -104,9 +104,27 @@ function boxmoe_comment_notification($comment_id){
 
     boxmoe_smtp_mail_template($post->post_author, $subject, $message);
 }
-if(get_boxmoe('boxmoe_new_comment_notice_switch')){
-    add_action('comment_post', 'boxmoe_comment_notification');
+//评论通知统一分发器（架构优化：评论模块只需触发 boxmoe_comment_notify 事件，此处集中判断开关并分派，避免跨模块直接调用与重复通知）
+function boxmoe_comment_notify_dispatcher($comment_id) {
+    $comment = get_comment($comment_id);
+    if (!$comment || 'spam' === $comment->comment_approved || 'trash' === $comment->comment_approved) {
+        return;
+    }
+    $smtp_on = (bool)get_boxmoe('boxmoe_smtp_mail_switch');
+    // 回复通知：发给父评论者
+    if ($smtp_on && $comment->comment_parent > 0) {
+        boxmoe_comment_reply_notification($comment_id);
+    }
+    // 新评论通知：发给文章作者
+    if ($smtp_on && get_boxmoe('boxmoe_new_comment_notice_switch')) {
+        boxmoe_comment_notification($comment_id);
+    }
+    // 机器人通知
+    if (get_boxmoe('boxmoe_robot_notice_switch') && get_boxmoe('boxmoe_new_comment_notice_robot_switch')) {
+        boxmoe_robot_msg_comment($comment_id);
+    }
 }
+add_action('boxmoe_comment_notify', 'boxmoe_comment_notify_dispatcher');
 
 //评论回复消息通知
 function boxmoe_comment_reply_notification($comment_id) {
@@ -286,9 +304,8 @@ function boxmoe_robot_post_template($remote_server, $post_string) {
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5); 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array ('Content-Type: application/json;charset=utf-8'));
     curl_setopt($ch, CURLOPT_POSTFIELDS, $post_string);  
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
-    curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0); 
-    curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // 安全加固：恢复默认 SSL 证书校验（原 13.12 关闭校验，存在中间人风险）
     $data = curl_exec($ch);
     curl_close($ch);                
     return $data;  
@@ -331,9 +348,24 @@ function boxmoe_robot_msg_comment($comment_id){
             return $result = boxmoe_robot_post_template($apiurl, $postdata);  
             }    
 	}
-    if(get_boxmoe('boxmoe_new_comment_notice_robot_switch')){
-        add_action('comment_post', 'boxmoe_robot_msg_comment');
+    // 机器人通知统一由 boxmoe_comment_notify 分发器触发，此处不再重复挂载 comment_post（防双发）
+
+//用户注册通知统一分发器（架构优化：用户模块只需触发 boxmoe_user_register_notify 事件）
+function boxmoe_user_register_notify_dispatcher($user_id) {
+    $user = get_user_by('id', $user_id);
+    if (!$user) {
+        return;
     }
+    if (get_boxmoe('boxmoe_smtp_mail_switch') && get_boxmoe('boxmoe_new_user_register_notice_switch')) {
+        boxmoe_new_user_register($user_id);
+    }
+    if (get_boxmoe('boxmoe_robot_notice_switch') && get_boxmoe('boxmoe_new_user_register_notice_robot_switch')) {
+        boxmoe_robot_msg_reguser($user_id, $user->user_email);
+    }
+    // 注册成功邮件（原 13.12 逻辑为无条件调用，此处保持一致；SMTP 未配置时静默失败）
+    boxmoe_new_user_register_email($user_id);
+}
+add_action('boxmoe_user_register_notify', 'boxmoe_user_register_notify_dispatcher');
 
 //新注册会员机器人通知	
 function boxmoe_robot_msg_reguser($user_id='',$user_email=''){	
@@ -352,8 +384,6 @@ function boxmoe_robot_msg_reguser($user_id='',$user_email=''){
             $data = array ('msgtype' => 'text','text' => array ('content' => $message));
 			$data_string = json_encode($data);
 			return $result = boxmoe_robot_post_template($apiurl, $data_string);  
-			$context = stream_context_create($opts);  
-			return $result = file_get_contents(''.$apiurl.'/send_private_msg?user_id='.$msgqq.'', false, $context);
 			}    
 		if(get_boxmoe('boxmoe_robot_channel') == 'dingtalk' ){
 			$time    = intval(microtime(true) * 1000);

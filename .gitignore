@@ -1,0 +1,9 @@
+# Windows 缩略图缓存
+Thumbs.db
+thumbs.db
+*.db
+
+# 编辑器/系统临时文件
+*.swp
+*.tmp
+.DS_Store

@@ -60,7 +60,7 @@ if(get_boxmoe('boxmoe_360_submit_switch')){
 function boxmoe_360_submit($post_ID) {
     if (get_post_status($post_ID) == 'publish') {
         $API_KEY_360 = get_boxmoe('boxmoe_360_api_key');
-        $api_url = 'http://zhanzhang.so.com/linksubmit/urlsubmit?site_token='.$API_KEY_360;
+        $api_url = 'https://zhanzhang.so.com/linksubmit/urlsubmit?site_token='.$API_KEY_360;
         $post_url = get_permalink($post_ID);
         $args = array(
             'headers' => array('Content-Type' => 'application/json'),
@@ -80,15 +80,12 @@ add_action('publish_post', 'boxmoe_360_submit');
 if(get_boxmoe('boxmoe_google_submit_switch')){
 function boxmoe_google_submit($post_ID) {
     if (get_post_status($post_ID) == 'publish') {
-        $GOOGLE_API_KEY = get_boxmoe('boxmoe_google_api_key');
-        $api_url = 'https://www.google.com/ping?sitemap='.$GOOGLE_API_KEY;
-        $post_url = get_permalink($post_ID);
-        $args = array(
-            'headers' => array('Content-Type' => 'application/json'),
-            'body' => json_encode(array('urls' => $post_url)),
-            'timeout' => 5
-        );
-        $response = wp_remote_post($api_url, $args);
+        // 修复：原 13.12 把 API Key 拼进 sitemap ping URL 且以 POST JSON 发送，接口语义错误。
+        // Google 官方已停用 sitemap ping 接口，此处改为 GET 提交站点 sitemap（最接近的合规实现），
+        // 如需实时收录请改用 Google Indexing API（需 OAuth2 服务账号凭据）。
+        $sitemap_url = home_url('/sitemap.xml');
+        $api_url = 'https://www.google.com/ping?sitemap=' . rawurlencode($sitemap_url);
+        $response = wp_remote_get($api_url, array('timeout' => 5, 'redirection' => 2));
         if(!is_wp_error($response) && $response['response']['code'] == 200){
             add_post_meta($post_ID, 'GoogleSubmit', '推送成功', true);
         }

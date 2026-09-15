@@ -298,6 +298,11 @@ function getPostLikes($postID) {
 }
 
 function boxmoe_post_like() {
+    // 安全加固：校验 nonce（原 13.12 仅靠 IP transient 去重，无请求鉴权）
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'boxmoe_ajax_nonce')) {
+        wp_send_json_error(['message' => '安全验证失败']);
+        return;
+    }
     $post_id = isset($_POST['post_id']) ? absint($_POST['post_id']) : 0;
     
     if (!$post_id) {
@@ -349,6 +354,11 @@ function isPostFavorited($post_id) {
 function boxmoe_post_favorite() {
     if (!is_user_logged_in()) {
         wp_send_json_error(['message' => '请先登录']);
+        return;
+    }
+    // 安全加固：校验 nonce（原 13.12 无请求鉴权）
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'boxmoe_ajax_nonce')) {
+        wp_send_json_error(['message' => '安全验证失败']);
         return;
     }
 

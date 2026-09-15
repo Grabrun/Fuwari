@@ -265,6 +265,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('action', 'boxmoe_form_money_card');
             formData.append('epdcardnum', document.getElementById('epdcardnum').value);
             formData.append('epdcardpass', document.getElementById('epdcardpass').value);
+            formData.append('nonce', ajax_object.nonce);
 
             try {
                 const response = await fetch(ajax_object.ajaxurl, {
@@ -307,6 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('action', 'boxmoe_form_money_online');
             formData.append('paytype', document.querySelector('select[name="paytype"]').value);
             formData.append('ice_money', iceMoney);
+            formData.append('nonce', ajax_object.nonce);
 
             fetch(ajax_object.ajaxurl, {
                 method: 'POST',

@@ -43,7 +43,30 @@ function boxmoe_upload_avatar() {
         wp_mkdir_p($upload_dir);
     }
     $user_id = get_current_user_id();
-    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    // 安全加固：扩展名不再取自用户文件名，改为基于文件真实内容的 MIME 白名单映射（杜绝上传可执行文件）
+    $mime_map = array(
+        'image/jpeg' => 'jpg',
+        'image/png'  => 'png',
+        'image/gif'  => 'gif',
+    );
+    $detected_type = '';
+    if (function_exists('finfo_open')) {
+        $finfo = @finfo_open(FILEINFO_MIME_TYPE);
+        if ($finfo) {
+            $detected_type = finfo_file($finfo, $file['tmp_name']);
+            finfo_close($finfo);
+        }
+    }
+    if (empty($detected_type)) {
+        // 降级：读取真实图片信息
+        $img_info = @getimagesize($file['tmp_name']);
+        $detected_type = isset($img_info['mime']) ? $img_info['mime'] : '';
+    }
+    if (!isset($mime_map[$detected_type])) {
+        wp_send_json_error(['message' => '文件内容不是有效的图片格式']);
+        return;
+    }
+    $extension = $mime_map[$detected_type];
     $random_string = wp_generate_password(8, false);
     $filename = $user_id . '_' . $random_string . '.' . $extension;
     $filepath = $upload_dir . '/' . $filename;
@@ -172,6 +195,10 @@ add_action('wp_ajax_nopriv_boxmoe_form_money_card', 'boxmoe_form_money_card');
 
 function boxmoe_form_money_card() {
 	date_default_timezone_set('Asia/Shanghai');
+	// 安全加固：卡密充值涉及资金，必须校验 nonce（原 13.12 无任何鉴权，存在 CSRF 风险）
+	if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'boxmoe_ajax_nonce')) {
+		wp_send_json_error(array('message' => '安全验证失败'));
+	}
 	$erphp_aff_money = get_option('erphp_aff_money');
     if (isset($_POST['epdcardnum']) && !empty($_POST['epdcardnum']) &&
         isset($_POST['epdcardpass']) && !empty($_POST['epdcardpass'])) {
@@ -202,6 +229,10 @@ add_action('wp_ajax_boxmoe_form_money_online', 'boxmoe_form_money_online');
 add_action('wp_ajax_nopriv_boxmoe_form_money_online', 'boxmoe_form_money_online');
 
 function boxmoe_form_money_online() {
+	// 安全加固：在线充值涉及资金，必须校验 nonce（原 13.12 无任何鉴权，存在 CSRF 风险）
+	if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'boxmoe_ajax_nonce')) {
+		wp_send_json_error(array('message' => '安全验证失败'));
+	}
 	if(isset($_POST['paytype']) && $_POST['paytype']){
 	   $paytype=esc_sql(intval($_POST['paytype']));
  
@@ -309,9 +340,18 @@ function handle_vip_upgrade() {
         return;
     }
 
+    // 安全加固：5 秒短锁防重复提交（原 13.12 无幂等保护，重复点击可能重复扣款）
+    $upgrade_lock_key = 'boxmoe_vip_upgrade_lock_' . get_current_user_id();
+    if (get_transient($upgrade_lock_key)) {
+        wp_send_json_error(array('message' => '操作过于频繁，请稍后再试'));
+        return;
+    }
+    set_transient($upgrade_lock_key, 1, 5);
+
     global $wpdb, $current_user;
     $vip_update_pay = get_option('vip_update_pay');
     $error = '';
+    $start_down2 = false; // 修复 13.12 未定义变量 notice（原逻辑恒为 false，行为不变）
     
     $userType = isset($_POST['userType']) && is_numeric($_POST['userType']) ? intval($_POST['userType']) : 0;
     $userType = esc_sql($userType);

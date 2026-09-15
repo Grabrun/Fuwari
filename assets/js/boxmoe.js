@@ -418,6 +418,7 @@ function initPostLikes() {
                 const formData = new FormData();
                 formData.append('action', 'post_like');
                 formData.append('post_id', postId);
+                formData.append('nonce', ajax_object.nonce);
                 
                 const response = await fetch(ajax_object.ajaxurl, {
                     method: 'POST',
@@ -492,6 +493,7 @@ function initPostFavorites() {
                 const formData = new FormData();
                 formData.append('action', 'post_favorite');
                 formData.append('post_id', postId);
+                formData.append('nonce', ajax_object.nonce);
                 
                 const response = await fetch(ajax_object.ajaxurl, {
                     method: 'POST',

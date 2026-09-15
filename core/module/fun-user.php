@@ -182,7 +182,7 @@ function handle_user_signup() {
         exit;
     }
 
-    remove_filter('sanitize_user', 'sanitize_user');
+    // sanitize_user 默认回调已在主题初始化时一次性替换（允许中文用户名），此处不再临时移除/恢复
     $username = $formData['username'];
     if (!preg_match('/^[\x{4e00}-\x{9fa5}a-zA-Z0-9_]+$/u', $username)) {
         wp_send_json_error(array(
@@ -207,7 +207,6 @@ function handle_user_signup() {
         $formData['password'],
         $formData['email']
     );
-    add_filter('sanitize_user', 'sanitize_user');
 
     if (is_wp_error($user_id)) {
         $error_code = $user_id->get_error_code();
@@ -233,18 +232,9 @@ function handle_user_signup() {
     $user = new WP_User($user_id);
     $user->set_role('subscriber');
 
-    if(get_boxmoe('boxmoe_smtp_mail_switch')){   
-        if(get_boxmoe('boxmoe_new_user_register_notice_switch')){
-            boxmoe_new_user_register($user_id);
-        }
-    }
-    if(get_boxmoe('boxmoe_robot_notice_switch')){
-        if(get_boxmoe('boxmoe_new_user_register_notice_robot_switch')){
-            boxmoe_robot_msg_reguser($user_id,$user->user_email);
-        }
-    } 
+    // 通知统一由 boxmoe_user_register_notify 事件分发（架构优化：解耦用户模块与消息模块，开关判断集中在消息模块）
+    do_action('boxmoe_user_register_notify', $user_id);
     delete_transient('verification_code_' . $formData['email']);  
-    boxmoe_new_user_register_email($user_id);
     wp_set_current_user($user_id);
     wp_set_auth_cookie($user_id, true);
     wp_send_json_success(array(
@@ -261,6 +251,10 @@ function boxmoe_allow_chinese_username($username, $raw_username, $strict) {
     $username = preg_replace('/[^[\x{4e00}-\x{9fa5}a-zA-Z0-9_]]/u', '', $username);
     return $username;
 }
+// 架构/安全加固：一次性替换核心默认清理回调（允许中文用户名是主题的明确设计）。
+// 原 13.12 在 AJAX 注册流程中临时 remove/add_filter，存在竞态且影响面不可控。
+// 此处先移除核心默认回调，再挂载主题白名单回调（注册路径另有强正则校验兜底）。
+remove_filter('sanitize_user', 'sanitize_user', 10, 3);
 add_filter('sanitize_user', 'boxmoe_allow_chinese_username', 10, 3);
 
 add_action('wp_ajax_nopriv_send_verification_code', 'handle_send_verification_code');
@@ -318,16 +312,26 @@ function handle_reset_password_request() {
 }
 
 // 透过代理或者cdn获取访客真实IP
+// 安全加固：默认只信任 REMOTE_ADDR（不可伪造）；代理头（X-Forwarded-For / Client-IP）仅在 REMOTE_ADDR
+// 无效时作为备选，且逐段校验为合法 IP 地址，避免任意伪造污染登录记录。
 function get_client_ip() {
-	if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown"))
-	        $ip = getenv("HTTP_CLIENT_IP"); else if (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), 
-	"unknown"))
-	        $ip = getenv("HTTP_X_FORWARDED_FOR"); else if (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), "unknown"))
-	        $ip = getenv("REMOTE_ADDR"); else if (isset ($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] 
-	&& strcasecmp($_SERVER['REMOTE_ADDR'], "unknown"))
-	        $ip = $_SERVER['REMOTE_ADDR']; else
-	        $ip = "unknown";
-	return ($ip);
+    $remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+    if ($remote_addr && filter_var($remote_addr, FILTER_VALIDATE_IP)) {
+        return $remote_addr;
+    }
+    $candidates = array();
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $candidates = array_merge($candidates, array_map('trim', explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])));
+    }
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $candidates[] = trim($_SERVER['HTTP_CLIENT_IP']);
+    }
+    foreach ($candidates as $ip) {
+        if ($ip && filter_var($ip, FILTER_VALIDATE_IP)) {
+            return $ip;
+        }
+    }
+    return 'unknown';
 }
 
 // 处理用户注册时间

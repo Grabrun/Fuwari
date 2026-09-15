@@ -56,7 +56,7 @@ echo "<script>setTimeout(function(){window.opener=null;window.close();}, 3000);<
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="refresh" content="1;url='<?php echo $url;?>';">
+    <meta http-equiv="refresh" content="1;url=<?php echo esc_attr($url);?>;">
     <title>
         <?php echo $title;?>
     </title>

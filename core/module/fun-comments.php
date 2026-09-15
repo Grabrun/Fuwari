@@ -241,21 +241,8 @@ function ajax_comment_callback() {
     if ('spam' !== $commentarr['comment_approved']) { 
         add_comment_meta($comment_id, '_wp_trash_meta_status', $commentarr['comment_approved']);
     }
-    if (get_boxmoe('boxmoe_smtp_mail_switch')){
-    if ($commentarr['comment_parent'] > 0) {
-        $parent_comment = get_comment($commentarr['comment_parent']);
-        if ($parent_comment && $parent_comment->comment_author_email) {
-            boxmoe_comment_reply_notification($comment_id);
-        }
-    }
-    }
-    if (get_boxmoe('boxmoe_smtp_mail_switch') && get_boxmoe('boxmoe_new_comment_notice_switch')) {
-        boxmoe_new_comment_notice_email($comment_id);
-    }
 
-    if (get_boxmoe('boxmoe_robot_notice_switch') && get_boxmoe('boxmoe_new_comment_notice_robot_switch')) {
-        boxmoe_robot_msg_comment($comment_id);
-    }
+    // 通知统一由 wp_insert_comment → boxmoe_comment_notify_bridge 触发 boxmoe_comment_notify 事件（架构优化：解耦评论模块与消息模块）
 
     $comment = get_comment($comment_id);
     ob_start();
@@ -277,14 +264,11 @@ add_action('init', 'disable_comment_flood_filter');
 add_filter('notify_post_author', '__return_false', 1);
 add_filter('notify_moderator', '__return_false', 1);
 
-// 添加后台评论回复的邮件通知
-function boxmoe_admin_comment_reply($comment_id, $comment_object) {
-    if (!get_boxmoe('boxmoe_smtp_mail_switch')) {
+// 评论通知事件桥（架构优化：任何路径的 wp_insert_comment 都触发 boxmoe_comment_notify，由消息模块统一分发；修复 13.12 中未定义函数 fatal 与重复通知）
+function boxmoe_comment_notify_bridge($comment_id, $comment_object) {
+    if (!$comment_object || !$comment_id) {
         return;
     }
-    if ($comment_object->comment_parent > 0) {
-        boxmoe_comment_reply_notification($comment_id);
-    }
+    do_action('boxmoe_comment_notify', $comment_id);
 }
-add_action('wp_insert_comment', 'boxmoe_admin_comment_reply', 10, 2);
-remove_action('comment_post', 'boxmoe_comment_reply_notification');
+add_action('wp_insert_comment', 'boxmoe_comment_notify_bridge', 10, 2);

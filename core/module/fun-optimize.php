@@ -38,7 +38,8 @@ add_filter( 'wp_img_tag_add_auto_sizes', 'boxmoe_disable_add_auto_sizes' );
 
 // 删除全局样式内联 CSS--------------------------boxmoe.com--------------------------
 function boxmoe_remove_global_inline_css() {
-    remove_action('wp_head', 'wp_print_styles');
+    // 安全修复：原 13.12 移除 wp_head 上的 wp_print_styles，会连带压制主题自身样式输出（整站 CSS 失效风险），已删除该操作。
+    // 全局/块级样式仅通过下方按 handle 精准 dequeue 处理。
 }
 add_action('init', 'boxmoe_remove_global_inline_css');
 add_action('after_setup_theme', function() {
@@ -192,7 +193,8 @@ if(get_boxmoe('boxmoe_autosave_switch')){
 function boxmoe_disable_autosave() {
     wp_deregister_script('autosave');
 }
-add_action('wp_enqueue_scripts', 'boxmoe_disable_autosave');
+// 修复：autosave 是后台脚本，原 13.12 挂在 wp_enqueue_scripts（前台）上实际不生效
+add_action('admin_enqueue_scripts', 'boxmoe_disable_autosave');
 }
 
 

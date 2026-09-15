@@ -68,25 +68,33 @@ endif;
 if ( ! function_exists( 'get_boxmoe' ) ) :
 function get_boxmoe( $name, $default = false ) {
 
-	$option_name = '';
+	// 静态缓存：单次请求内选项只读一次数据库（架构优化）
+	static $boxmoe_options_cache = null;
 
-	// Gets option name as defined in the theme
-	if ( function_exists( 'optionsframework_option_name' ) ) {
-		$option_name = optionsframework_option_name();
+	if ( null === $boxmoe_options_cache ) {
+		$option_name = '';
+
+		// Gets option name as defined in the theme
+		if ( function_exists( 'optionsframework_option_name' ) ) {
+			$option_name = optionsframework_option_name();
+		}
+
+		// Fallback option name
+		if ( '' == $option_name ) {
+			$option_name = get_option( 'stylesheet' );
+			$option_name = preg_replace( "/\W/", "_", strtolower( $option_name ) );
+		}
+
+		// Get option settings from database
+		$boxmoe_options_cache = get_option( $option_name );
+		if ( ! is_array( $boxmoe_options_cache ) ) {
+			$boxmoe_options_cache = array();
+		}
 	}
-
-	// Fallback option name
-	if ( '' == $option_name ) {
-		$option_name = get_option( 'stylesheet' );
-		$option_name = preg_replace( "/\W/", "_", strtolower( $option_name ) );
-	}
-
-	// Get option settings from database
-	$options = get_option( $option_name );
 
 	// Return specific option
-	if ( isset( $options[$name] ) ) {
-		return $options[$name];
+	if ( isset( $boxmoe_options_cache[$name] ) ) {
+		return $boxmoe_options_cache[$name];
 	}
 
 	return $default;

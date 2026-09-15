@@ -183,12 +183,16 @@ function alert_shortcode( $atts , $content = '') {
 add_shortcode('pwd_protected_post','password_protected_post');
 function password_protected_post($atts, $content=null){
     extract(shortcode_atts(array('key'=>null), $atts));
-    if(isset($_POST['password_key']) && $_POST['password_key']==$key){
+    // 安全加固：密码比较改用 hash_equals 常量时间比较（原 13.12 使用 == 存在时序侧信道）
+    $submitted_key = isset($_POST['password_key']) ? (string)$_POST['password_key'] : '';
+    $expected_key  = (string)$key;
+    $key_matches   = ('' !== $submitted_key && '' !== $expected_key && hash_equals($expected_key, $submitted_key));
+    if($key_matches){
         return '
 		    <div class="alert alert-default" role="alert"><strong>温馨提示！</strong>以下是密码保护的内容！</div> 
 			<div class="password_protected_post_content">'.$content.'</div>
 		';
-    }elseif(isset($_POST['password_key']) && $_POST['password_key']!=$key){
+    }elseif(isset($_POST['password_key'])){
         return '
 			<script>
 				alert("密码错误，请仔细核对密码后重试！！！");
