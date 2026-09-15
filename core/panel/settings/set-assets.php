@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://www.boxmoe.com
- * @package lolimeow
+ * @package fuwari
  */
 
 //boxmoe.com===安全设置=阻止直接访问主题文件
@@ -28,7 +28,7 @@ $options[] = array(
         'id' => 'boxmoe_cdn_assets_url',
         'type' => "text",
         'std' => '',
-        'desc' => __('(如https://domain.com/lolimeow/assets)，链接结尾不要带"/"', 'ui_boxmoe_com'),
+        'desc' => __('(如https://domain.com/fuwari/assets)，链接结尾不要带"/"', 'ui_boxmoe_com'),
         );
 	$gravatar_array = array(
 		'cravatar' => __('cravatar源', 'ui_boxmoe_com'),

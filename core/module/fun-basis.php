@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://www.boxmoe.com
- * @package lolimeow
+ * @package fuwari
  */
 
 // 安全设置--------------------------boxmoe.com--------------------------

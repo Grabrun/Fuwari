@@ -23,6 +23,12 @@
 - 评论 session（`init_comment_session`）保留——它服务评论者信息记忆，与 VIP 优惠码无关。
 - 0.1.0 建立的架构与安全加固全部保留：模块加载集中化、通知事件化、头像 MIME 白名单、AJAX nonce、SMTP 密码加密、VIP 重放锁（其唯一消费方已随 `handle_vip_upgrade` 删除）、`get_boxmoe` 静态缓存。
 
+### 主题品牌更名（2026-09-16）
+
+- 主题名由 **LoliMeow（洛丽喵）** 更名为 **Fuwari（浮絮）**，全称 **Fuwari · 浮絮**。
+- 更新：`style.css` Theme Name/Description（根目录与 assets/css）、README 标题、后台页脚 "Theme by" 文案、全仓文件头 `@package` 标识、SEO 默认关键词。
+- 保留：历史 CHANGELOG/README 中原名作为版本溯源记录；作者信息与 boxmoe.com 版权链接不变；作者端主题更新检查 URL 不变；主题目录名 `lolimeow-master` 不变（避免影响既有部署路径）。
+
 ### 回归审计修复（2026-09-15，随本版本一并交付）
 
 深度回归审计发现并修复两处会导致用户中心不可用的悬空引用：

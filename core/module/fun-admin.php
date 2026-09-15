@@ -185,7 +185,7 @@ function boxmoe_admin_style() {
 add_action('admin_head', 'boxmoe_admin_style');
 
 function example_footer_admin () {
-	echo '<span id="footer-thankyou">感谢使用<a target="_blank" href="https://cn.wordpress.org/">WordPress</a>进行创作。Theme by <a target="_blank" href="https://www.boxmoe.com/" style="color:red;">Lolimeow</a></span> ';
+	echo '<span id="footer-thankyou">感谢使用<a target="_blank" href="https://cn.wordpress.org/">WordPress</a>进行创作。Theme by <a target="_blank" href="https://www.boxmoe.com/" style="color:red;">Fuwari</a></span> ';
 	}
 	add_filter('admin_footer_text', 'example_footer_admin');
 

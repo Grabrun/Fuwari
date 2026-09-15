@@ -2,7 +2,7 @@
 /**
  * Template Name: 友情链接
  * @link https://www.boxmoe.com
- * @package lolimeow
+ * @package fuwari
  */
 get_header();
 ?>

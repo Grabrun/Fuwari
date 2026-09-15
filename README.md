@@ -1,6 +1,6 @@
 
 
-**欢迎使用 Lolimeow Wordpress主题**
+**欢迎使用 Fuwari（浮絮）WordPress 主题**
 <br>当前分支：**0.2.0-beta.1**（独立分支项目 · 语义化版本 SemVer 2.0.0 · 版本从 0.0.0 起算）
 
 **版本说明**

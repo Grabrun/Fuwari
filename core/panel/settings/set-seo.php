@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://www.boxmoe.com
- * @package lolimeow
+ * @package fuwari
  */
 
 //boxmoe.com===安全设置=阻止直接访问主题文件
@@ -90,7 +90,7 @@ $options[] = array(
         'id' => 'boxmoe_keywords',
         'type' => "textarea",
         'settings' => array('rows' => 3),
-        'std' => 'wordpress,boxmoe,lolimeow',
+        'std' => 'wordpress,boxmoe,fuwari',
         'desc' => __('网站关键词，多个关键词用英文逗号隔开', 'ui_boxmoe_com'),
         );
 
