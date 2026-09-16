@@ -1,6 +1,6 @@
 <?php
 /**
-* Template Name:澶栭摼鎻愰啋鐗?
+* Template Name:外链提醒版
  * @link https://www.boxmoe.com
  * @package fuwari
  * @copyright 2026 拿完西瓜跑 (Grabrun)
@@ -20,7 +20,7 @@ if(strlen($_SERVER['REQUEST_URI']) > 384 || strpos($_SERVER['REQUEST_URI'], "eva
 @exit;
 }
 $go_url=htmlspecialchars(preg_replace('/^url=(.*)$/i','$1',$_SERVER["QUERY_STRING"]));
-//鑷畾涔塙RL
+//自定义URL
 foreach($my_urls as $x=>$x_value)
 {
 	if($go_url==$x_value[0]) {
@@ -33,26 +33,26 @@ $go_url = base64_decode($go_url);
 }
 preg_match('/^(http|https|thunder|qqdl|ed2k|Flashget|qbrowser):\/\//i', $go_url, $matches);
 if (preg_match('/^(http|https|thunder|qqdl|ed2k|Flashget|qbrowser):\/\//i', $go_url, $matches) === false) {
-    // 澶勭悊閿欒
+    // 处理错误
     $err = "1";
 }
 if($matches){
 $url=$go_url;
-$title= '瀹夊叏涓績 | 鍔犺浇涓?..';
+$title= '安全中心 | 加载中...';
 } else {
 preg_match('/\./i',$go_url,$matche);
 if($matche){
 $url='https://'.$go_url;
-$title= '瀹夊叏涓績 | 鍔犺浇涓?..';
+$title= '安全中心 | 加载中...';
 } else {
 $err = "1";
 $url = 'https://'.$_SERVER['HTTP_HOST'];
-$title='鍙傛暟閿欒锛屼腑姝㈣烦杞紒姝ｅ湪杩斿洖棣栭〉...';
+$title='参数错误，中止跳转！正在返回首页...';
 }
 }
 } else {
 $err = "1";	
-$title ='鍙傛暟缂哄け锛屼腑姝㈣烦杞紒姝ｅ湪杩斿洖棣栭〉...';
+$title ='参数缺失，中止跳转！正在返回首页...';
 $url = 'https://'.$_SERVER['HTTP_HOST'];
 }
 ?>
@@ -129,13 +129,13 @@ body{margin:0;padding:0}body{height:100%}#loading{-webkit-box-pack:center;-ms-fl
 		<?php if($err != "1"){?>
         <div class="loading-info">                        
             <div class="flex flex-center loading-tip">                          
-                <div class="warning-ico"></div><div class="loading-text">璇锋敞鎰忔偍鐨勮处鍙峰拰璐骇瀹夊叏</div>                        
+                <div class="warning-ico"></div><div class="loading-text">请注意您的账号和财产安全</div>                        
             </div>                        
             <div class="loading-topic">
-                鎮ㄥ嵆灏嗙寮€ <?php bloginfo('name'); ?>锛屽幓寰€锛?span class="loading-url"><?php echo esc_html($url);?></span>                       
+                您即将离开 <?php bloginfo('name'); ?>，去往：<span class="loading-url"><?php echo esc_html($url);?></span>                       
             </div>                        
             <div class="flex flex-center"> 
-                                <div class="taxt-auto"><span id="time" class="auto-second">2</span>绉掑悗鑷姩璺宠浆</div> 
+                                <div class="taxt-auto"><span id="time" class="auto-second">2</span>秒后自动跳转</div> 
                 <script type="text/javascript">  
                     delayURL();    
                     function delayURL() { 
@@ -151,19 +151,19 @@ body{margin:0;padding:0}body{height:100%}#loading{-webkit-box-pack:center;-ms-fl
                     } 
                 </script>                  
                 <div class="flex-fill"></div>                     
-                <a class="loading-btn" href="<?php echo esc_attr(esc_url($url));?>" rel="external nofollow">缁х画</a>                        
+                <a class="loading-btn" href="<?php echo esc_attr(esc_url($url));?>" rel="external nofollow">继续</a>                        
             </div>                      
         </div>
 		<?php }else{ ?>
 		<div class="loading-info">                        
             <div class="flex flex-center loading-tip">                          
-                <div class="warning-ico"></div><div class="loading-text">鐩爣缃戝潃鏈€氳繃妫€娴?/div>                        
+                <div class="warning-ico"></div><div class="loading-text">目标网址未通过检测</div>                        
             </div>                        
             <div class="loading-topic">
                 <?php echo esc_html($title);?>                       
             </div>                        
             <div class="flex flex-center"> 
-                                <div class="taxt-auto"><span id="time" class="auto-second">2</span>绉掑悗鑷姩璺宠浆</div> 
+                                <div class="taxt-auto"><span id="time" class="auto-second">2</span>秒后自动跳转</div> 
                 <script type="text/javascript">  
                     delayURL();    
                     function delayURL() { 
@@ -180,14 +180,14 @@ body{margin:0;padding:0}body{height:100%}#loading{-webkit-box-pack:center;-ms-fl
                 </script>
                    
                 <div class="flex-fill"></div>                     
-                <a class="loading-btn" href="<?php echo esc_attr(esc_url($url));?>" rel="external nofollow">缁х画</a>                        
+                <a class="loading-btn" href="<?php echo esc_attr(esc_url($url));?>" rel="external nofollow">继续</a>                        
             </div>                      
         </div>
 		<?php }?>
    </div>
     </div>
 <script>
-    //寤舵椂30S鍏抽棴璺宠浆椤甸潰锛岀敤浜庢枃浠朵笅杞藉悗涓嶄細鍏抽棴璺宠浆椤电殑闂
+    //延时30S关闭跳转页面，用于文件下载后不会关闭跳转页的问题
     setTimeout(function() {
         window.opener = null;
         window.close();

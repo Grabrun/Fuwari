@@ -179,9 +179,9 @@ function fuwari_postmeta_keywords_description() {
             $meta_box_value = $meta_box['std'];
         echo'<p>'.$meta_box['title'].'</p>';
         if( $meta_box['name'] == 'keywords' ){
-            echo '<p><input type="text" style="width:98%" value="'.$meta_box_value.'" name="'.$meta_box['name'].'"></p>';
+            echo '<p><input type="text" style="width:98%" value="'.esc_attr($meta_box_value).'" name="'.$meta_box['name'].'"></p>';
         }else{
-            echo '<p><textarea style="width:98%" name="'.$meta_box['name'].'">'.$meta_box_value.'</textarea></p>';
+            echo '<p><textarea style="width:98%" name="'.$meta_box['name'].'">'.esc_textarea($meta_box_value).'</textarea></p>';
         }
     }
    
@@ -207,6 +207,8 @@ function fuwari_postmeta_keywords_description_save( $post_id ) {
                    
     foreach($postmeta_keywords_description as $meta_box) {
         $data = $_POST[$meta_box['name']];
+        // 安全加固：按字段类型清理（keywords 单行 / description 多行），防存储型 XSS
+        $data = ('keywords' === $meta_box['name']) ? sanitize_text_field($data) : sanitize_textarea_field($data);
         if(get_post_meta($post_id, $meta_box['name']) == "")
             add_post_meta($post_id, $meta_box['name'], $data, true);
         elseif($data != get_post_meta($post_id, $meta_box['name'], true))
@@ -250,7 +252,8 @@ function fuwari_keywords() {
     } else { $keywords = trim( wp_title('', false) );
     }
     if ( $keywords ) {
-      echo "<meta name=\"keywords\" content=\"$keywords\">\n";
+      // 安全加固：属性输出转义，防 meta 值注入
+      echo '<meta name="keywords" content="' . esc_attr($keywords) . '">' . "\n";
     }
   }
 
@@ -289,5 +292,6 @@ function fuwari_description() {
     } else { $description = $blog_name . "'" . trim( wp_title('', false) ) . "'";
     }
     $description = mb_substr( $description, 0, 80, 'utf-8' );
-    echo "<meta name=\"description\" itemprop=\"description\" itemprop=\"name\" content=\"$description\">\n";
+    // 安全加固：属性输出转义，防 meta 值注入
+    echo '<meta name="description" itemprop="description" itemprop="name" content="' . esc_attr($description) . '">' . "\n";
   }

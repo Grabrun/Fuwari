@@ -257,7 +257,12 @@ add_filter('sanitize_user', 'fuwari_allow_chinese_username', 10, 3);
 add_action('wp_ajax_nopriv_send_verification_code', 'handle_send_verification_code');
 add_action('wp_ajax_send_verification_code', 'handle_send_verification_code');
 function handle_send_verification_code() {
-    $email = sanitize_email($_POST['email']);
+    // 安全加固：校验注册页 nonce，防匿名滥用该端点
+    if (!isset($_POST['signup_nonce']) || !wp_verify_nonce($_POST['signup_nonce'], 'user_signup')) {
+        wp_send_json_error(array('message' => '安全验证失败，请刷新页面重试'));
+        exit;
+    }
+    $email = sanitize_email(isset($_POST['email']) ? $_POST['email'] : '');
     
     if (!is_email($email)) {
         wp_send_json_error(array('message' => '请输入有效的邮箱地址'));
@@ -267,6 +272,13 @@ function handle_send_verification_code() {
         wp_send_json_error(array('message' => '该邮箱已被注册'));
         exit;
     }
+    // 安全加固：频率限制（同邮箱或同 IP 60 秒内仅一次），防验证码邮件轰炸
+    $rate_key = 'fuwari_vcode_send_' . md5($email . '|' . get_client_ip());
+    if (get_transient($rate_key)) {
+        wp_send_json_error(array('message' => '发送过于频繁，请 60 秒后再试'));
+        exit;
+    }
+    set_transient($rate_key, 1, MINUTE_IN_SECONDS);
     $verification_code = sprintf("%06d", mt_rand(0, 999999));
     set_transient('verification_code_' . $email, $verification_code, 5 * MINUTE_IN_SECONDS);
     if (fuwari_verification_code_register_email($email, $verification_code)) {
@@ -299,6 +311,14 @@ function handle_reset_password_request() {
         wp_send_json_error(array('message' => '该邮箱地址未注册'));
         exit;
     }
+
+    // 安全加固：频率限制（同邮箱或同 IP 60 秒内仅一次），防重置密码邮件轰炸
+    $rate_key = 'fuwari_reset_send_' . md5($user_email . '|' . get_client_ip());
+    if (get_transient($rate_key)) {
+        wp_send_json_error(array('message' => '发送过于频繁，请 60 秒后再试'));
+        exit;
+    }
+    set_transient($rate_key, 1, MINUTE_IN_SECONDS);
 
     if(fuwari_reset_password_email($user->user_login)){
         wp_send_json_success(array('message' => '重置密码链接已发送到您的邮箱，请查收'));

@@ -19,7 +19,7 @@ class widget_tags extends WP_Widget {
 		extract( $args );
 
 		$title = apply_filters('widget_name', $instance['title']);
-		$count = $instance['count'];
+		$count = isset($instance['count']) ? absint($instance['count']) : 24;
 		echo $before_widget;
 		echo $before_title.$title.$after_title; 
 		echo '<div class="widget-tag">';
@@ -28,7 +28,7 @@ class widget_tags extends WP_Widget {
 			$i = 0;
 			foreach($tags_list as $tag) {
 				$i++;
-				echo '<a title="['. $tag->name .']有'.$tag->count.__('个相关', 'fuwari-com').'" '.fuwari_article_new_window().' href="'.get_tag_link($tag).'" class="tag-cloud"><i class="tagfa fa fa-dot-circle-o"></i>'. $tag->name .'</a>'; 
+				echo '<a title="'. esc_attr('['. $tag->name .']有'.$tag->count.__('个相关', 'fuwari-com')) .'" '.fuwari_article_new_window().' href="'.esc_url(get_tag_link($tag)).'" class="tag-cloud"><i class="tagfa fa fa-dot-circle-o"></i>'. esc_html($tag->name) .'</a>'; 
 			} 
 		}else{
 			echo __('暂无标签！', 'fuwari-com');

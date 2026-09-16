@@ -20,14 +20,16 @@ class widget_comments extends WP_Widget {
 	function widget( $args, $instance ) {
 		extract( $args );
 		$title = apply_filters('widget_name', $instance['title']);
-		$limit = isset($instance['limit']) ? $instance['limit'] : 8;
-		$outer = isset($instance['outer']) ? $instance['outer'] : -1;
+		// 安全加固：limit/outer 强制整数化，杜绝 widget 实例值直入 SQL
+		$limit = isset($instance['limit']) ? absint($instance['limit']) : 8;
+		$outer = isset($instance['outer']) ? (int)$instance['outer'] : -1;
 		echo $before_widget;
 		echo $before_title.$title.$after_title; 
 		echo '<ul class="widget-latest-comment">';
 		$output = '';
 		$comment_avatar = '';
 		global $wpdb;
+		$limit = max(1, min($limit, 50));
 		$sql = "SELECT DISTINCT ID, post_title, post_password, user_id, comment_ID, comment_post_ID, comment_author, comment_date, comment_date_gmt, comment_approved,comment_author_email, comment_type,comment_author_url, SUBSTRING(comment_content,1,60) AS com_excerpt FROM $wpdb->comments LEFT OUTER JOIN $wpdb->posts ON ($wpdb->comments.comment_post_ID = $wpdb->posts.ID) WHERE user_id!='".$outer."' AND comment_approved = '1' AND (comment_type = '' OR comment_type = 'comment') AND post_password = '' ORDER BY comment_date DESC LIMIT $limit";
 		$comments = $wpdb->get_results($sql);
 		foreach ( $comments as $comment ) {
@@ -43,7 +45,7 @@ class widget_comments extends WP_Widget {
                           <div class="comment-author">'.strip_tags($comment->comment_author).'</div>
                           <span class="comment-date">'.get_comment_date('Y-m-d', $comment->comment_ID).'</span></div>
                         <div class="comment-content-link">
-                          <a '.fuwari_article_new_window().' href="'.get_comment_link( $comment->comment_ID ).'" title="'.$comment->post_title.__('上的评论', 'fuwari-com').'">
+                          <a '.fuwari_article_new_window().' href="'.get_comment_link( $comment->comment_ID ).'" title="'.esc_attr($comment->post_title).__('上的评论', 'fuwari-com').'">
                             <div class="comment-content">'.$content.'</div></a>
                         </div>						  
 						</li>';

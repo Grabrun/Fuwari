@@ -170,7 +170,7 @@ if (is_user_logged_in()){
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: 'action=send_verification_code&email=' + encodeURIComponent(email)
+            body: 'action=send_verification_code&email=' + encodeURIComponent(email) + '&signup_nonce=' + encodeURIComponent(document.getElementById('signup_nonce').value)
         })
         .then(response => response.json())
         .then(response => {

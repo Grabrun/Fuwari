@@ -3,6 +3,36 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.8.0-beta.1] - 2026-09-17
+
+> 全项目代码审计（安全 / 兼容 / 回归）。对 73 个 PHP、11 个 JS 文件完成盘点与安全扫描，逐文件精读审计；修复 1 处存储型 XSS、2 处邮件滥用端点、2 处 SQL 拼接隐患与 1 处双重编码乱码。**不改变任何设置项结构、选项 ID 与前台观感，无需数据迁移。**
+
+### 安全修复
+
+- **S1 存储型 XSS（中高危）**：`fun-seo.php` 的文章自定义 keywords/description 输出到 `<meta name="keywords/description" content="...">` 时未转义（作者可控 meta 值可注入属性）；同时 meta box 表单回显未转义、保存未清理。已修复：输出侧 `esc_attr()`、表单回显 `esc_attr()/esc_textarea()`、保存侧按字段类型 `sanitize_text_field()/sanitize_textarea_field()`。
+- **S2 邮件滥用（中危）**：`fun-user.php` 注册验证码发送端点（`send_verification_code`，匿名可调）**无 nonce、无频率限制**，可被脚本化循环调用轰炸任意邮箱；重置密码端点（`reset_password_action`）无限流。已修复：验证码端点增加 `user_signup` nonce 校验（前端注册页同步携带 `signup_nonce`），两个端点均增加同邮箱/同 IP 60 秒 transient 限流。
+- **S3 SQL 拼接加固（低危防御）**：`widget-comments.php` 最新评论 SQL 中 `$limit`/`$outer` 来自 widget 实例且未 int 化直入 SQL。已修复：`absint()`/`(int)` 强制整数化，`LIMIT` 上限 50（`$outer` 保留负数语义以 `(int)` 处理，不用 `absint`）。
+- **S4 输出转义（低危防御）**：`widget-comments.php` 评论链接 `title` 属性中 `post_title` 未转义；`widget-tags.php` 标签云 `title` 属性与正文中 `$tag->name` 未转义。已修复：`esc_attr()/esc_html()/esc_url()`，标签数量 `absint()`。
+- **S5 双重编码乱码（显示 bug）**：`page/p-goto.php` 外链提醒页 13 处中文（模板名、提示文案、按钮、注释）为双重编码乱码且含私用区字符（U+E044 等）。已按基线 `13.12` 权威文案修复，正文提示语、标题变量、跳转逻辑、加固转义（`esc_attr/esc_html/esc_js`）均保留。
+
+### 审计确认（无需改动）
+
+- `fun-smtp.php`：`manage_options` 菜单 + `check_admin_referer` + 全字段 sanitize + SMTP 密码 AES-256-CBC（密钥 wp_salt('auth') 派生不落库，`fuwari_enc:`/`boxmoe_enc:` 双前缀兼容）。
+- `fun-user-center.php`：头像上传登录 + nonce + MIME 白名单 + finfo 真实内容检测 + 1MB 上限 + 随机文件名；资料/密码更新 nonce + sanitize + `wp_check_password` 验证旧密码。
+- `fun-user.php`：登录 nonce + `wp_signon`；注册 nonce + 验证码 + 中文用户名强正则 + 固定 `subscriber` 角色；客户端 IP 优先 `REMOTE_ADDR`，代理头逐段 `filter_var` 校验。
+- `fun-comments.php`：AJAX 评论 `check_ajax_referer('comment_nonce', 'security')` + 20 秒 IP 间隔 + 重复评论检查 + `wp_allow_comment` 审核；表单回填 `esc_attr`。
+- `fun-article.php`：点赞/收藏 nonce + `absint` + 文章存在性 + IP transient 每日防刷。
+- `fun-shortcode.php`：`extract(shortcode_atts(...))` 受白名单约束；密码保护 `hash_equals` 常量时间比较。
+- `page/p-go.php`、`page/p-goto.php`：跳转 scheme 白名单（http/https/thunder 等）+ `esc_attr/esc_html/esc_js` 输出 + 414 长度防护；`fun-msg.php` curl 通知（超时 + SSL 默认校验）；`fun-optimize.php` OPTIMIZE 表名取自 `$wpdb` 白名单且仅定时任务触发。
+- 登记不改（设计取舍，非缺陷）：评论内容 `esc_attr` 全袋转义存储（防 XSS 的显示副作用）、widget 标题按 WP 官方惯例不转义、登录失败无限流（记录为可选改进）。
+
+### 验证
+
+- PHP 静态冒烟：73 文件无 BOM、标签规范、括号平衡全部通过。
+- JS `node --check`：11 个 JS 全部通过。
+- 全仓双重编码乱码 / 私用区字符扫描：仅剩 CHANGELOG.md 中 0.4.0-beta.10 的乱码引用示例（预期内）。
+- 行为回归：修复均为局部加固，无选项 ID / 数据结构 / 存储变更；后台设置观感与前台渲染不受影响。
+
 ## [0.7.0-beta.1] - 2026-09-16
 
 > 后台主题设置架构重构（方案 C：定义 Schema 化 + 自研注册制框架）。**观感与 0.6.0 完全一致**（不做全屏面板式布局）：渲染层（class-options-interface.php 等）、选项存储（options-framework-theme）、HTML/CSS/JS 输出均未改动；仅"定义管理"层重构。
