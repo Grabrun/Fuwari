@@ -3,6 +3,25 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.4.0-beta.9] - 2026-09-16
+
+> 本项目版权声明加入：作者 **拿完西瓜跑（Grabrun）**，许可 GPL-3.0-or-later；全仓 PHP 文件头统一标注本项目版权，原项目与第三方版权声明保持原样。
+
+### 变更
+
+- **全仓 72 个 PHP 文件版权声明核查与补齐**：
+  - 66 个主题原创文件头统一追加 `@copyright 2026 拿完西瓜跑 (Grabrun)` 与 `@license GPL-3.0-or-later`（原 `@link https://www.boxmoe.com` 原项目声明保留）；补齐 8 个此前无标准头的文件（6 个 core/module + page/p-go、page/p-goto，后者于模板头内追加，不破坏 Template Name）。
+  - 6 个第三方 Options Framework 文件保留原作者版权（Devin Price / WP Theming / GPL-2.0+），未添加本项目署名。
+- **主题头 Author 更新**：`Author:拿完西瓜跑 (Grabrun)`（根 style.css 与 assets/css/style.css）。
+- **LICENSE**：顶部新增本项目版权声明段（Copyright (C) 2026 拿完西瓜跑 (Grabrun) + GPLv3 说明 + LoliMeow 衍生声明），GPL-3.0 全文保留完整。
+- **README**：新增「版权与许可」章节。
+- 顺带修复 0.4.0-beta.8 引入的头部损坏：`assets/css/style.css` 的 Author 值被 License 行插入吞掉（Author 变空、License URI 尾部被拼接），本次已还原。
+
+### 验证
+
+- 两个 style.css 主题头字段完整（Theme Name/URI/Description/Author/Version/License）。
+- 66 原创文件含 Grabrun 版权、6 第三方保留原版权；冒烟通过。
+
 ## [0.4.0-beta.8] - 2026-09-16
 
 > 版权合规与页尾文案：项目明确采用 **GPLv3**；原项目（LoliMeow / Boxmoe）版权声明全量保留核查通过；前台页尾更新为 "Theme by Fuwari・基于 Boxmoe 的 LoliMeow 项目"。

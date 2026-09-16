@@ -2,6 +2,8 @@
 /**
  * @link https://www.boxmoe.com
  * @package fuwari
+ * @copyright 2026 æ¿å®è¥¿çè· (Grabrun)
+ * @license   GPL-3.0-or-later
  */
 
 add_action( 'optionsframework_custom_scripts', 'optionsframework_custom_scripts' );

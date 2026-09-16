@@ -1,7 +1,7 @@
 
 
 **欢迎使用 Fuwari（浮絮）WordPress 主题**
-<br>当前分支：**0.4.0-beta.8**（独立分支项目 · 语义化版本 SemVer 2.0.0 · 版本从 0.0.0 起算）
+<br>当前分支：**0.4.0-beta.9**（独立分支项目 · 语义化版本 SemVer 2.0.0 · 版本从 0.0.0 起算）
 
 **版本说明**
 <br>`13.12-master` 为上游源码基线（git 分支 `13.12-master`，tag `13.12`）。本分支为独立项目，从 0.0.0 起算：`0.1.0-beta.1` 为架构与安全深度优化首版；`0.2.0-beta.1` 为破坏性变更版，移除对 erphpdown 付费插件的硬耦合：
@@ -48,3 +48,13 @@
 <br>添加侧栏搜索框 \core\widgets\widget-set.php  \core\widgets\widget-search.php
 **V13.03-V13.1**
 <br>修复文章形式开关问题、错别字、优化短代码、添加经典编辑器表情包、添加仪表盘评论回复表情包、添加评论内容安全防护输出、优化UI、优化注册/登录页面体验，其他bug；
+
+
+---
+
+## 版权与许可
+
+- **主题**：Fuwari（浮絮）WordPress Theme
+- **作者**：拿完西瓜跑（Grabrun）
+- **许可**：GPLv3 or later（详见仓库根目录 LICENSE，GPL-3.0 全文）
+- **衍生声明**：本主题源自 [LoliMeow](https://www.boxmoe.com) 项目（Boxmoe），各源文件保留原项目版权说明（`@link https://www.boxmoe.com`）；内置 Options Framework 组件版权归其原作者（Devin Price / WP Theming，GPL-2.0+）。

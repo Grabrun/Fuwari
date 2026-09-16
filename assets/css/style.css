@@ -2,9 +2,9 @@
 Theme Name:Fuwari · 浮絮
 Theme URI:https://www.boxmoe.com
 Description:Fuwari（浮絮）主题.
-Author:
+Author:拿完西瓜跑 (Grabrun)
 License: GPLv3 or later
-License URI: https://www.gnu.org/licenses/gpl-3.0.html拿完西瓜跑
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 */
 /* 0.4.0: 移除 CSS @import（fancybox/font-awesome 改为 wp_enqueue_style 并行加载，消除渲染阻塞） */
 /* 0.4.0: 字体子集化 alimama-common.woff2（GB2312 一级常用字，2.3MB → 1.3MB） */

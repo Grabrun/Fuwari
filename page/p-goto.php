@@ -1,6 +1,11 @@
 <?php
 /**
-* Template Name:澶栭摼鎻愰啋鐗?*/
+* Template Name:澶栭摼鎻愰啋鐗?
+ * @link https://www.boxmoe.com
+ * @package fuwari
+ * @copyright 2026 æ¿å®è¥¿çè· (Grabrun)
+ * @license   GPL-3.0-or-later
+*/
 $my_urls = array(
 array('fuwari','https://www.boxmoe.com'),
 array('jsmoe','https://www.jsmoe.com')
