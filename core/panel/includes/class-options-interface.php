@@ -89,6 +89,11 @@ class Options_Framework_Interface {
 				}
 
 				if (isset($value['group']) && $value['group'] == 'start') {
+					// 0.5.0 防御：已在分组内再遇 start（数据异常）→ 先闭合旧分组，防止嵌套泄漏
+					if ($group_opened) {
+						$output .= '</div>' . "\n";
+						$group_opened = false;
+					}
 					$group_opened = true;
 					$group_section_id = 'section-' . $value['id'];
 					$output .= '<div id="' . esc_attr($group_section_id) .'" class="' . esc_attr( $class ) . ' mini col">' . "\n";
@@ -455,13 +460,21 @@ class Options_Framework_Interface {
 			// type 为 null 进入上方收尾块关闭 group；0.4.0-beta.6 将其默认成 'info' 后收尾块被跳过，
 			// 导致 group_opened 状态泄漏、后续 tab（社交图标/静态加速/系统优化/通知设置/关于主题）HTML 结构错乱。
 			if ( isset( $value['group'] ) && $value['group'] == 'end' ) {
-				$output .= '</div>'."\n";
-				$group_opened = false;
+				// 0.5.0 防御：孤儿 end（未在分组内，数据异常）忽略，不输出多余闭合
+				if ( $group_opened ) {
+					$output .= '</div>'."\n";
+					$group_opened = false;
+				}
 			}
 
 			echo $output;
 		}
 
+		// 0.5.0 防御：循环结束仍有未闭合分组 → 补闭合（防止数据异常导致 div 泄漏）
+		if ( $group_opened ) {
+			echo '</div>' . "\n";
+			$group_opened = false;
+		}
 		// Outputs closing div if there tabs
 		if ( Options_Framework_Interface::optionsframework_tabs() != '' ) {
 			echo '</div>';
