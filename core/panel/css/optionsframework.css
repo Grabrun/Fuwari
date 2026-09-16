@@ -152,12 +152,12 @@ input[type="number"].number-text-d {width:70px;}
 #optionsframework-wrap .navbar-brand {float:left;width:100%;height:75px;line-height:56px;list-style:none;background:#61aac5;border-top-left-radius:2rem;}
 #optionsframework-wrap .navbar-brand img {margin:1.8em 1em;}
 /**菜单**/#optionsframework-wrap .set-main-menu {width:250px;flex-direction:column;border-top-left-radius:2rem;display:flex;background-color:#000;position:sticky;top:32px;align-self:flex-start;height:calc(100vh - 32px);max-height:calc(100vh - 32px);overflow-y:auto;}
-#optionsframework-wrap .nav-tab-wrapper {height:auto;min-height:0;border-right:solid 1px #e6e6e6;list-style:none;padding-left:0;padding-top:0 !important;border-bottom:1px solid #e6e6e6 !important;background-color:#000;}
+#optionsframework-wrap .nav-tab-wrapper {height:100%;min-height:0;border-right:solid 1px #e6e6e6;list-style:none;padding-left:0;padding-top:0 !important;border-bottom:1px solid #e6e6e6 !important;background-color:#000;}
 #optionsframework-wrap .nav-tab {float:left;width:100%;border:0;border-bottom:none;margin-left:0;font-weight:500;background:initial;text-decoration:none;white-space:nowrap;height:56px;line-height:56px;position:relative;list-style:none;font-size:14px;color:#686a70;padding:0 20px;cursor:pointer;-webkit-transition:border-color .3s,background-color .3s,color .3s;box-sizing:border-box;text-align:left;}
 #optionsframework-wrap .nav-tab-active,#optionsframework-wrap .nav-tab:focus,#optionsframework-wrap .nav-tab:hover {outline:0;border-bottom:0;color:#000;background:#e8e9e9;}
 /**内容区**/#optionsframework {max-width:100%;}
 #optionsframework-wrap .metabox-holder {padding-top:0;}
-#optionsframework-wrap .metabox-holder {flex:1;padding:0;overflow-x:hidden;height:100%;margin-left:-2rem}
+#optionsframework-wrap .metabox-holder {flex:1;padding:0;overflow-x:hidden;height:100%;margin-left:0;}
 #optionsframework-wrap h3 {cursor:default;background-color:#fff;line-height:1.4;padding:1.3em 20px;border-bottom:none;padding-bottom:10px;color:#1d2327;font-size:1.3em;}
 #optionsframework-wrap .postbox,#optionsframework-wrap .stuffbox {margin-bottom:0;border:0;border-right:solid 1px #f9f9ff;border-left:solid 1px #f9f9ff;background-color:#fff;min-height:800px;}
 #optionsframework-wrap .postbox {border-radius:0;}
@@ -188,7 +188,7 @@ h1 .nav-tab,h2 .nav-tab,h3 .nav-tab,nav .nav-tab {margin:0;border-bottom:0;}
 .fuwari-options-site-wrap {display:grid;grid-template-columns:280px 1fr;}
 .nav-tab-wrapper {background:#0b121b;color:white;border-top-left-radius:2rem;display:flex;flex-direction:column;}
 .nav-tab-wrapper a {color:inherit;}
-.nav-tab-wrapper ul {margin-bottom:auto;}
+.nav-tab-wrapper ul {flex:1;overflow-y:auto;margin-bottom:0;}
 .nav-tab-wrapper ul li a {display:block;padding:0.75rem 0.5rem 0.75rem 2rem;position:relative;color:#fff;}
 .nav-tab-wrapper ul li a:hover,.nav-tab-wrapper ul li a:focus {color:#4371c5;}
 .nav-tab-wrapper ul li.active > a {background:linear-gradient(to right,#4c8bff,#4371c54d);}
@@ -247,12 +247,12 @@ input[type="text"],input[type="password"],input[type="date"],input[type="datetim
 /* ===== 0.6.0 方案B：搜索 / 键盘 / 折叠 / Toast / 暗色适配 ===== */
 
 /* B1 设置项搜索框（左侧菜单区，深色侧栏风格 #0b121b 对齐） */
-.fuwari-options-search {position:relative;padding:0 1rem 0.4rem;}
+.fuwari-options-search {position:relative;padding:0 1rem 0.4rem;flex-shrink:0;}
 .fuwari-options-search .dashicons {position:absolute;left:1.6rem;top:50%;transform:translateY(-50%);color:#8a94a6;font-size:15px;line-height:1;pointer-events:none;}
 .fuwari-options-search input[type="search"] {width:100%;box-sizing:border-box;background:#0d1520;border:1px solid #243244;border-radius:8px;color:#fff;padding:0.45rem 0.75rem 0.45rem 2.1rem;font-size:13px;transition:border-color .2s,box-shadow .2s;min-height:34px;}
 .fuwari-options-search input[type="search"]:focus {border-color:#457ace;outline:none;box-shadow:0 0 0 1px rgba(69,122,206,.35);}
 .fuwari-options-search input[type="search"]::placeholder {color:#5c6a80;}
-.fuwari-search-count {display:none;font-size:12px;color:#8a94a6;padding:0 1rem 0.6rem;}
+.fuwari-search-count {display:none;font-size:12px;color:#8a94a6;padding:0 1rem 0.6rem;flex-shrink:0;}
 
 /* B3 分组折叠按钮（主蓝 #457ace 对齐） */
 .fuwari_tab_header .fuwari-group-toggle {background:transparent;border:0;cursor:pointer;padding:0 0.6rem 0 0;color:#457ace;vertical-align:middle;margin:0;box-shadow:none;}

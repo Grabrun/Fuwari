@@ -184,8 +184,8 @@ jQuery(document).ready(function($) {
 					if ( fuwari_section_hay( $(this) ).indexOf( q ) !== -1 ) { any = true; }
 				});
 				if ( any && ! $(this).is(':visible') ) {
-					var href = '#' + this.id;
-					$('.nav-tab-wrapper li a[href="' + href + '"]').trigger('click');
+					// 搜索内部自动切换：保留关键词，直接激活目标 tab 并继续过滤
+					fuwari_activate_tab( '#' + this.id, true );
 					switched = true;
 				}
 			});
@@ -225,7 +225,9 @@ jQuery(document).ready(function($) {
 		}
 
 		// 0.6.0 方案B：Tab 激活统一入口（供点击 / 键盘 / 搜索切换复用）
-		function fuwari_activate_tab( href ) {
+		// keepSearch=true 为搜索内部跨 tab 自动切换（保留关键词继续过滤）；
+		// 用户手动点击/键盘切换时清空搜索，恢复当前 tab 完整显示，避免"点菜单后被过滤成空白/弹回原 tab"。
+		function fuwari_activate_tab( href, keepSearch ) {
 			$('.nav-tab-wrapper li').removeClass('active');
 			$('.nav-tab-wrapper li a[href="' + href + '"]').parent('li').addClass('active');
 			if ( typeof(localStorage) != 'undefined' ) {
@@ -233,7 +235,13 @@ jQuery(document).ready(function($) {
 			}
 			$group.hide();
 			$(href).fadeIn();
-			// 搜索状态下，切换 tab 后重新过滤
+			if ( ! keepSearch && $searchInput.length && $.trim( $searchInput.val() ) !== '' ) {
+				// 手动切换：清空搜索词并恢复完整显示
+				$searchInput.val('');
+				fuwari_apply_search();
+				return;
+			}
+			// 搜索状态下（含搜索内部跨 tab 切换），切换后重新过滤
 			if ( $searchInput.length && $.trim( $searchInput.val() ) !== '' ) {
 				fuwari_apply_search();
 			}
