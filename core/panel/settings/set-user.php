@@ -62,4 +62,5 @@ $options[] = array(
         );
     $options[] = array(
         'group' => 'end',
+        'type' => 'info',  // 0.4.0-beta.6：group 结束标记缺 type 键导致后台设置页 Undefined array key 警告
         );

@@ -3,6 +3,23 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.4.0-beta.6] - 2026-09-16
+
+> 后台主题设置界面修复：`Warning: Undefined array key "type"`（`class-options-interface.php`）——用户设置分组的 `group => 'end'` 闭合标记项缺 `type` 键（上游遗留，PHP 8 严格报错）。
+
+### 修复
+
+- **数据根治**：`core/panel/settings/set-user.php` 的 group 结束项补 `'type' => 'info'`（全仓 124 个选项项精确扫描，仅此 1 处缺 type）。
+- **代码防御**：`class-options-interface.php`
+  - `optionsframework_tabs()`：无 `type` 的项直接跳过（tab 只关心 heading）；
+  - `optionsframework_fields()`：无 `type` 的项默认 `'info'`（不可 continue——需保留 group 结束闭合逻辑）。
+- admin 侧（`class-options-framework-admin.php`）经核查本就有 `isset` 保护，不受影响。
+
+### 验证
+
+- 全仓选项项扫描确认无其他缺 type 项；静态冒烟通过。
+- 目标环境：后台主题设置页警告应消失；若仍出现，请提供完整行号（当前修复覆盖全部无保护读取点）。
+
 ## [0.4.0-beta.5] - 2026-09-16
 
 > 页尾文案调整：前台页尾版权行 "Theme by Fuwari（浮絮） · 源自 LoliMeow 项目" 中移除中文名"（浮絮）"，仅保留英文 "Theme by Fuwari · 源自 LoliMeow 项目"（原项目说明链接保留）。登录/注册页脚与主题头品牌全称不受影响。

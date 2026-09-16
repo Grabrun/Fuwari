@@ -17,6 +17,10 @@ class Options_Framework_Interface {
 		$options = & Options_Framework::_optionsframework_options();
 		$menu = '<ul>'; 
 		foreach ( $options as $value ) {
+			// 0.4.0-beta.6：防 Undefined array key "type"（如 group 结束标记项）；tabs 只关心 heading，跳过无 type 项
+			if ( ! isset( $value['type'] ) ) {
+				continue;
+			}
 			if ( $value['type'] == "heading" ) {
 				$counter++;
 				$class = '';
@@ -59,6 +63,10 @@ class Options_Framework_Interface {
 		$group_section_id = '';
 
 		foreach ( $options as $value ) {
+			// 0.4.0-beta.6：group 结束标记等无 type 项默认为 info（不可 continue，需保留 group 闭合逻辑）
+			if ( ! isset( $value['type'] ) ) {
+				$value['type'] = 'info';
+			}
 
 			$val = '';
 			$select_value = '';
