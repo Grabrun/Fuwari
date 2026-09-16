@@ -12,7 +12,7 @@ get_header(); ?>
 					<div class="site-search">
 						<h1 class="search-title">
 						<i class="fa fa-search"></i>
-						<span>搜索:<strong>[<?php echo htmlspecialchars($s); ?>]</strong>关键词<?php global $wp_query;echo ' 共' . $wp_query->found_posts . ' 篇文章';?></span></h1>
+						<span>搜索:<strong>[<?php echo esc_html(get_search_query()); ?>]</strong>关键词<?php global $wp_query;echo ' 共' . $wp_query->found_posts . ' 篇文章';?></span></h1>
                 </div>
 		</div>
 <?php get_template_part('page/template/blog-list');

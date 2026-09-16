@@ -148,11 +148,11 @@ input[type="number"].number-text-d {width:70px;}
 #optionsframework-wrap .el-button:active {color:#3a8ee6;border-color:#3a8ee6;outline:0;}
 #optionsframework-wrap .el-button:focus,#optionsframework-wrap .el-button:hover {color:#409EFF;border-color:#c6e2ff;background-color:#ecf5ff;}
 #optionsframework-wrap  textarea:focus {border:1px solid #daeada;}
-#optionsframework-wrap .set-main-plane {flex:1;display:flex;align-items:stretch;height:100%;background-color:#000;border-top-right-radius:2rem;border-top-left-radius:2rem;}
+#optionsframework-wrap .set-main-plane {flex:1;display:flex;align-items:flex-start;height:100%;background-color:#000;border-top-right-radius:2rem;border-top-left-radius:2rem;}
 #optionsframework-wrap .navbar-brand {float:left;width:100%;height:75px;line-height:56px;list-style:none;background:#61aac5;border-top-left-radius:2rem;}
 #optionsframework-wrap .navbar-brand img {margin:1.8em 1em;}
-/**菜单**/#optionsframework-wrap .set-main-menu {width:250px;flex-direction:column;border-top-left-radius:2rem;display:flex;background-color:#000;}
-#optionsframework-wrap .nav-tab-wrapper {height:100%;border-right:solid 1px #e6e6e6;list-style:none;padding-left:0;padding-top:0 !important;border-bottom:1px solid #e6e6e6 !important;background-color:#000;}
+/**菜单**/#optionsframework-wrap .set-main-menu {width:250px;flex-direction:column;border-top-left-radius:2rem;display:flex;background-color:#000;position:sticky;top:32px;align-self:flex-start;height:calc(100vh - 32px);max-height:calc(100vh - 32px);overflow-y:auto;}
+#optionsframework-wrap .nav-tab-wrapper {height:auto;min-height:0;border-right:solid 1px #e6e6e6;list-style:none;padding-left:0;padding-top:0 !important;border-bottom:1px solid #e6e6e6 !important;background-color:#000;}
 #optionsframework-wrap .nav-tab {float:left;width:100%;border:0;border-bottom:none;margin-left:0;font-weight:500;background:initial;text-decoration:none;white-space:nowrap;height:56px;line-height:56px;position:relative;list-style:none;font-size:14px;color:#686a70;padding:0 20px;cursor:pointer;-webkit-transition:border-color .3s,background-color .3s,color .3s;box-sizing:border-box;text-align:left;}
 #optionsframework-wrap .nav-tab-active,#optionsframework-wrap .nav-tab:focus,#optionsframework-wrap .nav-tab:hover {outline:0;border-bottom:0;color:#000;background:#e8e9e9;}
 /**内容区**/#optionsframework {max-width:100%;}

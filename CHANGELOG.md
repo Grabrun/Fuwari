@@ -3,6 +3,23 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.8.0-beta.2] - 2026-09-17
+
+> 用户反馈修复：后台设置页左侧菜单/搜索框滚动时不固定、设置项搜索分组内结果不可见、前台搜索结果页搜索词不显示。纯修复，无选项 ID / 数据结构变更，无需数据迁移。
+
+### 修复
+
+- **F1 后台左侧菜单吸顶（布局）**：`core/panel/css/optionsframework.css` — `.set-main-menu` 增加 `position:sticky; top:32px; height:calc(100vh - 32px); overflow-y:auto`（避开 WP 顶栏），`.set-main-plane` 改 `align-items:flex-start`。滚动设置页时左侧菜单与搜索框保持在视口内，可随时切换设置项 / 使用搜索，无需滚回顶部。移动端（≤550px 弹层布局）不受影响。
+- **F2 后台设置项搜索（逻辑）**：`core/panel/js/options-custom.js` — 分组容器（group start）自身也带 `.section` 类，原过滤逻辑将未命中的分组容器隐藏，导致**组内命中项被父容器吞掉、搜索结果不可见**。改为：仅过滤叶子设置项，命中项展开所在分组容器，无命中的分组容器隐藏；跨 tab 自动切换逻辑同步修正。
+- **F3 前台搜索词显示（PHP 8 兼容）**：`search.php` — 搜索关键词由 `htmlspecialchars($s)`（模板作用域未声明全局，PHP 8 下 `Undefined variable $s`，关键词显示为空）改为 `esc_html(get_search_query())`。
+- **F4 前台初始化链隔离（防御）**：`assets/js/fuwari.js` — DOMContentLoaded 初始化链改为逐项独立 try/catch，任一初始化异常不再中断后续步骤（避免出现"搜索框不可用 + 吸顶菜单失效"同时发生）。
+
+### 验证
+
+- `node --check`：fuwari.js / options-custom.js 通过。
+- PHP 静态冒烟：73 文件全部通过。
+- 行为回归：均为局部修复，后台观感除"菜单吸顶"外不变；搜索过滤与分组折叠/记忆逻辑保持兼容；前台搜索词正常回显。
+
 ## [0.8.0-beta.1] - 2026-09-17
 
 > 全项目代码审计（安全 / 兼容 / 回归）。对 73 个 PHP、11 个 JS 文件完成盘点与安全扫描，逐文件精读审计；修复 1 处存储型 XSS、2 处邮件滥用端点、2 处 SQL 拼接隐患与 1 处双重编码乱码。**不改变任何设置项结构、选项 ID 与前台观感，无需数据迁移。**

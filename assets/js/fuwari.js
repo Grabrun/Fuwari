@@ -649,23 +649,33 @@ function initRunningDays() {
 
 // DOM加载完成后初始化
 document.addEventListener("DOMContentLoaded", () => {
-    initPreloader();
-    initSearchBox();
-    initLazyLoad();
-    initMobileUserPanel();
-    initBannerImage();
-    initStickyHeader();
-    initTableOfContents();
-    initTagColors();
-    initHitokoto();
-    initPostLikes(); 
-    initReward(); 
-    initPostFavorites(); 
-    ThemeSwitcher.init(); 
-    initPrettyPrint();
-    initCodeCopy();
-    initRunningDays();
-    Fancybox.bind("[data-fancybox]", {});
+    // 防御加固：每项初始化独立隔离，单项异常不中断后续（搜索框 / 吸顶菜单 / 懒加载等）
+    var fuwariInitSteps = [
+        initPreloader,
+        initSearchBox,
+        initLazyLoad,
+        initMobileUserPanel,
+        initBannerImage,
+        initStickyHeader,
+        initTableOfContents,
+        initTagColors,
+        initHitokoto,
+        initPostLikes,
+        initReward,
+        initPostFavorites,
+        function() { ThemeSwitcher.init(); },
+        initPrettyPrint,
+        initCodeCopy,
+        initRunningDays,
+        function() { Fancybox.bind("[data-fancybox]", {}); }
+    ];
+    for (var i = 0; i < fuwariInitSteps.length; i++) {
+        try {
+            fuwariInitSteps[i]();
+        } catch (err) {
+            if (window.console && console.error) { console.error('fuwari init step error:', err); }
+        }
+    }
     document.querySelectorAll('.switch-account-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const guestInputs = document.querySelector('.guest-inputs');

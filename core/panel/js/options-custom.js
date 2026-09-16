@@ -126,6 +126,14 @@ jQuery(document).ready(function($) {
 	var $searchInput = $('#fuwari-options-search-input'),
 		$searchCount = $('#fuwari-search-count');
 
+	function fuwari_section_hay( $s ) {
+		return ( $s.find('.heading').text() + ' ' +
+		       $s.find('.explain').text() + ' ' +
+		       $s.find('label').text() + ' ' +
+		       $s.find('input[type="text"],input[type="search"],textarea,select').attr('placeholder') + ' ' +
+		       $s.find('input,select,textarea').attr('id') ).toLowerCase();
+	}
+
 	function fuwari_apply_search() {
 		var q = $.trim( $searchInput.val() ).toLowerCase();
 		if ( q === '' ) {
@@ -141,17 +149,28 @@ jQuery(document).ready(function($) {
 		var $activeGroup = $('.group:visible'),
 			total = 0,
 			visible = 0;
-		$activeGroup.find('.section').each(function() {
-			var $s = $(this),
-				hay = ( $s.find('.heading').text() + ' ' +
-				       $s.find('.explain').text() + ' ' +
-				       $s.find('label').text() + ' ' +
-				       $s.find('input[type="text"],input[type="search"],textarea,select').attr('placeholder') + ' ' +
-				       $s.find('input,select,textarea').attr('id') ).toLowerCase();
+		// 第一遍：只过滤叶子设置项（分组容器自身不带搜索文本，且其显隐由后代命中决定）
+		$activeGroup.find('.section').filter(function() {
+			return ! $(this).find('.section').length;
+		}).each(function() {
+			var $s = $(this);
 			total++;
-			var hit = ( hay.indexOf( q ) !== -1 );
+			var hit = ( fuwari_section_hay( $s ).indexOf( q ) !== -1 );
 			$s.toggle( hit );
-			if ( hit ) { visible++; }
+			if ( hit ) {
+				visible++;
+				// 命中项所在的折叠分组容器一并展开显示，避免结果被隐藏的父容器吞掉
+				$s.closest('[data-fuwari-group]').show();
+			}
+		});
+		// 第二遍：无任何命中项的分组容器隐藏（有命中的保持显示）
+		$activeGroup.find('.section[data-fuwari-group]').each(function() {
+			var $g = $(this),
+				any = false;
+			$g.find('.section').each(function() {
+				if ( $(this).is(':visible') ) { any = true; }
+			});
+			$g.toggle( any );
 		});
 		if ( visible === 0 ) {
 			// 当前 tab 无匹配 → 自动切换到第一个有匹配的 tab
@@ -159,14 +178,10 @@ jQuery(document).ready(function($) {
 			$('.group').each(function() {
 				if ( switched ) { return; }
 				var any = false;
-				$(this).find('.section').each(function() {
-					var $s = $(this),
-						hay = ( $s.find('.heading').text() + ' ' +
-						       $s.find('.explain').text() + ' ' +
-						       $s.find('label').text() + ' ' +
-						       $s.find('input[type="text"],input[type="search"],textarea,select').attr('placeholder') + ' ' +
-						       $s.find('input,select,textarea').attr('id') ).toLowerCase();
-					if ( hay.indexOf( q ) !== -1 ) { any = true; }
+				$(this).find('.section').filter(function() {
+					return ! $(this).find('.section').length;
+				}).each(function() {
+					if ( fuwari_section_hay( $(this) ).indexOf( q ) !== -1 ) { any = true; }
 				});
 				if ( any && ! $(this).is(':visible') ) {
 					var href = '#' + this.id;
