@@ -28,9 +28,23 @@ foreach ($widgets as $widget) {
 }
 
 add_action( 'widgets_init', 'widget_ui_loader' );
+// 0.4.0-beta.3 修复：模块在 fuwari_load_modules() 函数内加载，顶层 $widgets 为函数局部变量而非全局；
+// widget_ui_loader 在 widgets_init 时执行，global $widgets 取到 null 导致 foreach 报错且侧栏组件全部未注册。
 function widget_ui_loader() {
-	global $widgets;
-	foreach ($widgets as $widget) {
-		register_widget( 'widget_'.$widget );
+	$fuwari_widgets = array(
+		'ads',
+		'postlist',
+		'comments',
+		'category',
+		'archive',
+		'tags',
+		'userinfo',
+		'search',
+	);
+	foreach ( $fuwari_widgets as $widget ) {
+		$fuwari_class = 'widget_' . $widget;
+		if ( class_exists( $fuwari_class ) ) {
+			register_widget( $fuwari_class );
+		}
 	}
 }

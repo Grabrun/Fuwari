@@ -3,6 +3,24 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.4.0-beta.3] - 2026-09-16
+
+> 首页致命修复：侧栏组件 `widget_ui_loader` 因变量作用域问题在 `widgets_init` 时取到 null，导致 foreach 警告且侧栏 8 个组件全部未注册。
+
+### 根因
+
+0.1.0 架构重构将模块改为在 `fuwari_load_modules()` 函数内 `require_once` 加载：`widget-set.php` 顶层定义的 `$widgets` 因此成为**函数局部变量**（非全局）；`widget_ui_loader()` 内的 `global $widgets` 在 `widgets_init` 钩子触发时取到 null → `foreach()` 报错 + 所有侧栏 widget 未注册。
+
+### 修复
+
+- `widget_ui_loader()` 不再依赖全局变量：widget 列表内联于函数内，并加 `class_exists()` 防御后再 `register_widget()`（8 个 widget 类文件存在性已验证）。
+- 全仓精确扫描确认：除本处外无其他"模块顶层变量 + 函数内 `global` 引用"同类模式。
+
+### 验证
+
+- 静态冒烟 `.verify/php_smoke.py` 通过；修复后 `widget-set.php` 无 `global` 语句（仅注释说明）；`add_action('widgets_init', 'widget_ui_loader')` 钩子保留。
+- 目标环境需刷新页面确认：警告消失、双栏布局侧栏组件（广告/文章列表/评论/分类/归档/标签/用户信息/搜索）正常注册。
+
 ## [0.4.0-beta.2] - 2026-09-16
 
 > 深度审计修复版：全项目审计（函数/钩子/资源/安全/回归五维）发现并修复 2 处缺陷，其余全部验证通过。
