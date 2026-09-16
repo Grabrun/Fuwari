@@ -3,6 +3,23 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.4.0-beta.8] - 2026-09-16
+
+> 版权合规与页尾文案：项目明确采用 **GPLv3**；原项目（LoliMeow / Boxmoe）版权声明全量保留核查通过；前台页尾更新为 "Theme by Fuwari・基于 Boxmoe 的 LoliMeow 项目"。
+
+### 变更
+
+- **新增 `LICENSE`（GPL-3.0 全文，35KB，取自 gnu.org）**；根目录与 `assets/css/style.css` 主题头补充 `License: GPLv3 or later` + `License URI`。
+- **版权声明全量核查（72 个 PHP 文件）**：
+  - 66 个 LoliMeow 原创文件头 `@link https://www.boxmoe.com` 全部保留；补齐遗漏的 `core/panel/options-framework-js.php`。
+  - 6 个第三方 Options Framework 文件保留原作者版权（Devin Price / WP Theming / GPL-2.0+ / wptheming.com），未改动。
+- **页尾文案**：`Theme by Fuwari・基于 Boxmoe 的 LoliMeow 项目`（"・"为日文中点；Boxmoe 与 LoliMeow 链接指向原项目 boxmoe.com）。
+
+### 说明
+
+- 主题以 GPLv3 发布；其中内置的 Options Framework（GPL-2.0+）为兼容许可，二者可共存分发。
+- 原项目版权归属文字（文件头 @link boxmoe.com）属"保留声明"，与主题品牌名（Fuwari）并行，不冲突。
+
 ## [0.4.0-beta.7] - 2026-09-16
 
 > 后台主题设置回归修复：0.4.0-beta.6 将缺 `type` 项默认设为 `'info'` 后，**group 结束标记（`group => 'end'`）因 `type='info'` 跳过了收尾逻辑，group 容器未闭合、`group_opened` 状态泄漏**——导致"用户设置" tab 之后的所有 tab（社交图标/静态加速/系统优化/通知设置/关于主题）HTML 结构错乱，点击后右侧内容不显示。

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @link https://www.boxmoe.com
+ * @package fuwari
+ */
 
 add_action( 'optionsframework_custom_scripts', 'optionsframework_custom_scripts' );
 function optionsframework_custom_scripts() { ?>

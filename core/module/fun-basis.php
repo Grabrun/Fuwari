@@ -231,7 +231,7 @@ function fuwari_load_assets_footer(){?>
           </div>
           <div class="col-lg-12 text-center mt-3 copyright">
           <span>Copyright © <?php echo date('Y'); ?> <a href="<?php echo home_url(); ?>"><?php echo get_bloginfo('name'); ?></a> <?php echo get_fuwari('fuwari_footer_info','Powered by WordPress'); ?> </span>
-          <span>Theme by <a href="https://www.boxmoe.com" target="_blank" rel="noopener">Fuwari</a> · 源自 <a href="https://www.boxmoe.com" target="_blank" rel="noopener">LoliMeow</a> 项目</span>
+          <span>Theme by Fuwari・基于 <a href="https://www.boxmoe.com" target="_blank" rel="noopener">Boxmoe</a> 的 <a href="https://www.boxmoe.com" target="_blank" rel="noopener">LoliMeow</a> 项目</span>
           <?php if(get_fuwari('fuwari_footer_running_days_switch')): ?> 
           <?php echo get_fuwari('fuwari_footer_running_days_prefix','本站已稳定运行了'); ?><span id="running-days" style="display:inline-block;">0</span><?php echo get_fuwari('fuwari_footer_running_days_suffix','天'); ?>
           <?php endif; ?>
