@@ -2,7 +2,7 @@
 /**
  * @link https://www.boxmoe.com
  * @package fuwari
- * @copyright 2026 æ¿å®è¥¿çè· (Grabrun)
+ * @copyright 2026 拿完西瓜跑 (Grabrun)
  * @license   GPL-3.0-or-later
  */
 //=======安全设置，阻止直接访问主题文件=======
