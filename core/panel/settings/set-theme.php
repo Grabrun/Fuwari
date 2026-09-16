@@ -12,20 +12,20 @@ if(!defined('ABSPATH')){
     exit;
 }
 
-$options[] = array(
+Fuwari_Options_Registry::register( array(
     'name' => __('关于主题', 'ui_fuwari_com'),
     'icon' => 'dashicons-info',
-    'type' => 'heading');
+    'type' => 'heading'));
 
-$options[] = array(
+Fuwari_Options_Registry::register( array(
     'name' => __('开源协议', 'ui_fuwari_com'), 
     'id' => 'banquan',
     'desc' => __('
      <p>1.主题依托于开源协议 GPL V3.0，如果不接受本协议，请立即删除</p>
      <p>2.请遵循开源协议，保留主题底部版权信息，如果不接受本协议，请立即删除；</p>		
     ', 'ui_fuwari_com'),
-    'type' => 'info');
-$options[] = array(
+    'type' => 'info'));
+Fuwari_Options_Registry::register( array(
     'name' => __('使用协议/注意事项', 'ui_fuwari_com'), 
     'id' => 'shiyong',
     'desc' => __('
@@ -36,8 +36,8 @@ $options[] = array(
      <p>5.主题开源无任何加密文件，对于因用户使用本主题而造成自身或他人隐私泄露，等任何不良后果，均由用户自行承担，主题作者不负任何责任；</p>
      <p>6.本主题共享下载，如果用户自行下载使用，即表明用户自愿并接受本协议所有条款。 如果用户不接受本协议，请立即删除；</p>
     ', 'ui_fuwari_com'),
-    'type' => 'info');		
-$options[] = array(
+    'type' => 'info'));		
+Fuwari_Options_Registry::register( array(
     'name' => __('主题信息', 'ui_fuwari_com'), 
     'id' => 'banquan',
     'desc' => __('
@@ -47,4 +47,4 @@ $options[] = array(
      <p>主题QQ群：<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=YLb_jw14jGMh1q8cMwga9UZcWp6JDPsS&authKey=x8YpdYVOU%2BIyiJ8uSJ2gT9UJ%2B%2BByQjnaHTTaTjMAu9YIERV20NnM%2F7tfBB%2B39peo&noverify=0&group_code=24847519" target="_blank" rel="external nofollow" class="url">24847519</a></p>
      <p>TG群组：<a href="https://t.me/hezimeng" target="_blank" rel="external nofollow" class="url">https://t.me/hezimeng</a></p>
     ', 'ui_fuwari_com'),
-    'type' => 'info');		
+    'type' => 'info'));		

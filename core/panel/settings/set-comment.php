@@ -12,32 +12,32 @@ if(!defined('ABSPATH')){
     exit;
 }
 
-$options[] = array(
+Fuwari_Options_Registry::register( array(
     'name' => __('评论设置', 'ui_fuwari_com'),
     'icon' => 'dashicons-admin-comments',
-    'type' => 'heading');     
+    'type' => 'heading'));     
 
-    $options[] = array(
+    Fuwari_Options_Registry::register( array(
         'group' => 'start',
         'group_title' => '评论开关设置',
         'name' => __('全站评论关闭', 'ui_fuwari_com'),
         'id' => 'fuwari_comment_switch',
         'type' => "checkbox",
         'std' => false,
-        );
-    $options[] = array(
+        ));
+    Fuwari_Options_Registry::register( array(
         'name' => __('仅登录评论开关', 'ui_fuwari_com'),
         'id' => 'fuwari_comment_login_switch',
         'type' => "checkbox",
         'std' => false,
-        );
-    $options[] = array(
+        ));
+    Fuwari_Options_Registry::register( array(
         'name' => __('禁止纯英文评论', 'ui_fuwari_com'),
         'id' => 'fuwari_comment_english_switch',
         'type' => "checkbox",
         'std' => false,
-        );
-    $options[] = array(
+        ));
+    Fuwari_Options_Registry::register( array(
         'group' => 'end',
         'name' => __('博主标签自定义', 'ui_fuwari_com'),
         'id' => 'fuwari_comment_blogger_tag',
@@ -45,4 +45,4 @@ $options[] = array(
         'std' => '博主',
         'desc' => __('博主标签，留空则显示博主', 'ui_fuwari_com'),
         'class' => 'mini',
-        ); 
+        )); 

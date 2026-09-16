@@ -3,6 +3,27 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.7.0-beta.1] - 2026-09-16
+
+> 后台主题设置架构重构（方案 C：定义 Schema 化 + 自研注册制框架）。**观感与 0.6.0 完全一致**（不做全屏面板式布局）：渲染层（class-options-interface.php 等）、选项存储（options-framework-theme）、HTML/CSS/JS 输出均未改动；仅"定义管理"层重构。
+
+### 变更
+
+- **C1 定义 Schema 化 / 注册制**：11 个 `set-*.php` 中 124 项定义由 `$options[] = array(...)` 改为 `Fuwari_Options_Registry::register( array(...) )` 声明式注册；定义内容（键/值/顺序/缩进）与迁移前**逐字节一致**（脚本比对 124/124 全等）。
+- **C2 自研注册器**（新增 `core/panel/includes/class-fuwari-options-registry.php`）：
+  - 集中加载定义文件（顺序可控、上下文统一构建：分类/标签/页面/图片路径/版本号）；
+  - Schema 校验：type 白名单、id 唯一性、group start/end 配对预检与终检——**容错设计**：仅记录（WP_DEBUG 时 error_log），绝不阻断渲染，设置页不白屏；
+  - `optionsframework_options()` 改为从注册器取数（对外接口、返回结构不变），A1/A2 双重缓存（静态 + transient）原样保留。
+- 渲染层 / 存储层 / 前台完全不动：设置页观感、字段行为、保存验证、数据格式均与 0.6.0 一致。
+
+### 验证
+
+- 迁移脚本：改前/改后 124 项定义（缩进 + 内容）全等比对通过。
+- Schema 校验模拟：124 项 type 全部合法、group 终检 depth=0（无孤儿 end、无未闭合 start）；唯一提示"重复 id banquan"为**迁移前已存在**的现状（两个 info 项，渲染层容忍），注册器仅警告不阻断。
+- div 配对模拟：124 项 / 24 组 / 11 tab 最终 depth=0。
+- PHP 静态冒烟通过（无 BOM、标签规范、括号平衡）。
+- 目标环境：进入「外观-主题设置」观感应与 0.6.0 完全一致；后台若开启 WP_DEBUG，日志中可能出现 `[Fuwari Options] 重复 id「banquan」`（预期内，不影响使用）。
+
 ## [0.6.0-beta.1] - 2026-09-16
 
 > 后台主题设置体验重构（方案 B）。纯前端增强（PHP 仅增加 DOM 标识与搜索框），无选项 ID / 数据结构 / 存储变更，无需迁移。样式与代码风格对齐主题主视觉（深色侧栏 `#0b121b`、主蓝 `#457ace`）。

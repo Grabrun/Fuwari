@@ -12,26 +12,26 @@ if(!defined('ABSPATH')){
     exit;
 }
 
-$options[] = array(
+Fuwari_Options_Registry::register( array(
     'name' => __( 'Banner设置', 'ui_fuwari_com' ),
     'icon' => 'dashicons-format-gallery',
     'desc' => __( '（导航下的图片设置）', 'ui_fuwari_com' ),
     'type' => 'heading'
-);
-    $options[] = array(
+));
+    Fuwari_Options_Registry::register( array(
         'group' => 'start',
 		'group_title' => 'Banner欢迎语一言设置',
 		'name' => __( 'Banner欢迎语', 'ui_fuwari_com' ),
 		'desc' => __('（留空则不显示）', 'ui_fuwari_com'),
 		'id' => 'fuwari_banner_font',
 		'std' => 'Hello! 欢迎来到盒子萌！',
-		'type' => 'text');
-    $options[] = array(
+		'type' => 'text'));
+    Fuwari_Options_Registry::register( array(
 		'name' => __('banner一言开关', 'ui_fuwari_com'),
 		'id' => 'fuwari_banner_hitokoto_switch',
 		'type' => "checkbox",
 		'std' => false,
-		);
+		));
         $hitokoto_array = array(
 			'a' => __('动画', 'ui_fuwari_com'),
 			'b' => __('漫画', 'ui_fuwari_com'),
@@ -45,38 +45,38 @@ $options[] = array(
 			'j' => __('网易云', 'ui_fuwari_com'),
 			'k' => __('哲学', 'ui_fuwari_com'),
 		);
-    $options[] = array(
+    Fuwari_Options_Registry::register( array(
         'group' => 'end',
 		'name' => __('选择一言句子类型', 'ui_fuwari_com'),
 		'id' => 'fuwari_banner_hitokoto_text',
 		'type' => 'select',
-		'options' => $hitokoto_array);
-    $options[] = array(
+		'options' => $hitokoto_array));
+    Fuwari_Options_Registry::register( array(
         'group' => 'start',
 		'group_title' => '自定义banner高度开关',
 		'id' => 'fuwari_banner_height_switch',
 		'type' => "checkbox",
 		'std' => false,
-		);
-    $options[] = array(
+		));
+    Fuwari_Options_Registry::register( array(
 		'name' => __( '[PC端]Banner高度 留空则默认580', 'ui_fuwari_com' ),
 		'id' => 'fuwari_banner_height',
 		'std' => '580',
 		'class' => 'mini',
-		'type' => 'text');
-	$options[] = array(
+		'type' => 'text'));
+	Fuwari_Options_Registry::register( array(
 		'name' => __( '[手机端]Banner高度 留空默认480', 'ui_fuwari_com' ),
 		'id' => 'fuwari_banner_height_m',
 		'std' => '480',
 		'class' => 'mini',
 		'group' => 'end',
-		'type' => 'text');	
-    $options[] = array(
+		'type' => 'text'));	
+    Fuwari_Options_Registry::register( array(
 		'name' => __('自定义Banner背景图', 'ui_fuwari_com'),
 		'id' => 'fuwari_banner_url',
 		'std' => $image_path.'/banner/assets/images/banner.jpg',
-		'type' => 'upload');
-    $options[] = array(
+		'type' => 'upload'));
+    Fuwari_Options_Registry::register( array(
 		'group' => 'start',
 		'group_title' => 'Banner随机图片',
 		'name' => __('Banner开启本地随机图片', 'ui_fuwari_com'),
@@ -84,17 +84,17 @@ $options[] = array(
 		'id' => 'fuwari_banner_rand_switch',
 		'class' => 'mini',
         'std' => false,
-		'type' => 'checkbox');
-    $options[] = array(
+		'type' => 'checkbox'));
+    Fuwari_Options_Registry::register( array(
 		'name' => __('使用外链APi-Banner图片', 'ui_fuwari_com'),
 		'desc' => __('（开启后上方本地设置图片功能全失效）', 'ui_fuwari_com'),		
 		'id' => 'fuwari_banner_api_switch',
 		'type' => "checkbox",
 		'std' => false,
-		);
-	$options[] = array(
+		));
+	Fuwari_Options_Registry::register( array(
         'group' => 'end',
 		'name' => __('图片外链APi链接', 'ui_fuwari_com'),
 		'id' => 'fuwari_banner_api_url',
 		'std' => 'https://api.boxmoe.com/random.php?size=mw1024',
-		'type' => 'text');     
+		'type' => 'text'));     

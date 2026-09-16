@@ -12,26 +12,26 @@ if(!defined('ABSPATH')){
     exit;
 }
 
-$options[] = array(
+Fuwari_Options_Registry::register( array(
     'name' => __('静态加速', 'ui_fuwari_com'),
     'icon' => 'dashicons-performance',
-    'type' => 'heading'); 
-    $options[] = array(
+    'type' => 'heading')); 
+    Fuwari_Options_Registry::register( array(
         'group' => 'start',
         'group_title' => '静态资源加速设置项',
         'name' => __('静态资源加速开关', 'ui_fuwari_com'),
         'id' => 'fuwari_cdn_assets_switch',
         'type' => "checkbox",
         'std' => false,
-        );
-    $options[] = array(
+        ));
+    Fuwari_Options_Registry::register( array(
         'group' => 'end',
         'name' => __('静态资源加速url', 'ui_fuwari_com'),
         'id' => 'fuwari_cdn_assets_url',
         'type' => "text",
         'std' => '',
         'desc' => __('(如https://domain.com/fuwari/assets)，链接结尾不要带"/"', 'ui_fuwari_com'),
-        );
+        ));
 	$gravatar_array = array(
 		'cravatar' => __('cravatar源', 'ui_fuwari_com'),
         'weavatar' => __('cravatar备用源', 'ui_fuwari_com'),
@@ -41,7 +41,7 @@ $options[] = array(
 		'cn' => __('默认CN源', 'ui_fuwari_com'),
 		'ssl' => __('默认SSL源', 'ui_fuwari_com'),
 	);
-    $options[] = array(
+    Fuwari_Options_Registry::register( array(
         'group' => 'start',
         'group_title' => '前端头像加速服务器',
         'name' => __('Gravatar头像', 'ui_fuwari_com'),
@@ -50,7 +50,7 @@ $options[] = array(
         'std' => 'lolinet',
         'type' => 'select',
         'class' => 'mini', //mini, tiny, small
-        'options' => $gravatar_array);
+        'options' => $gravatar_array));
     
     $qqravatar_array = array(
 		'Q1' => __('QQ官方服务器1', 'ui_fuwari_com'),
@@ -58,7 +58,7 @@ $options[] = array(
 		'Q3' => __('QQ官方服务器3', 'ui_fuwari_com'),
 		'Q4' => __('QQ官方服务器4', 'ui_fuwari_com'),	
 	);    
-    $options[] = array(
+    Fuwari_Options_Registry::register( array(
         'name' => __('QQ头像', 'ui_fuwari_com'),
         'desc' => __('（如果用户是QQ邮箱则调用QQ头像）', 'ui_fuwari_com'),
         'id' => 'fuwari_qqavatar_url',
@@ -66,4 +66,4 @@ $options[] = array(
         'std' => 'Q2',
         'type' => 'select',
         'class' => 'mini', //mini, tiny, small
-        'options' => $qqravatar_array);	
+        'options' => $qqravatar_array));	

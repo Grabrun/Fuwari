@@ -12,12 +12,12 @@ if(!defined('ABSPATH')){
     exit;
 }
 
-$options[] = array(
+Fuwari_Options_Registry::register( array(
     'name' => __('社交图标', 'ui_fuwari_com'),
     'icon' => 'dashicons-share',
-    'type' => 'heading'); 
+    'type' => 'heading')); 
 
-    $options[] = array(
+    Fuwari_Options_Registry::register( array(
         'group' => 'start',
         'group_title' => '社交图标设置',
         'name' => __('QQ', 'ui_fuwari_com'),
@@ -26,49 +26,49 @@ $options[] = array(
         'std' => '10000',
         'class' => 'mini',
         'desc' => __('QQ号，留空则不显示', 'ui_fuwari_com'),
-        );
-    $options[] = array(        
+        ));
+    Fuwari_Options_Registry::register( array(        
         'name' => __('Email', 'ui_fuwari_com'),
         'id' => 'fuwari_social_email',
         'type' => 'text',
         'std' => '',
         'desc' => __('Email地址，留空则不显示', 'ui_fuwari_com'),
         'class' => 'mini',
-        );    
-    $options[] = array(
+        ));    
+    Fuwari_Options_Registry::register( array(
         'name' => __('WeChat', 'ui_fuwari_com'),
         'id' => 'fuwari_social_wechat',
         'type' => 'text',
         'std' => $image_path.'default-thumbnail.jpg',
         'desc' => __('WeChat二维码链接，留空则不显示', 'ui_fuwari_com'),
         'class' => '',
-        );
+        ));
 
-    $options[] = array(
+    Fuwari_Options_Registry::register( array(
         'name' => __('Weibo', 'ui_fuwari_com'),
         'id' => 'fuwari_social_weibo',
         'type' => 'text',
         'std' => '',
         'desc' => __('Weibo链接，留空则不显示', 'ui_fuwari_com'),
         'class' => 'small',
-        );   
-    $options[] = array(
+        ));   
+    Fuwari_Options_Registry::register( array(
         'name' => __('Instagram', 'ui_fuwari_com'),
         'id' => 'fuwari_social_instagram',
         'type' => 'text',
         'std' => '',
         'desc' => __('Instagram链接，留空则不显示', 'ui_fuwari_com'),
         'class' => 'small',
-        );
-    $options[] = array(
+        ));
+    Fuwari_Options_Registry::register( array(
         'name' => __('Telegram', 'ui_fuwari_com'),
         'id' => 'fuwari_social_telegram',
         'type' => 'text',
         'std' => '',
         'desc' => __('Telegram链接，留空则不显示', 'ui_fuwari_com'),
         'class' => 'small',
-        );
-    $options[] = array(
+        ));
+    Fuwari_Options_Registry::register( array(
         'group' => 'end',
         'name' => __('GitHub', 'ui_fuwari_com'),
         'id' => 'fuwari_social_github',
@@ -76,4 +76,4 @@ $options[] = array(
         'std' => '',
         'desc' => __('GitHub链接，留空则不显示', 'ui_fuwari_com'),
         'class' => 'small',
-        );
+        ));
