@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {echo'Look your sister';exit;}
 class widget_archive extends WP_Widget {
     public function __construct() {
         parent::__construct(
-            'fuwari_widget_archive',
+            'boxmoe_widget_archive',
             'Fuwari_侧栏文章归档',
             array('description' => __('Fuwari_侧栏文章归档', 'text_domain'),
             'classname' => __('widget_archive', 'text_domain' ))

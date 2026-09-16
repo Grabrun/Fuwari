@@ -3,6 +3,25 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.4.0-beta.4] - 2026-09-16
+
+> 侧栏兼容修复：0.3.0 改名时误改 search/archive 两个 widget 的 id_base（WP 数据库存储键），升级用户旧侧栏配置失效、对应 widget 从前台消失（其余 6 个 widget 未变故仍显示，表现为"侧栏显示了一部分 / 搜索不见了"）。
+
+### 根因
+
+- 0.3.0 内部标识改名把 `widget-search` 的 id_base 从 `boxmoe_widget_search` 改为 `fuwari_widget_search`、`widget-archive` 从 `boxmoe_widget_archive` 改为 `fuwari_widget_archive`。
+- WP_Widget 的 id_base 同时是 `widget_{id_base}` 选项与 `sidebars_widgets` 引用的存储键：id_base 改变后，数据库中既有实例（`boxmoe_widget_search-1` 等）找不到对应 widget 类，前台 `dynamic_sidebar()` 渲染时被跳过——**旧配置数据仍在数据库，只是不再被识别**。
+
+### 修复
+
+- 恢复两个 widget 的 id_base 为 0.2.0 时代值：`boxmoe_widget_search` / `boxmoe_widget_archive`（classname 不变，前台样式不受影响）。
+- 新增一次性迁移 `fuwari_migrate_widget_storage()`（挂 `init`，早于 `widgets_init`）：把 0.3.0+ 期间产生的新键配置（`fuwari_widget_*` 选项与侧栏引用）合并迁移回旧键，幂等、新旧配置均不丢失。
+
+### 验证
+
+- 静态冒烟通过；id_base 恢复确认；迁移函数对旧键数据/新键数据/混合情况均安全（重复执行无副作用）。
+- 目标环境更新后：既有侧栏配置自动恢复显示；若仍不显示，检查「外观-小工具」中 widget 是否被手动删除。
+
 ## [0.4.0-beta.3] - 2026-09-16
 
 > 首页致命修复：侧栏组件 `widget_ui_loader` 因变量作用域问题在 `widgets_init` 时取到 null，导致 foreach 警告且侧栏 8 个组件全部未注册。
