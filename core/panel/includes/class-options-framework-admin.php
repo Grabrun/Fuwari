@@ -201,6 +201,12 @@ class Options_Framework_Admin {
       </svg>
     </div>
 				<div class="nav-tab-wrapper">
+					<?php // 0.6.0 方案B：设置项搜索框（仅设置页，JS 过滤当前 tab 内选项） ?>
+					<div class="fuwari-options-search">
+						<span class="dashicons dashicons-search"></span>
+						<input type="search" id="fuwari-options-search-input" placeholder="搜索设置项（名称 / 描述 / ID）" autocomplete="off" />
+					</div>
+					<div class="fuwari-search-count" id="fuwari-search-count"></div>
 				<?php echo Options_Framework_Interface::optionsframework_tabs(); ?>
 				</div>
 			</div>

@@ -243,3 +243,46 @@ input[type="text"],input[type="password"],input[type="date"],input[type="datetim
 @media screen and (max-width:550px) {#fuwari_lolijump_img-controls {flex-direction:column;}
 #fuwari_lolijump_img-controls label {margin-bottom:8px;}
 }
+
+/* ===== 0.6.0 方案B：搜索 / 键盘 / 折叠 / Toast / 暗色适配 ===== */
+
+/* B1 设置项搜索框（左侧菜单区，深色侧栏风格 #0b121b 对齐） */
+.fuwari-options-search {position:relative;padding:0 1rem 0.4rem;}
+.fuwari-options-search .dashicons {position:absolute;left:1.6rem;top:50%;transform:translateY(-50%);color:#8a94a6;font-size:15px;line-height:1;pointer-events:none;}
+.fuwari-options-search input[type="search"] {width:100%;box-sizing:border-box;background:#0d1520;border:1px solid #243244;border-radius:8px;color:#fff;padding:0.45rem 0.75rem 0.45rem 2.1rem;font-size:13px;transition:border-color .2s,box-shadow .2s;min-height:34px;}
+.fuwari-options-search input[type="search"]:focus {border-color:#457ace;outline:none;box-shadow:0 0 0 1px rgba(69,122,206,.35);}
+.fuwari-options-search input[type="search"]::placeholder {color:#5c6a80;}
+.fuwari-search-count {display:none;font-size:12px;color:#8a94a6;padding:0 1rem 0.6rem;}
+
+/* B3 分组折叠按钮（主蓝 #457ace 对齐） */
+.fuwari_tab_header .fuwari-group-toggle {background:transparent;border:0;cursor:pointer;padding:0 0.6rem 0 0;color:#457ace;vertical-align:middle;margin:0;box-shadow:none;}
+.fuwari_tab_header .fuwari-group-toggle:hover {color:#4c8bff;}
+.fuwari_tab_header .fuwari-group-toggle .dashicons {font-size:18px;line-height:1;width:auto;height:auto;transition:transform .25s ease;vertical-align:middle;}
+.fuwari_tab_header .fuwari-group-toggle:focus {box-shadow:none;}
+.fuwari-group-collapsed .fuwari-group-toggle .dashicons {transform:rotate(180deg);}
+.fuwari_tab_header .dashicons-info-outline {vertical-align:middle;}
+
+/* B5 保存/重置 Toast（主题深色卡片风格 #171c26 对齐） */
+#fuwari-toast {position:fixed;right:24px;bottom:88px;z-index:100000;background:#171c26;color:#e8edf4;border:1px solid #2a3550;border-left:4px solid #457ace;border-radius:10px;padding:12px 18px;font-size:13px;line-height:1.4;box-shadow:0 8px 24px rgba(0,0,0,.35);display:none;opacity:0;transform:translateY(8px);transition:opacity .25s ease,transform .25s ease;max-width:320px;}
+#fuwari-toast.show {display:block;opacity:1;transform:translateY(0);}
+#fuwari-toast.success {border-left-color:#2ea16b;}
+#fuwari-toast.error {border-left-color:#d63638;}
+#fuwari-toast .dashicons {margin-right:6px;vertical-align:middle;color:inherit;}
+
+/* B4 暗色模式适配：WP 后台暗色时内容区同步（侧栏本就深色，保持 #0b121b/#457ace 主视觉） */
+#optionsframework-wrap.fuwari-dark .header-set-title {background:#10161f;}
+#optionsframework-wrap.fuwari-dark .header-set-title .themes-name {color:#d0d7de;}
+#optionsframework-wrap.fuwari-dark #optionsframework h3 {color:#d0d7de;}
+#optionsframework-wrap.fuwari-dark .postbox,#optionsframework-wrap.fuwari-dark .stuffbox {background-color:#141c26;border-color:#1e2937;}
+#optionsframework-wrap.fuwari-dark #optionsframework .section {background-color:#1a2431;border-color:#243244;}
+#optionsframework-wrap.fuwari-dark #optionsframework .section .heading {color:#d0d7de;background-color:#1a2431;border-color:#2a3550;}
+#optionsframework-wrap.fuwari-dark .section .fuwari_tab_header {color:#e8edf4;}
+#optionsframework-wrap.fuwari-dark #optionsframework .section .explain,#optionsframework-wrap.fuwari-dark #optionsframework .description {color:#9aa7b8;}
+#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="text"],#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="password"],#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="url"],#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="search"],#optionsframework-wrap.fuwari-dark #optionsframework .controls textarea,#optionsframework-wrap.fuwari-dark #optionsframework .controls select {background-color:#0e141c;border-color:#2a3550;color:#d0d7de;}
+#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="text"]:focus,#optionsframework-wrap.fuwari-dark #optionsframework .controls textarea:focus,#optionsframework-wrap.fuwari-dark #optionsframework .controls select:focus {border-color:#457ace;}
+#optionsframework-wrap.fuwari-dark #optionsframework .option input,#optionsframework-wrap.fuwari-dark #optionsframework .option select,#optionsframework-wrap.fuwari-dark #optionsframework .option textarea {background-color:#0e141c;border-color:#2a3550;color:#d0d7de;}
+#optionsframework-wrap.fuwari-dark #optionsframework-submit {background-color:#10161f;border-top-color:#243244;}
+#optionsframework-wrap.fuwari-dark #optionsframework a {color:#6ea8fe;}
+#optionsframework-wrap.fuwari-dark .themes-inf a {color:#8a94a6 !important;}
+#optionsframework-wrap.fuwari-dark .section-textarea .controls textarea,#optionsframework-wrap.fuwari-dark #optionsframework textarea {color:#d0d7de;}
+#optionsframework-wrap.fuwari-dark .fuwari_group_opened .explain {color:#9aa7b8;}

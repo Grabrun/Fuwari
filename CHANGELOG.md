@@ -3,6 +3,28 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.6.0-beta.1] - 2026-09-16
+
+> 后台主题设置体验重构（方案 B）。纯前端增强（PHP 仅增加 DOM 标识与搜索框），无选项 ID / 数据结构 / 存储变更，无需迁移。样式与代码风格对齐主题主视觉（深色侧栏 `#0b121b`、主蓝 `#457ace`）。
+
+### 变更
+
+- **B1 设置项搜索**（`class-options-framework-admin.php` + `options-custom.js`）：
+  - 左侧菜单区新增搜索框，输入即过滤当前 tab 内设置项（按名称/描述/标签/ID/占位符匹配）；
+  - 实时显示"匹配 X / Y 项"；当前 tab 无匹配时自动切换到第一个有匹配的 tab；全部无匹配显示空态；清空恢复原状（含折叠记忆）。
+- **B2 Tab 键盘导航**：聚焦左侧 tab 后可用 `↑ ↓ ← →` 切换并激活，首尾循环；Tab 激活统一入口（点击/键盘/搜索共用）。
+- **B3 分组折叠**（`class-options-interface.php`）：group 分组标题新增折叠按钮（箭头旋转、`aria-expanded` 语义），点击折叠/展开该组，折叠状态记忆到 localStorage，默认展开；为组内选项输出 `data-fuwari-group` 标识。
+- **B4 后台暗色适配**（`optionsframework.css` + JS 检测）：检测 WP 后台暗色（body 类 `wp-dark-mode`/`is-dark-theme`/`wp-admin-dark`/`dark-theme` + 系统 `prefers-color-scheme: dark` 双信号）后，设置页内容区自动切换深色配色；侧栏与主视觉不变。
+- **B5 保存/重置 Toast**：点击保存/重置显示"正在保存…"；页面加载时检测保存结果（WP notice 类）显示成功/失败 Toast，右下角深色卡片风格，2.6 秒自动消失。
+- 样式与代码对齐：新增 CSS/JS 沿用主题深色侧栏与主蓝风格；JS 保持 tab 缩进与 jQuery 风格。
+
+### 验证
+
+- div 配对模拟：124 项 / 24 组 / 11 tab 最终 depth=0、最小 depth=0（data 属性不改变结构）。
+- JS `node --check` 通过；PHP 静态冒烟通过（无 BOM、标签规范、括号平衡）。
+- 专项检查：搜索框/计数、折叠按钮 + `aria-expanded`、`data-fuwari-group` 注入（start 项/普通项/heading 重置/group end 清除）、暗色双信号、Toast 提交与回读逻辑均在包内核对通过。
+- 目标环境：进入「外观-主题设置」验证搜索、键盘切换、分组折叠、暗色模式、保存 Toast；需用户在实际站点走查确认视觉效果。
+
 ## [0.5.0-beta.1] - 2026-09-16
 
 > 后台主题设置优化（方案 A：轻量加固）。本版本聚焦设置页性能与稳定性，不改变任何选项 ID、数据结构与存储，无需迁移。

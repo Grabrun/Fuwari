@@ -61,6 +61,8 @@ class Options_Framework_Interface {
 
 		$group_opened = false;
 		$group_section_id = '';
+		// 0.6.0 方案B：当前分组标识（供分组折叠与搜索过滤定位）
+		$current_group_id = '';
 
 		foreach ( $options as $value ) {
 			// 0.4.0-beta.6：group 结束标记等无 type 项默认为 info（不可 continue，需保留 group 闭合逻辑）
@@ -95,20 +97,22 @@ class Options_Framework_Interface {
 						$group_opened = false;
 					}
 					$group_opened = true;
-					$group_section_id = 'section-' . $value['id'];
-					$output .= '<div id="' . esc_attr($group_section_id) .'" class="' . esc_attr( $class ) . ' mini col">' . "\n";
+					// 0.6.0 方案B：记录分组标识，供折叠/搜索定位
+					$current_group_id = isset( $value['id'] ) ? $value['id'] : 'group-' . $counter;
+					$group_section_id = 'section-' . $current_group_id;
+					$output .= '<div id="' . esc_attr($group_section_id) .'" class="' . esc_attr( $class ) . ' mini col" data-fuwari-group="' . esc_attr( $current_group_id ) . '">' . "\n";
 					
 					if (isset($value['group_title'])) {
-						$output .= '<div class="fuwari_tab_header"><span class="dashicons dashicons-info-outline"></span> ' . esc_html($value['group_title']) . '</div>' . "\n";
+						$output .= '<div class="fuwari_tab_header"><button type="button" class="fuwari-group-toggle" aria-expanded="true" aria-label="折叠/展开「' . esc_attr($value['group_title']) . '」"><span class="dashicons dashicons-arrow-up-alt2"></span></button><span class="dashicons dashicons-info-outline"></span> ' . esc_html($value['group_title']) . '</div>' . "\n";
 					}
 				}
 				
 				if (!$group_opened) {
-					$output .= '<div id="' . esc_attr( $id ) .'" class="' . esc_attr( $class ) . ' col">' . "\n";
+					$output .= '<div id="' . esc_attr( $id ) .'" class="' . esc_attr( $class ) . ' col"' . ( $current_group_id !== '' ? ' data-fuwari-group="' . esc_attr( $current_group_id ) . '"' : '' ) . '>' . "\n";
 				}
 
 				if ($group_opened) {
-				$output .= '<div class="fuwari_group_opened">' . "\n";
+				$output .= '<div class="fuwari_group_opened" data-fuwari-group="' . esc_attr( $current_group_id ) . '">' . "\n";
 				}		
 				if ( isset( $value['name'] ) ) {
 					$output .= '<h4 class="heading"><span class="dashicons dashicons-shortcode"></span> ' . esc_html( $value['name'] ) . '</h4>' . "\n";
@@ -420,7 +424,7 @@ class Options_Framework_Interface {
 					$class .= ' ' . $value['class'];
 				}
 
-				$output .= '<div ' . $id . 'class="' . esc_attr( $class ) . '">' . "\n";
+				$output .= '<div ' . $id . 'class="' . esc_attr( $class ) . '"' . ( $current_group_id !== '' ? ' data-fuwari-group="' . esc_attr( $current_group_id ) . '"' : '' ) . '>' . "\n";
 				if ( isset($value['name']) ) {
 					$output .= '<h4 class="heading">' . esc_html( $value['name'] ) . '</h4>' . "\n";
 				}
@@ -433,6 +437,8 @@ class Options_Framework_Interface {
 			// Heading for Navigation
 			case "heading":
 				$counter++;
+				// 0.6.0 方案B：新 tab 重置分组标识
+				$current_group_id = '';
 				if ( $counter >= 2 ) {
 					$output .= '</div>'."\n";
 				}
@@ -464,6 +470,8 @@ class Options_Framework_Interface {
 				if ( $group_opened ) {
 					$output .= '</div>'."\n";
 					$group_opened = false;
+					// 0.6.0 方案B：分组结束，清除分组标识
+					$current_group_id = '';
 				}
 			}
 
