@@ -447,12 +447,16 @@ class Options_Framework_Interface {
 				$output .= '</div>';
 				if ($group_opened) {$output .= '</div>'; }
 
-				if (isset($value['group']) && $value['group'] == 'end') {
-					$output .= '</div>'."\n";
-					$group_opened = false;
-				} else if (!$group_opened) {
+				if (!$group_opened) {
 					$output .= '</div>'."\n";
 				}
+			}
+			// 0.4.0-beta.7：group 结束标记的闭合独立于 type——此前 group end 项缺 type 时靠
+			// type 为 null 进入上方收尾块关闭 group；0.4.0-beta.6 将其默认成 'info' 后收尾块被跳过，
+			// 导致 group_opened 状态泄漏、后续 tab（社交图标/静态加速/系统优化/通知设置/关于主题）HTML 结构错乱。
+			if ( isset( $value['group'] ) && $value['group'] == 'end' ) {
+				$output .= '</div>'."\n";
+				$group_opened = false;
 			}
 
 			echo $output;

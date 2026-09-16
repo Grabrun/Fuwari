@@ -3,6 +3,26 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.4.0-beta.7] - 2026-09-16
+
+> 后台主题设置回归修复：0.4.0-beta.6 将缺 `type` 项默认设为 `'info'` 后，**group 结束标记（`group => 'end'`）因 `type='info'` 跳过了收尾逻辑，group 容器未闭合、`group_opened` 状态泄漏**——导致"用户设置" tab 之后的所有 tab（社交图标/静态加速/系统优化/通知设置/关于主题）HTML 结构错乱，点击后右侧内容不显示。
+
+### 根因链
+
+- 原始设计：group end 项**不带 `type`**，遍历时 `$value['type']` 为 null → 进入收尾分支（`type != heading && != info`）→ 关闭 group 容器并复位 `group_opened`。
+- 0.4.0-beta.6 为消除 PHP 8 `Undefined array key "type"` 警告，把缺 type 项默认成 `'info'` → group end 项走 `info` 分支，**跳过收尾分支** → group 不关闭。
+- 该回归由 div 开闭配对模拟确认：旧逻辑最终 depth=1（多一个未闭合 div）、`group_opened=True`（泄漏）；新逻辑 depth=0、状态正常。
+
+### 修复
+
+- `class-options-interface.php`：group 结束标记的闭合逻辑**独立于 type 条件**单独执行——无论 group end 项 type 为 `info`/缺失/其他，均关闭 group 容器并复位 `group_opened`；普通项的 div 收尾行为完全不变（已逐场景核对）。
+
+### 验证
+
+- div 开闭配对模拟：124 个选项项、24 组 group start/end、11 个 tab 全部配对，最终 depth=0。
+- 静态冒烟通过。
+- 目标环境：更新后后台主题设置各 tab 右侧内容恢复正常；`Undefined array key "type"` 警告仍由 0.4.0-beta.6 的防御保持消除。
+
 ## [0.4.0-beta.6] - 2026-09-16
 
 > 后台主题设置界面修复：`Warning: Undefined array key "type"`（`class-options-interface.php`）——用户设置分组的 `group => 'end'` 闭合标记项缺 `type` 键（上游遗留，PHP 8 严格报错）。
