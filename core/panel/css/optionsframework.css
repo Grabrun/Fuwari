@@ -271,7 +271,7 @@ input[type="text"],input[type="password"],input[type="date"],input[type="datetim
 
 /* B4 暗色模式适配：WP 后台暗色时内容区同步（侧栏本就深色，保持 #0b121b/#457ace 主视觉） */
 #optionsframework-wrap.fuwari-dark .header-set-title {background:#10161f;}
-#optionsframework-wrap.fuwari-dark .header-set-title .themes-name {color:#d0d7de;}
+#optionsframework-wrap.fuwari-dark .header-set-title .themes-name {color:#e8edf4;}
 #optionsframework-wrap.fuwari-dark #optionsframework h3 {color:#d0d7de;}
 #optionsframework-wrap.fuwari-dark .postbox,#optionsframework-wrap.fuwari-dark .stuffbox {background-color:#141c26;border-color:#1e2937;}
 #optionsframework-wrap.fuwari-dark #optionsframework .section {background-color:#1a2431;border-color:#243244;}
@@ -345,3 +345,10 @@ input[type="text"],input[type="password"],input[type="date"],input[type="datetim
 #optionsframework-wrap.fuwari-dark .fuwari-options-search input[type="search"]::placeholder,
 #optionsframework-wrap.fuwari-dark #optionsframework input::placeholder,
 #optionsframework-wrap.fuwari-dark #optionsframework textarea::placeholder {color:#7b8aa0;}
+
+/* 0.8.0-beta.8：关于主题（info 区块）暗色对比度——协议条款 p 文字原本无暗色规则（默认深灰，深色卡片上不可见） */
+#optionsframework-wrap.fuwari-dark #optionsframework .section-info,
+#optionsframework-wrap.fuwari-dark #optionsframework .section-info p {color:#d0d7de;}
+#optionsframework-wrap.fuwari-dark #optionsframework .section-info .heading {color:#e8edf4;}
+#optionsframework-wrap.fuwari-dark #optionsframework .section-info a,
+#optionsframework-wrap.fuwari-dark #optionsframework .section-info a.url {color:#6ea8fe;}
