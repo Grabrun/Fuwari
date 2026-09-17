@@ -277,7 +277,7 @@ input[type="text"],input[type="password"],input[type="date"],input[type="datetim
 #optionsframework-wrap.fuwari-dark #optionsframework .section {background-color:#1a2431;border-color:#243244;}
 #optionsframework-wrap.fuwari-dark #optionsframework .section .heading {color:#d0d7de;background-color:#1a2431;border-color:#2a3550;}
 #optionsframework-wrap.fuwari-dark .section .fuwari_tab_header {color:#e8edf4;}
-#optionsframework-wrap.fuwari-dark #optionsframework .section .explain,#optionsframework-wrap.fuwari-dark #optionsframework .description {color:#9aa7b8;}
+#optionsframework-wrap.fuwari-dark #optionsframework .section .explain,#optionsframework-wrap.fuwari-dark #optionsframework .description {color:#aab6c6;}
 #optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="text"],#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="password"],#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="url"],#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="search"],#optionsframework-wrap.fuwari-dark #optionsframework .controls textarea,#optionsframework-wrap.fuwari-dark #optionsframework .controls select {background-color:#0e141c;border-color:#2a3550;color:#d0d7de;}
 #optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="text"]:focus,#optionsframework-wrap.fuwari-dark #optionsframework .controls textarea:focus,#optionsframework-wrap.fuwari-dark #optionsframework .controls select:focus {border-color:#457ace;}
 #optionsframework-wrap.fuwari-dark #optionsframework .option input,#optionsframework-wrap.fuwari-dark #optionsframework .option select,#optionsframework-wrap.fuwari-dark #optionsframework .option textarea {background-color:#0e141c;border-color:#2a3550;color:#d0d7de;}
@@ -285,7 +285,7 @@ input[type="text"],input[type="password"],input[type="date"],input[type="datetim
 #optionsframework-wrap.fuwari-dark #optionsframework a {color:#6ea8fe;}
 #optionsframework-wrap.fuwari-dark .themes-inf a {color:#8a94a6 !important;}
 #optionsframework-wrap.fuwari-dark .section-textarea .controls textarea,#optionsframework-wrap.fuwari-dark #optionsframework textarea {color:#d0d7de;}
-#optionsframework-wrap.fuwari-dark .fuwari_group_opened .explain {color:#9aa7b8;}
+#optionsframework-wrap.fuwari-dark .fuwari_group_opened .explain {color:#aab6c6;}
 
 /* 0.8.0-beta.7：暗色模式视觉细节补全（header 白按钮、滚动条、checkbox/radio、菜单色差、上传按钮） */
 #optionsframework-wrap.fuwari-dark .header-set-title .el-button {background:#1a2431;color:#d0d7de;border:1px solid #2a3550;}
@@ -352,3 +352,10 @@ input[type="text"],input[type="password"],input[type="date"],input[type="datetim
 #optionsframework-wrap.fuwari-dark #optionsframework .section-info .heading {color:#e8edf4;}
 #optionsframework-wrap.fuwari-dark #optionsframework .section-info a,
 #optionsframework-wrap.fuwari-dark #optionsframework .section-info a.url {color:#6ea8fe;}
+
+/* 0.8.0-beta.9：全页暗色正文/标签文字提亮——radio 标签（无 class label）、上传控件内提示 p/i、note 提示（覆盖 11 个设置页） */
+#optionsframework-wrap.fuwari-dark #optionsframework label {color:#d0d7de;}
+#optionsframework-wrap.fuwari-dark #optionsframework .controls,
+#optionsframework-wrap.fuwari-dark #optionsframework .controls p,
+#optionsframework-wrap.fuwari-dark #optionsframework .controls i {color:#d0d7de;}
+#optionsframework-wrap.fuwari-dark #optionsframework .note p {color:#aab6c6;}
