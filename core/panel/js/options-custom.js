@@ -135,10 +135,12 @@ jQuery(document).ready(function($) {
 	}
 
 	function fuwari_apply_search() {
-		var q = $.trim( $searchInput.val() ).toLowerCase();
+		var q = ( $searchInput.val() || '' ).trim().toLowerCase();
 		if ( q === '' ) {
 			// 恢复：当前 tab 全部显示，并恢复分组折叠记忆
 			$('.group:visible .section').show();
+			// 0.8.0-beta.5：分组内设置项渲染为 .fuwari_group_opened（非 .section），清空搜索时一并恢复
+			$('.group:visible .fuwari_group_opened').show();
 			$('[data-fuwari-group].fuwari-group-collapsed').each(function() {
 				var gid = $(this).attr('data-fuwari-group');
 				$('[data-fuwari-group="' + gid + '"]').not(this).hide();
@@ -149,7 +151,7 @@ jQuery(document).ready(function($) {
 		var $activeGroup = $('.group:visible'),
 			total = 0,
 			visible = 0;
-		// 第一遍：只过滤叶子设置项（分组容器自身不带搜索文本，且其显隐由后代命中决定）
+		// 第一遍：过滤叶子设置项（分组容器自身不带搜索文本，且其显隐由后代命中决定）
 		$activeGroup.find('.section').filter(function() {
 			return ! $(this).find('.section').length;
 		}).each(function() {
@@ -163,34 +165,53 @@ jQuery(document).ready(function($) {
 				$s.closest('[data-fuwari-group]').show();
 			}
 		});
+		// 0.8.0-beta.5：分组内设置项（.fuwari_group_opened，无 .section class）同样参与过滤与计数
+		$activeGroup.find('.fuwari_group_opened').each(function() {
+			var $s = $(this);
+			total++;
+			var hit = ( fuwari_section_hay( $s ).indexOf( q ) !== -1 );
+			$s.toggle( hit );
+			if ( hit ) {
+				visible++;
+				// 命中项所在分组容器展开显示
+				$s.closest('.section[data-fuwari-group]').show();
+			}
+		});
 		// 第二遍：无任何命中项的分组容器隐藏（有命中的保持显示）
 		$activeGroup.find('.section[data-fuwari-group]').each(function() {
 			var $g = $(this),
 				any = false;
-			$g.find('.section').each(function() {
+			$g.find('.section, .fuwari_group_opened').each(function() {
 				if ( $(this).is(':visible') ) { any = true; }
 			});
 			$g.toggle( any );
 		});
 		if ( visible === 0 ) {
 			// 当前 tab 无匹配 → 自动切换到第一个有匹配的 tab
-			var switched = false;
+			var switched = false,
+				// 0.8.0-beta.5：防递归——切换后若目标 tab 仍无匹配（理论上不出现），不再重复切回同一 tab
+				tried = {};
 			$('.group').each(function() {
 				if ( switched ) { return; }
 				var any = false;
 				$(this).find('.section').filter(function() {
 					return ! $(this).find('.section').length;
-				}).each(function() {
+				}).add( $(this).find('.fuwari_group_opened') ).each(function() {
 					if ( fuwari_section_hay( $(this) ).indexOf( q ) !== -1 ) { any = true; }
 				});
-				if ( any && ! $(this).is(':visible') ) {
+				var href = '#' + this.id;
+				if ( any && ! $(this).is(':visible') && ! tried[ href ] ) {
 					// 搜索内部自动切换：保留关键词，直接激活目标 tab 并继续过滤
-					fuwari_activate_tab( '#' + this.id, true );
+					tried[ href ] = true;
+					fuwari_activate_tab( href, true );
 					switched = true;
 				}
 			});
-			// 全部 tab 都无匹配 → 空态提示
-			$searchCount.show().text('无匹配设置项');
+			// 0.8.0-beta.5：跨 tab 切换成功后（递归过滤已更新计数），不再执行空态提示覆盖
+			if ( ! switched ) {
+				// 全部 tab 都无匹配 → 空态提示
+				$searchCount.show().text('无匹配设置项');
+			}
 		} else {
 			$searchCount.show().text('匹配 ' + visible + ' / ' + total + ' 项');
 		}
@@ -198,6 +219,32 @@ jQuery(document).ready(function($) {
 
 	if ( $searchInput.length ) {
 		$searchInput.on('input', function() { fuwari_apply_search(); });
+	}
+
+	// 0.6.0 方案B + 0.8.0-beta.5：Tab 激活统一入口（供点击 / 键盘 / 搜索切换复用）。
+	// 0.8.0-beta.5：从 options_framework_tabs() 内提升到 ready 顶层——原嵌套定义作用域在
+	// options_framework_tabs() 局部，跨 tab 搜索调用 fuwari_apply_search() → fuwari_activate_tab()
+	// 时 ReferenceError，导致搜索跨 tab 自动切换崩溃。$group 局部依赖改为 $('.group')。
+	// keepSearch=true 为搜索内部跨 tab 自动切换（保留关键词继续过滤）；
+	// 用户手动点击/键盘切换时清空搜索，恢复当前 tab 完整显示，避免"点菜单后被过滤成空白/弹回原 tab"。
+	function fuwari_activate_tab( href, keepSearch ) {
+		$('.nav-tab-wrapper li').removeClass('active');
+		$('.nav-tab-wrapper li a[href="' + href + '"]').parent('li').addClass('active');
+		if ( typeof(localStorage) != 'undefined' ) {
+			localStorage.setItem('active_tab', href );
+		}
+		$('.group').hide();
+		$(href).fadeIn();
+		if ( ! keepSearch && $searchInput.length && ( $searchInput.val() || '' ).trim() !== '' ) {
+			// 手动切换：清空搜索词并恢复完整显示
+			$searchInput.val('');
+			fuwari_apply_search();
+			return;
+		}
+		// 搜索状态下（含搜索内部跨 tab 切换），切换后重新过滤
+		if ( $searchInput.length && ( $searchInput.val() || '' ).trim() !== '' ) {
+			fuwari_apply_search();
+		}
 	}
 
 	function options_framework_tabs() {
@@ -222,29 +269,6 @@ jQuery(document).ready(function($) {
 		} else {
 			$('.group:first').fadeIn();
 			$('.nav-tab-wrapper li:first').addClass('active');
-		}
-
-		// 0.6.0 方案B：Tab 激活统一入口（供点击 / 键盘 / 搜索切换复用）
-		// keepSearch=true 为搜索内部跨 tab 自动切换（保留关键词继续过滤）；
-		// 用户手动点击/键盘切换时清空搜索，恢复当前 tab 完整显示，避免"点菜单后被过滤成空白/弹回原 tab"。
-		function fuwari_activate_tab( href, keepSearch ) {
-			$('.nav-tab-wrapper li').removeClass('active');
-			$('.nav-tab-wrapper li a[href="' + href + '"]').parent('li').addClass('active');
-			if ( typeof(localStorage) != 'undefined' ) {
-				localStorage.setItem('active_tab', href );
-			}
-			$group.hide();
-			$(href).fadeIn();
-			if ( ! keepSearch && $searchInput.length && $.trim( $searchInput.val() ) !== '' ) {
-				// 手动切换：清空搜索词并恢复完整显示
-				$searchInput.val('');
-				fuwari_apply_search();
-				return;
-			}
-			// 搜索状态下（含搜索内部跨 tab 切换），切换后重新过滤
-			if ( $searchInput.length && $.trim( $searchInput.val() ) !== '' ) {
-				fuwari_apply_search();
-			}
 		}
 
 		// Bind tabs clicks

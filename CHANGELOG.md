@@ -3,6 +3,23 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.8.0-beta.5] - 2026-09-17
+
+> 后台设置页搜索功能深度修复（jsdom + jQuery 3.7 真实渲染验证，15/15 用例通过）。beta.4 解决了"浏览器用旧资源"，本版解决"新版资源下搜索仍不工作"的 JS 层根因。纯修复，无选项 ID / 数据结构变更。
+
+### 修复（`core/panel/js/options-custom.js`）
+
+- **I1 分组内设置项不参与搜索（搜索不到组内项/分组容器被强制隐藏）**：分组内项渲染为 `.fuwari_group_opened`（无 `.section` class），原逻辑只过滤 `.section` 导致组内项既不被搜索、又在第二遍 `$g.find('.section')` 查空后被全部隐藏。现 `.fuwari_group_opened` 纳入过滤/计数/跨 tab 匹配，第二遍可见性检查含组内项，清空搜索时一并恢复。
+- **I2 `$.trim` 在 jQuery 3.5+ 已移除导致搜索首行崩溃**：WordPress 自带 jQuery 3.7.x（未启用主题内置 jQuery 时），`$.trim(...)` 直接 TypeError，搜索完全失效。改为原生 `String.prototype.trim`（3 处）。
+- **I3 跨 tab 自动切换 ReferenceError**：`fuwari_activate_tab` 原嵌套在 `options_framework_tabs()` 局部作用域，搜索跨 tab 调用时未定义崩溃。提升到 ready 顶层，`$group` 局部依赖改为 `$('.group')`。
+- **I4 跨 tab 切换成功后计数被覆盖为"无匹配"**：切换后递归过滤已更新计数，外层循环结束仍执行空态提示覆盖。现仅在 `switched=false` 时提示无匹配。
+- **I5 防递归**：跨 tab 切换后若目标 tab 仍无匹配（理论不出现），`tried` 集合防止重复切回同一 tab 造成死循环。
+
+### 验证
+
+- `node --check` 通过；`php_smoke.py` 通过。
+- jsdom + jQuery 3.7（与 WP 内置一致）加载真实渲染 HTML（11 group / 39 section / 98 组内项）逐项断言 15/15 通过：叶子命中（LOGO）、组内项命中（边框）、跨 tab 自动切换（一言，计数不被覆盖）、清空恢复当前 tab 完整显示、分组容器显隐正确。
+
 ## [0.8.0-beta.4] - 2026-09-17
 
 > 生产环境实测修复：后台设置页 JS/CSS 版本参数固定 `Options_Framework::VERSION`（1.9.0）且服务器 `Cache-Control: max-age=43200`，浏览器 12 小时长缓存旧资源，导致"主题文件已更新（含 beta.3 吸顶/搜索修复）但页面仍用旧版"——清服务器缓存（WP Fastest Cache）无效。纯修复，无选项 ID / 数据结构变更。
