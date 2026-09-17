@@ -317,3 +317,31 @@ input[type="text"],input[type="password"],input[type="date"],input[type="datetim
 #optionsframework-wrap.fuwari-dark #optionsframework .button-secondary {background:#1a2431;color:#d0d7de;border-color:#2a3550;}
 #optionsframework-wrap.fuwari-dark #optionsframework .button:hover,
 #optionsframework-wrap.fuwari-dark #optionsframework .button-secondary:hover {background:#243244;color:#fff;border-color:#457ace;}
+
+/* 0.8.0-beta.8：暗色对比度增强——未选中态 checkbox/radio 边框提亮（accent-color 只影响勾选态）、输入框边界清晰、占位符可读 */
+#optionsframework-wrap.fuwari-dark #optionsframework input[type="checkbox"],
+#optionsframework-wrap.fuwari-dark #optionsframework input[type="radio"] {
+    accent-color:#4c8bff;
+    border:1px solid #6ea8fe;
+    background-color:#0e141c;
+    box-shadow:0 0 0 1px rgba(110,168,254,.25);
+}
+#optionsframework-wrap.fuwari-dark #optionsframework input[type="checkbox"]:checked,
+#optionsframework-wrap.fuwari-dark #optionsframework input[type="radio"]:checked {
+    border-color:#4c8bff;
+    box-shadow:none;
+}
+#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="text"],
+#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="password"],
+#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="url"],
+#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="search"],
+#optionsframework-wrap.fuwari-dark #optionsframework .controls textarea,
+#optionsframework-wrap.fuwari-dark #optionsframework .controls select,
+#optionsframework-wrap.fuwari-dark #optionsframework .option input,
+#optionsframework-wrap.fuwari-dark #optionsframework .option select,
+#optionsframework-wrap.fuwari-dark #optionsframework .option textarea {
+    border-color:#3e4f6e;
+}
+#optionsframework-wrap.fuwari-dark .fuwari-options-search input[type="search"]::placeholder,
+#optionsframework-wrap.fuwari-dark #optionsframework input::placeholder,
+#optionsframework-wrap.fuwari-dark #optionsframework textarea::placeholder {color:#7b8aa0;}
