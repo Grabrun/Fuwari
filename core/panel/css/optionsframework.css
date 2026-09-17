@@ -278,6 +278,7 @@ input[type="text"],input[type="password"],input[type="date"],input[type="datetim
 #optionsframework-wrap.fuwari-dark #optionsframework .section {background-color:#1a2431;border-color:#243244;}
 #optionsframework-wrap.fuwari-dark #optionsframework .section .heading {color:#d0d7de;background-color:#1a2431;border-color:#2a3550;}
 #optionsframework-wrap.fuwari-dark .section .fuwari_tab_header {color:#e8edf4;}
+#optionsframework-wrap.fuwari-dark .fuwari_tab_header {color:#e8edf4;}
 #optionsframework-wrap.fuwari-dark #optionsframework .section .explain,#optionsframework-wrap.fuwari-dark #optionsframework .description {color:#aab6c6;}
 #optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="text"],#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="password"],#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="url"],#optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="search"],#optionsframework-wrap.fuwari-dark #optionsframework .controls textarea,#optionsframework-wrap.fuwari-dark #optionsframework .controls select {background-color:#0e141c;border-color:#2a3550;color:#d0d7de;}
 #optionsframework-wrap.fuwari-dark #optionsframework .controls input[type="text"]:focus,#optionsframework-wrap.fuwari-dark #optionsframework .controls textarea:focus,#optionsframework-wrap.fuwari-dark #optionsframework .controls select:focus {border-color:#457ace;}
