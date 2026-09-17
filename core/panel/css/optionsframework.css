@@ -286,3 +286,34 @@ input[type="text"],input[type="password"],input[type="date"],input[type="datetim
 #optionsframework-wrap.fuwari-dark .themes-inf a {color:#8a94a6 !important;}
 #optionsframework-wrap.fuwari-dark .section-textarea .controls textarea,#optionsframework-wrap.fuwari-dark #optionsframework textarea {color:#d0d7de;}
 #optionsframework-wrap.fuwari-dark .fuwari_group_opened .explain {color:#9aa7b8;}
+
+/* 0.8.0-beta.7：暗色模式视觉细节补全（header 白按钮、滚动条、checkbox/radio、菜单色差、上传按钮） */
+#optionsframework-wrap.fuwari-dark .header-set-title .el-button {background:#1a2431;color:#d0d7de;border:1px solid #2a3550;}
+#optionsframework-wrap.fuwari-dark .header-set-title .el-button:hover,#optionsframework-wrap.fuwari-dark .header-set-title .el-button:focus {background:#243244;color:#fff;border-color:#457ace;}
+/* 暗色滚动条（左侧菜单 / 内容区 / 菜单列表） */
+#optionsframework-wrap.fuwari-dark .set-main-menu::-webkit-scrollbar,
+#optionsframework-wrap.fuwari-dark #optionsframework-metabox::-webkit-scrollbar,
+#optionsframework-wrap.fuwari-dark .nav-tab-wrapper ul::-webkit-scrollbar {width:8px;height:8px;}
+#optionsframework-wrap.fuwari-dark .set-main-menu::-webkit-scrollbar-track,
+#optionsframework-wrap.fuwari-dark #optionsframework-metabox::-webkit-scrollbar-track,
+#optionsframework-wrap.fuwari-dark .nav-tab-wrapper ul::-webkit-scrollbar-track {background:transparent;}
+#optionsframework-wrap.fuwari-dark .set-main-menu::-webkit-scrollbar-thumb,
+#optionsframework-wrap.fuwari-dark #optionsframework-metabox::-webkit-scrollbar-thumb,
+#optionsframework-wrap.fuwari-dark .nav-tab-wrapper ul::-webkit-scrollbar-thumb {background:#2a3550;border-radius:4px;}
+#optionsframework-wrap.fuwari-dark .set-main-menu::-webkit-scrollbar-thumb:hover,
+#optionsframework-wrap.fuwari-dark #optionsframework-metabox::-webkit-scrollbar-thumb:hover,
+#optionsframework-wrap.fuwari-dark .nav-tab-wrapper ul::-webkit-scrollbar-thumb:hover {background:#3a4a6b;}
+/* checkbox / radio 强调色（暗色下未选中态对比度） */
+#optionsframework-wrap.fuwari-dark #optionsframework input[type="checkbox"],
+#optionsframework-wrap.fuwari-dark #optionsframework input[type="radio"] {accent-color:#457ace;}
+/* 左侧菜单背景统一（主视觉 #0b121b，消除顶部与列表区色差与浅灰边线） */
+#optionsframework-wrap.fuwari-dark .set-main-menu,
+#optionsframework-wrap.fuwari-dark .nav-tab-wrapper {background:#0b121b;border-right-color:#243244;border-bottom-color:#243244;}
+#optionsframework-wrap.fuwari-dark .nav-tab-wrapper ul li a {color:#c3cdd9;}
+#optionsframework-wrap.fuwari-dark .nav-tab-wrapper ul li a:hover,#optionsframework-wrap.fuwari-dark .nav-tab-wrapper ul li a:focus {color:#6ea8fe;}
+#optionsframework-wrap.fuwari-dark .nav-tab-wrapper ul li.active > a {color:#fff;}
+/* WP 默认上传等按钮暗色化 */
+#optionsframework-wrap.fuwari-dark #optionsframework .button,
+#optionsframework-wrap.fuwari-dark #optionsframework .button-secondary {background:#1a2431;color:#d0d7de;border-color:#2a3550;}
+#optionsframework-wrap.fuwari-dark #optionsframework .button:hover,
+#optionsframework-wrap.fuwari-dark #optionsframework .button-secondary:hover {background:#243244;color:#fff;border-color:#457ace;}

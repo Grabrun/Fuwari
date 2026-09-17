@@ -3,6 +3,24 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.8.0-beta.7] - 2026-09-17
+
+> 后台设置页暗色 UI 视觉修复（生产浏览器实测，暗色模式截图核对）。纯样式/文案，无选项 ID / 数据结构变更。
+
+### 修复
+
+- **K1 侧栏主题名仍为原项目名"盒子萌主题"**：`core/panel/includes/class-options-framework-admin.php` — 暗色侧栏顶部品牌名改为「Fuwari · 浮絮」（与主题名/页尾版权一致）。
+- **K2 暗色下头部"在线文档"按钮为白色（刺眼）**：`core/panel/css/optionsframework.css` — `.el-button` 原白底未做暗色适配，改为深底浅字、hover 高亮。
+- **K3 暗色下滚动条为 WP 默认浅灰**：左侧菜单/内容区/菜单列表滚动条改深色（`#2a3550` thumb、hover 提亮）。
+- **K4 checkbox/radio 未选中态对比度不足**：暗色下加 `accent-color:#457ace`。
+- **K5 左侧菜单顶部与列表区背景色差**：`.set-main-menu`（黑）与 `.nav-tab-wrapper`（#0b121b）统一为 #0b121b，浅灰边线（border-right/bottom #e6e6e6）改深色；菜单项文字/active 项在暗色下微调。
+- **K6 WP 默认上传等按钮在暗色下为白底**：`.button/.button-secondary` 暗色化。
+
+### 验证
+
+- 生产浏览器实测（只读，已还原）：暗色模式正常激活（body 暗色信号），截图核对侧栏/内容区/按钮/卡片配色。
+- CSS 括号平衡、`php -l` 通过；搜索功能 jsdom 回归 21/21 通过。
+
 ## [0.8.0-beta.6] - 2026-09-17
 
 > 后台设置页搜索状态残留修复：搜索过滤后手动切换 tab（搜索框已清空），切回原 tab 仍显示过滤后内容。纯修复，无选项 ID / 数据结构变更。
