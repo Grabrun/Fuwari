@@ -3,6 +3,20 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.8.0-beta.4] - 2026-09-17
+
+> 生产环境实测修复：后台设置页 JS/CSS 版本参数固定 `Options_Framework::VERSION`（1.9.0）且服务器 `Cache-Control: max-age=43200`，浏览器 12 小时长缓存旧资源，导致"主题文件已更新（含 beta.3 吸顶/搜索修复）但页面仍用旧版"——清服务器缓存（WP Fastest Cache）无效。纯修复，无选项 ID / 数据结构变更。
+
+### 修复
+
+- **H1 后台资源版本参数固定导致浏览器缓存旧版（根因）**：`core/panel/includes/class-options-framework-admin.php` — `optionsframework.css` / `options-custom.js` 的 enqueue 版本参数由固定 `Options_Framework::VERSION`（1.9.0）改为 `THEME_VERSION`（读取自 style.css）。主题升级后 `?ver` 自动变化，浏览器强制拉取最新资源，不再吃 12 小时长缓存旧版。
+- **H2 quicktags.js 版本参数统一**：`core/module/fun-shortcode.php` — `html_code_button()` 的 `'1.0.0'` 固定版本改为 `THEME_VERSION`。
+
+### 验证
+
+- 生产实测（只读，已还原）：服务器 options-custom.js / optionsframework.css 与本地 0.8.0-beta.3 内容一致（仅换行符差异），均含吸顶（`position:sticky;top:32px`）与搜索修复逻辑；页面直接加载原始资源（后台不合并）；根因确认为浏览器长缓存旧版。本版起版本参数跟随主题版本，升级自动破缓存。
+- `php_smoke.py` 静态检查通过；PHP 8.3 本地模拟渲染 11 个 group / 108 项选项完整。
+
 ## [0.8.0-beta.3] - 2026-09-17
 
 > 后台设置页交互回归修复：左侧菜单吸顶后内容区与菜单的视觉叠加、搜索状态下切换设置项空白/弹回、小屏下搜索框随菜单整体滚走。纯修复，无选项 ID / 数据结构变更。

@@ -151,7 +151,9 @@ class Options_Framework_Admin {
 		if ( $this->options_screen != $hook )
 	        return;
 
-		wp_enqueue_style( 'optionsframework', OPTIONS_FRAMEWORK_DIRECTORY . 'css/optionsframework.css', array(),  Options_Framework::VERSION );
+		// 0.8.0-beta.4：后台资源版本参数由固定 Options_Framework::VERSION(1.9.0) 改为 THEME_VERSION，
+		// 主题升级时 ?ver 自动变化，强制浏览器拉取最新 JS/CSS，避免"代码已更新、页面仍用 12h 长缓存旧资源"。
+		wp_enqueue_style( 'optionsframework', OPTIONS_FRAMEWORK_DIRECTORY . 'css/optionsframework.css', array(),  THEME_VERSION );
 		wp_enqueue_style( 'wp-color-picker' );
 	}
 
@@ -165,8 +167,8 @@ class Options_Framework_Admin {
 		if ( $this->options_screen != $hook )
 	        return;
 
-		// Enqueue custom option panel JS
-		wp_enqueue_script( 'options-custom', OPTIONS_FRAMEWORK_DIRECTORY . 'js/options-custom.js', array( 'jquery','wp-color-picker' ), Options_Framework::VERSION );
+		// Enqueue custom option panel JS（版本参数跟随主题版本，0.8.0-beta.4）
+		wp_enqueue_script( 'options-custom', OPTIONS_FRAMEWORK_DIRECTORY . 'js/options-custom.js', array( 'jquery','wp-color-picker' ), THEME_VERSION );
 
 		// Inline scripts from options-interface.php
 		add_action( 'admin_head', array( $this, 'of_admin_head' ) );

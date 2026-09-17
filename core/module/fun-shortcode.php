@@ -335,7 +335,7 @@ add_action('admin_head', 'fuwari_button');
 
 // HTML模式短代码
 function html_code_button() {
-    wp_enqueue_script( 'html_code_button', get_template_directory_uri() . '/assets/js/quicktags.js', array( 'jquery', 'quicktags' ), '1.0.0', true );
+    wp_enqueue_script( 'html_code_button', get_template_directory_uri() . '/assets/js/quicktags.js', array( 'jquery', 'quicktags' ), THEME_VERSION, true );
 }
 add_action('admin_print_footer_scripts', 'html_code_button' );
 
