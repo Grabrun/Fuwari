@@ -137,10 +137,10 @@ jQuery(document).ready(function($) {
 	function fuwari_apply_search() {
 		var q = ( $searchInput.val() || '' ).trim().toLowerCase();
 		if ( q === '' ) {
-			// 恢复：当前 tab 全部显示，并恢复分组折叠记忆
-			$('.group:visible .section').show();
-			// 0.8.0-beta.5：分组内设置项渲染为 .fuwari_group_opened（非 .section），清空搜索时一并恢复
-			$('.group:visible .fuwari_group_opened').show();
+			// 恢复：全部 group 的叶子与组内项恢复完整显示——0.8.0-beta.6：不再只恢复当前可见 group，
+			// 否则手动切走 tab 时原 tab 残留搜索过滤状态，切回时仍显示过滤后内容
+			$('.group .section').show();
+			$('.group .fuwari_group_opened').show();
 			$('[data-fuwari-group].fuwari-group-collapsed').each(function() {
 				var gid = $(this).attr('data-fuwari-group');
 				$('[data-fuwari-group="' + gid + '"]').not(this).hide();
