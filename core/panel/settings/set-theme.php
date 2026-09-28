@@ -44,7 +44,5 @@ Fuwari_Options_Registry::register( array(
      <p>当前版本：'.$THEME_VERSION.'</p>
      <p>最新版本：<span id="vbox"></span></p>
      <p>查看主题：<a href="https://github.com/Grabrun/Fuwari" target="_blank" rel="external nofollow" class="url">更新日志</a></p>		
-     <p>主题QQ群：<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=YLb_jw14jGMh1q8cMwga9UZcWp6JDPsS&authKey=x8YpdYVOU%2BIyiJ8uSJ2gT9UJ%2B%2BByQjnaHTTaTjMAu9YIERV20NnM%2F7tfBB%2B39peo&noverify=0&group_code=24847519" target="_blank" rel="external nofollow" class="url">24847519</a></p>
-     <p>TG群组：<a href="https://t.me/hezimeng" target="_blank" rel="external nofollow" class="url">https://t.me/hezimeng</a></p>
     ', 'ui_fuwari_com'),
     'type' => 'info'));		
