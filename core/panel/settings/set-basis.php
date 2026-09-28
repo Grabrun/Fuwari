@@ -157,7 +157,7 @@ Fuwari_Options_Registry::register( array(
 		'name' => __('页尾版权行自定义', 'ui_fuwari_com'),
 		'desc' => __('（留空使用默认：Copyright © 年份 站点名。支持占位符 %year%（年份）、%site%（站点名），可填HTML如备案号）', 'ui_fuwari_com'),
 		'id' => 'fuwari_footer_copyright',
-		'std' => '',
+		'std' => 'Copyright © %year% %site%',
 		'settings' => array('rows' => 2),
 		'type' => 'textarea'));
 	Fuwari_Options_Registry::register( array(
