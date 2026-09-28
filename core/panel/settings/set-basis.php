@@ -154,6 +154,13 @@ Fuwari_Options_Registry::register( array(
 		'settings' => array('rows' => 3),
 		'type' => 'textarea'));
 	Fuwari_Options_Registry::register( array(
+		'name' => __('页尾版权行自定义', 'ui_fuwari_com'),
+		'desc' => __('（留空使用默认：Copyright © 年份 站点名。支持占位符 %year%（年份）、%site%（站点名），可填HTML如备案号）', 'ui_fuwari_com'),
+		'id' => 'fuwari_footer_copyright',
+		'std' => '',
+		'settings' => array('rows' => 2),
+		'type' => 'textarea'));
+	Fuwari_Options_Registry::register( array(
 		'name' => __('网站底部自定义信息（如备案号支持HTML代码）', 'ui_fuwari_com'),
 		'id' => 'fuwari_footer_info',
 		'std' => '本站使用Wordpress创作'."\n",

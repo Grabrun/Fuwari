@@ -232,7 +232,12 @@ function fuwari_load_assets_footer(){?>
             </div>
           </div>
           <div class="col-lg-12 text-center mt-3 copyright">
-          <span>Copyright © <?php echo date('Y'); ?> <a href="<?php echo home_url(); ?>"><?php echo get_bloginfo('name'); ?></a> <?php echo get_fuwari('fuwari_footer_info','Powered by WordPress'); ?> </span>
+          <?php $fuwari_cr = trim((string)get_fuwari('fuwari_footer_copyright', '')); ?>
+          <?php if ($fuwari_cr !== '') : ?>
+          <span><?php echo wp_kses_post(str_replace(array('%year%','%site%'), array(date('Y'), get_bloginfo('name')), $fuwari_cr)); ?></span>
+          <?php else : ?>
+          <span>Copyright © <?php echo date('Y'); ?> <a href="<?php echo esc_url(home_url()); ?>"><?php echo esc_html(get_bloginfo('name')); ?></a> <?php echo get_fuwari('fuwari_footer_info','Powered by WordPress'); ?> </span>
+          <?php endif; ?>
           <span>Theme by Fuwari・基于 <a href="https://www.boxmoe.com" target="_blank" rel="noopener">Boxmoe</a> 的 <a href="https://github.com/baomihuahua/lolimeow" target="_blank" rel="noopener">LoliMeow</a> 项目</span>
           <?php if(get_fuwari('fuwari_footer_running_days_switch')): ?> 
           <?php echo get_fuwari('fuwari_footer_running_days_prefix','本站已稳定运行了'); ?><span id="running-days" style="display:inline-block;">0</span><?php echo get_fuwari('fuwari_footer_running_days_suffix','天'); ?>
