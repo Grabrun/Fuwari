@@ -234,7 +234,7 @@ function fuwari_load_assets_footer(){?>
           <div class="col-lg-12 text-center mt-3 copyright">
           <?php $fuwari_cr = trim((string)get_fuwari('fuwari_footer_copyright', '')); ?>
           <?php if ($fuwari_cr !== '') : ?>
-          <span><?php echo wp_kses_post(str_replace(array('%year%','%site%'), array(date('Y'), get_bloginfo('name')), $fuwari_cr)); ?></span>
+          <span><?php echo wp_kses_post(str_replace(array('%year%','%site%'), array(date('Y'), get_bloginfo('name')), $fuwari_cr)); ?> <?php echo get_fuwari('fuwari_footer_info',''); ?></span>
           <?php else : ?>
           <span>Copyright © <?php echo date('Y'); ?> <a href="<?php echo esc_url(home_url()); ?>"><?php echo esc_html(get_bloginfo('name')); ?></a> <?php echo get_fuwari('fuwari_footer_info','Powered by WordPress'); ?> </span>
           <?php endif; ?>
