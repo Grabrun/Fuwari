@@ -36,7 +36,8 @@ $current_user = wp_get_current_user();
                                 'comment' => '我的评论',
                                 'password' => '修改密码'
                             );
-                            echo isset($menu_names[$items]) ? $menu_names[$items] : $items;
+                            // 安全加固（审计修复）：$items 非白名单时强制转义输出，杜绝反射型 XSS
+                            echo isset($menu_names[$items]) ? $menu_names[$items] : esc_html($items);
                             ?></h3>
                         </div>
                         <div class="table-responsive mb-3">

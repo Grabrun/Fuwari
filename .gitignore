@@ -7,3 +7,6 @@ thumbs.db
 *.swp
 *.tmp
 .DS_Store
+
+# 开发验证脚本（不入发布包）
+.verify/
