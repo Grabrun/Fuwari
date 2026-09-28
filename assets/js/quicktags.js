@@ -21,5 +21,5 @@
 		QTags.addButton( 'userreading1', '会员查看模式一', '[userreading]', '隐藏内容[/userreading]','','userreading1' );  
 		QTags.addButton( 'userreading2', '会员查看模式二', '[userreading notice="未登录时候显示的内容"]', '隐藏内容[/userreading]','','userreading2' ); 
 		QTags.addButton( 'pwd_protected_post', '文章密码保护', '[pwd_protected_post key="保护密码"]文章密码保护内容','[/pwd_protected_post]' );
-		QTags.addButton( 'downloadbox', '下载框', '<div class="post-download-box fontsom mt-2 mb-5">\n<h3>下载信息</h3>\n<ul class="infobox">\n<li class="title"><i class="fa fa-bars"></i> 下载地址1:<span><a href="https://www.boxmoe.com" target="_blank" rel="noopener">点击下载</a></span><small>说明</small> </li>\n</ul>\n<span class="sya">部分资源来源于网络如有侵权,请联系删除</span>\n</div>', '','','downloadbox' );		
+		QTags.addButton( 'downloadbox', '下载框', '<div class="post-download-box fontsom mt-2 mb-5">\n<h3>下载信息</h3>\n<ul class="infobox">\n<li class="title"><i class="fa fa-bars"></i> 下载地址1:<span><a href="https://github.com/Grabrun/Fuwari" target="_blank" rel="noopener">点击下载</a></span><small>说明</small> </li>\n</ul>\n<span class="sya">部分资源来源于网络如有侵权,请联系删除</span>\n</div>', '','','downloadbox' );		
     
