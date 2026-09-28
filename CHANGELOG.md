@@ -3,6 +3,21 @@
 本主题遵循[语义化版本 2.0.0](https://semver.org/lang/zh-CN/)：
 `主版本号.次版本号.修订号[-预发布版本]`。预发布版本（beta/rc）不代表最终 API 稳定。
 
+## [0.8.2] - 2026-09-28
+
+> **正式版发布（stable）**：链接与文档更新版。
+
+### 变更
+
+- **非版权链接改为当前项目**：主题 Theme URI（`style.css` / `assets/css/style.css`）、后台主题设置「更新日志」链接、编辑器「下载框」示例链接统一指向 `https://github.com/Grabrun/Fuwari`。
+- **页尾版权链接修正**：LoliMeow 链接改为原项目 GitHub 仓库 `https://github.com/baomihuahua/lolimeow`，Boxmoe 保留官网 `https://www.boxmoe.com`。
+- **新增深度审计报告**：`docs/SECURITY-AUDIT.md`（73/73 语法通过、1 项 XSS 已修复并随 0.8.1 发布、安全/架构/性能全项核查）。
+- 本版本不涉及选项 ID / 数据结构变更，升级平滑。
+
+### 验证
+
+- PHP `php -l` 全量 73 文件通过；JS `node --check` 通过。
+- 链接替换为纯字符串变更，无功能逻辑改动。
 ## [0.8.1] - 2026-09-28
 
 > **正式版发布（stable）**：安全审计修复版。
